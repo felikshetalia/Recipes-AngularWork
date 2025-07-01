@@ -1,0 +1,30 @@
+header {
+    flex-direction: column;
+    background-color: #4e89c4;
+    background: linear-gradient(to bottom, #4e89c4, #39739d);
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.75rem 0.1rem;
+    gap: 1rem;
+    align-items: center;
+    font-size: 1rem;
+}
+
+button.dialog {
+    margin-right: 30px;
+    padding: 10px;
+    color: rgb(56, 125, 228);
+    font-size: 50px;
+    cursor: pointer;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+nav ul {
+    font-size: 2rem;
+    color: white;
+    font-weight: bolder;
+}
