@@ -11,8 +11,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 })
 export class Navbar {
   readonly dialog = inject(MatDialog);
-  openDialog() {
-    return this.dialog.open(AuthorDialog, {
+  openDialog():void {
+    this.dialog.open(AuthorDialog, {
       hasBackdrop: true,
       disableClose: false,
       data: { name: 'Kuchnia Express Marche Przepisy' }

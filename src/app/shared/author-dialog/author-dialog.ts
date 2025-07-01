@@ -10,7 +10,7 @@ import { Navbar } from '../../navbar/navbar';
   styleUrl: './author-dialog.scss'
 })
 export class AuthorDialog {
-  closeDialog() {
+  closeDialog(): void {
     const dialog = inject(MatDialog);
     return dialog.closeAll();
   }
