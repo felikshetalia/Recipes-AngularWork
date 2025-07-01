@@ -12,6 +12,6 @@ import { Navbar } from '../../navbar/navbar';
 export class AuthorDialog {
   closeDialog() {
     const dialog = inject(MatDialog);
-    dialog.closeAll();
+    return dialog.closeAll();
   }
 }
