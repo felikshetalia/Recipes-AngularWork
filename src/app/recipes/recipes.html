@@ -2,7 +2,10 @@
     <ul>
         @for(recipe of RECIPE_LIST; track recipe.id) {
     
-        <app-one-recipe [id]="recipe.id" (select)="onSelectRecipe(recipe.id)">{{ nameFromID }}</app-one-recipe>
+        <app-one-recipe 
+        [inputRecipe]="recipe"
+        (recipeSelected)="onSelectRecipe($event)"
+        >{{ nameFromID }}</app-one-recipe>
     
         }
     </ul>

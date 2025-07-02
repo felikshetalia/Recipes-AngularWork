@@ -5,8 +5,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TimeCustomPipe implements PipeTransform {
 
-  transform(hrs: number, mins: number): string {
-    return '${hrs}h ${mins}m';
+  transform(mins: number): string {
+    const hrs = Math.floor(mins / 60);
+    const remainingMins = mins % 60;
+    return '${hrs}h ${remainingMins}m';
   }
 
 }
