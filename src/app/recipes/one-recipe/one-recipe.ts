@@ -11,8 +11,8 @@ import { Recipe, recipesList } from '../recipes-list';
 })
 export class OneRecipe {
   recipe = input.required<Recipe>();
-  recipeSelected = output<Recipe>();
+  recipeSelected = output<void>();
   onSelectRecipe(): void {
-    this.recipeSelected.emit(this.recipe());
+    this.recipeSelected.emit();
   }
 }
