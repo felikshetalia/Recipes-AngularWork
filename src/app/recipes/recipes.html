@@ -1,0 +1,12 @@
+<section id="recipesList">
+    <ul>
+        @for(recipe of RECIPE_LIST; track recipe.id) {
+    
+        <app-one-recipe 
+        [recipe]="recipe"
+        (recipeSelected)="onSelectRecipe(recipe)"
+        >{{ recipe.name }}</app-one-recipe>
+    
+        }
+    </ul>
+</section>
