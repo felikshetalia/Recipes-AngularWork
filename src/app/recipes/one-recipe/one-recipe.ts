@@ -10,15 +10,9 @@ import { Recipe, recipesList } from '../recipes-list';
 
 })
 export class OneRecipe {
-  // id = input.required<string>();
-  // name = input.required<string>();
-  inputRecipe = input.required<Recipe>();
+  recipe = input.required<Recipe>();
   recipeSelected = output<Recipe>();
-  // get name(): string {
-  //   const recipe = recipesList.find(r => r.id === this.id());
-  //   return recipe ? recipe.name : 'Unknown';
-  // }
   onSelectRecipe(): void {
-    this.recipeSelected.emit(this.inputRecipe());
+    this.recipeSelected.emit(this.recipe());
   }
 }

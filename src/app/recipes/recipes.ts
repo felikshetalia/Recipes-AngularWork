@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { Recipe, recipesList } from './recipes-list';
 import { OneRecipe } from "./one-recipe/one-recipe";
 @Component({
@@ -10,11 +10,8 @@ import { OneRecipe } from "./one-recipe/one-recipe";
 })
 export class Recipes {
   RECIPE_LIST = recipesList;
-  selectedRecipeID?: string;
-  onSelectRecipe(rep: Recipe) {
-    this.selectedRecipeID = rep.id;
-  }
-  get nameFromID() {
-    return this.RECIPE_LIST.find((recipe) => recipe.id === this.selectedRecipeID)?.name;
+  selectedRecipe = signal<Recipe | undefined>(undefined);
+  onSelectRecipe(rep: Recipe) : void {
+    this.selectedRecipe.set(rep);
   }
 }

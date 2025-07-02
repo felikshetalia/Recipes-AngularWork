@@ -1,7 +1,7 @@
 import { DatePipe } from "@angular/common";
 import { TimeCustomPipe } from "../shared/time-custom-pipe";
 
-export type Recipe = {
+export interface Recipe {
     id: string;
     name: string;
     preparationTimeInMins: number | TimeCustomPipe; // takes hour and minutes in number
@@ -9,7 +9,7 @@ export type Recipe = {
 }
 
 // just dummy data for now
-export const recipesList = [
+export const recipesList : Recipe[] = [
     {
         id: 'r1',
         name: 'Spaghetti Carbonara',
