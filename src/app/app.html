@@ -1,4 +1,12 @@
 <app-navbar> </app-navbar>
 <main>
-  <app-recipes></app-recipes>
+  <div class="container">
+    <app-recipes (recipeSelected2Display)="onRecipeSelected($event)"></app-recipes>
+
+      @if(selectedRecipe() !== undefined) {
+      <app-recipe-card [recipe]="selectedRecipe()"></app-recipe-card>
+      }
+
+  </div>
+
 </main>

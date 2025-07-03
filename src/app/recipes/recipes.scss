@@ -1,8 +1,10 @@
 #recipesList{
     overflow: auto;
     padding: 1rem;
-    max-height: 60vh;
-    max-width: 500px;
+    max-height: none;
+    max-width: none;
+    height: 60vh;
+    width: auto;
     border-radius: 8px;
     margin: 100px;
     background-color: cornflowerblue;
@@ -13,8 +15,7 @@ ul {
     padding: 0;
     gap: 1rem;
     display: flex;
-    max-height: 50vh;
-    overflow: auto;
+    max-height: none;
     border-radius: 0.5rem;
     flex-direction: column;
     background: transparent;

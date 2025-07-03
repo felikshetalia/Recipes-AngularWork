@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 2rem;
+    width: 100%;
+    height: 100%;
+    padding: 0 2rem;
+    max-width: none;
+    max-height: none;
+}
+
+#recipe-card {
+    border-radius: 0.3rem;
+    flex: 1 1 0;
+    background-color: lavender;
+    margin-top: 100px;
+    padding: 3rem 3rem;
+}
+
+main {
+    background-color: rgb(195, 195, 209);
+    max-width: none;
+    max-height: none;
+    width: 100%;
+    height: 100%;
+}
