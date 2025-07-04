@@ -12,7 +12,6 @@ import { RecipeCard } from './recipe-card/recipe-card';
 export class Recipes {
   RECIPE_LIST = recipesList;
   selectedRecipe = signal<Recipe | undefined>(undefined);
-  selectedRecipe2Display = input<Recipe | undefined>();
   recipeSelected2Display = output<Recipe>();
   onSelectRecipe(rep: Recipe) : void {
     this.selectedRecipe.set(rep);
