@@ -1,23 +1,22 @@
-#recipesList{
+.recipesList {
     overflow: auto;
     padding: 1rem;
     max-height: none;
     max-width: none;
-    height: 60vh;
     width: auto;
     border-radius: 8px;
-    margin: 100px;
+    margin: 100px 100px 100px 100px;
     background-color: cornflowerblue;
-}
 
-ul {
-    margin: 1rem 0;
-    padding: 0;
-    gap: 1rem;
-    display: flex;
-    max-height: none;
-    border-radius: 0.5rem;
-    flex-direction: column;
-    background: transparent;
-    box-shadow: 0 2px 8px rgba(78, 137, 196, 0.08);
+    ul {
+        margin: 1rem 0;
+        padding: 0;
+        gap: 1rem;
+        display: flex;
+        max-height: none;
+        border-radius: 0.5rem;
+        flex-direction: column;
+        background: transparent;
+        box-shadow: 0 2px 8px rgba(78, 137, 196, 0.08);
+    }
 }
