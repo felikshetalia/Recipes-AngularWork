@@ -20,9 +20,6 @@ export class Recipes {
     console.log('Selected recipe:', this.selectedRecipe());
   }
   onDeleteRecipe(rep: Recipe): void {
-    if(!this.selectedRecipe()){
-      this.selectedRecipe.set(rep);
-    }
     this.RECIPE_LIST = this.RECIPE_LIST.filter(recipe => recipe.id !== this.selectedRecipe()?.id);
     this.selectedRecipe.set(undefined);
   }

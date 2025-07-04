@@ -15,9 +15,10 @@ import { Recipe, recipesList } from './recipes/recipes-list';
 })
 export class App {
   protected title = 'Recipes';
+  RECIPE_LIST = recipesList;
   selectedRecipe = signal<Recipe | undefined>(undefined);
 
-  onRecipeSelected(recipe: Recipe) {
+  onRecipeSelected(recipe: Recipe) :void{
     this.selectedRecipe.set(recipe);
   }
 }

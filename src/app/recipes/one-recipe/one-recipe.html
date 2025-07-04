@@ -1,3 +1,12 @@
-<button (click)="onSelectRecipe()">
-    <span>{{ recipe().name }}</span>
-</button>
+<div class="recipe-row">
+    <button class="btn btn-recipe" type="button" (click)="onSelectRecipe()">
+        {{ recipe().name }}
+    </button>
+    <button class="icon-btn btn-danger" type="button" title="Delete" (click)="onDelete()">
+        <span class="material-icons">delete</span>
+    </button>
+    <button class="icon-btn" title="Edit" type="button" (click)="onEdit()">
+        <span class="material-icons">edit</span>
+    </button>
+
+</div>

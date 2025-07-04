@@ -3,9 +3,13 @@
   <div class="container">
     <app-recipes (recipeSelected2Display)="onRecipeSelected($event)"></app-recipes>
 
-      @if(selectedRecipe() !== undefined) {
-      <app-recipe-card [recipe]="selectedRecipe()"></app-recipe-card>
-      }
+    @if(selectedRecipe() !== undefined) {
+    <app-recipe-card [recipe]="selectedRecipe()"></app-recipe-card>
+    }
+    @else {
+    <app-recipe-card [recipe]="RECIPE_LIST[0]"></app-recipe-card>
+
+    }
 
   </div>
 
