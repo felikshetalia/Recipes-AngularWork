@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, input, output, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, input, output, Output } from '@angular/core';
 import { Recipe, recipesList } from '../recipes-list';
+import { RecipesManagement } from '../../shared/recipes-management';
 
 @Component({
   selector: 'app-one-recipe',
@@ -13,6 +14,8 @@ export class OneRecipe {
   recipe = input.required<Recipe>();
   recipeSelected = output<void>();
   recipeDeleted = output<void>();
+  // recipeToEdit = output<void>();
+  recipeManagerService = inject(RecipesManagement);
   onSelectRecipe(): void {
     this.recipeSelected.emit();
   }
@@ -22,6 +25,7 @@ export class OneRecipe {
     }
   }
   onEdit(): void {
+    this.recipeManagerService.setEditMode(true);
     console.log('Edit recipe:', this.recipe());
   }
 }

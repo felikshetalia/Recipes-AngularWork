@@ -13,7 +13,8 @@ export class Recipes {
   RECIPE_LIST = recipesList;
   selectedRecipe = signal<Recipe | undefined>(undefined);
   recipeSelected2Display = output<Recipe>();
-  onSelectRecipe(rep: Recipe) : void {
+
+  onSelectRecipe(rep: Recipe): void {
     this.selectedRecipe.set(rep);
     this.recipeSelected2Display.emit(rep);
     console.log('Selected recipe:', this.selectedRecipe());
