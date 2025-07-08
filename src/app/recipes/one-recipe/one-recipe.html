@@ -1,11 +1,11 @@
 <div class="recipe-row">
-    <button class="btn btn-recipe" type="button" (click)="onSelectRecipe()">
+    <button class="btn btn-recipe" type="button" (click)="onSelectRecipe(recipe())">
         {{ recipe().name }}
     </button>
-    <button class="icon-btn btn-danger" type="button" title="Delete" (click)="onDelete()">
+    <button class="icon-btn btn-danger" type="button" title="Delete" (click)="onDelete(recipe())">
         <span class="material-icons">delete</span>
     </button>
-    <button class="icon-btn" title="Edit" type="button" (click)="onEdit()">
+    <button class="icon-btn" title="Edit" type="button" (click)="onEdit(recipe())">
         <span class="material-icons">edit</span>
     </button>
 

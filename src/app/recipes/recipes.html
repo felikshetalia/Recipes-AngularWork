@@ -1,9 +1,13 @@
 <section class="recipesList">
     <ul>
-        @for(recipe of RECIPE_LIST; track recipe.id) {
+        @for(recipe of RECIPE_LIST(); track recipe.id) {
 
-        <app-one-recipe [recipe]="recipe" (recipeSelected)="onSelectRecipe(recipe)"
-            (recipeDeleted)="onDeleteRecipe(recipe)">{{ recipe.name }}</app-one-recipe>
+        <app-one-recipe 
+        [recipe]="recipe" 
+        (recipeSelected)="onSelectRecipe($event)"
+        (recipeDeleted)="onDeleteRecipe($event)"
+        (isEditing)="onChangeEditMode($event)"
+        (recipeEdited)="onEditRecipe($event)">{{ recipe.name }}</app-one-recipe>
 
         }
     </ul>

@@ -1,41 +1,24 @@
-import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Recipe, recipesList } from '../recipes/recipes-list';
 import { isPlatformBrowser } from '@angular/common';
 @Injectable({
   providedIn: 'root'
 })
-export class RecipesManagement {
-  private platformID = inject(PLATFORM_ID)
+export class RecipesManagementService {
+
   public RECIPES_LIST = signal<Recipe[]>(recipesList);
+
   public recipesReadonly = this.RECIPES_LIST.asReadonly();
-  public isEditing = signal<boolean>(false);
-  constructor() {
-    if(isPlatformBrowser(this.platformID)) {
-      const savedRecipes = localStorage.getItem('RECIPES_LIST');
-      if (savedRecipes) {
-        this.RECIPES_LIST.set(JSON.parse(savedRecipes));
-      } else {
-        this.RECIPES_LIST.set(recipesList);
-        this.saveAllRecipes();
-      }
-    }
-    else{
-      this.RECIPES_LIST.set(recipesList);
-    }
-   }
 
-  setEditMode(isEditing: boolean): void {
-    this.isEditing.set(isEditing);
-  }
-
-  updateRecipe(current: Recipe): void {
-    const newList = this.RECIPES_LIST().map(recipe => recipe.id === current.id ? current : recipe);
+  updateRecipe(source: Recipe, dest: Recipe): void {
+    const newList = this.RECIPES_LIST().map(recipe => recipe.id === dest.id ? source : recipe);
     this.RECIPES_LIST.set(newList);
-    this.saveAllRecipes();
+    console.log(this.RECIPES_LIST());
   }
 
-  private saveAllRecipes(): void {
-    localStorage.setItem('RECIPES_LIST', JSON.stringify(this.RECIPES_LIST()));
+  deleteRecipe(rep: Recipe): void {
+    const newList = this.RECIPES_LIST().filter(recipe => recipe.id !== rep.id);
+    this.RECIPES_LIST.set(newList);
   }
 
 }

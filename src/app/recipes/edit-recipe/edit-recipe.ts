@@ -1,7 +1,7 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit, output } from '@angular/core';
 import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
 import { Recipe } from '../recipes-list';
-import { RecipesManagement } from '../../shared/recipes-management';
+import { RecipesManagementService } from '../../shared/recipes-management';
 @Component({
   selector: 'app-edit-recipe',
   imports: [ReactiveFormsModule],
@@ -10,7 +10,11 @@ import { RecipesManagement } from '../../shared/recipes-management';
 })
 export class EditRecipe implements OnInit {
   recipe = input.required<Recipe | undefined>();
-  recipeManagerService = inject(RecipesManagement);
+  recipeManagerService = inject(RecipesManagementService);
+
+  editingFinished = output<void>();
+  newRecipeData = output<Recipe>();
+
   ngOnInit(): void {
     this.formGroup.patchValue({
       recipeName: this.recipe()?.name,
@@ -18,20 +22,24 @@ export class EditRecipe implements OnInit {
       ingredientList: this.recipe()?.ingredients.join(', ')
     });
   }
+  
   formGroup = new FormGroup({
     recipeName: new FormControl(''),
     prepTime: new FormControl<number>(0),
     ingredientList: new FormControl('')
   });
 
+  onCancel(): void{
+    this.editingFinished.emit();
+  }
+
   onSubmit(): void{
-    this.recipeManagerService.updateRecipe({
+    const enteredData = {
       id: this.recipe()!.id,
       name: this.formGroup.value.recipeName || '',
       preparationTimeInMins: this.formGroup.value.prepTime || 0,
       ingredients: this.formGroup.value.ingredientList ? this.formGroup.value.ingredientList.split(',').map(ing => ing.trim()) : []
-    });
-    this.recipeManagerService.setEditMode(false);
-    console.log('Recipe updated:', this.formGroup.value);
+    }
+    this.newRecipeData.emit(enteredData);
   }
 }

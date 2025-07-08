@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnChanges, output, SimpleChanges } from '@angular/core';
 import { Recipe, recipesList } from '../recipes-list';
 import { TimeCustomPipe } from '../../shared/time-custom-pipe';
 import { EditRecipe } from "../edit-recipe/edit-recipe";
-import { RecipesManagement } from '../../shared/recipes-management';
 
 @Component({
   selector: 'app-recipe-card',
@@ -13,8 +12,16 @@ import { RecipesManagement } from '../../shared/recipes-management';
 })
 export class RecipeCard {
   recipe = input.required<Recipe | undefined>();
-  private recipeManagerService = inject(RecipesManagement);
-  isEditing = this.recipeManagerService.isEditing;
+  isEditing = input.required<boolean>();
+  
+  editingFinished = output<void>();
+  submittedData = output<Recipe>();
 
+  onFinishEditing() : void{
+    this.editingFinished.emit();
+  }
 
+  onSubmit(rep: Recipe){
+    this.submittedData.emit(rep);
+  }
 }

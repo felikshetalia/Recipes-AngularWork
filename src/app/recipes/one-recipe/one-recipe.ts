@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, inject, input, output, Output } from '@angular/core';
 import { Recipe, recipesList } from '../recipes-list';
-import { RecipesManagement } from '../../shared/recipes-management';
+import { RecipesManagementService } from '../../shared/recipes-management';
 
 @Component({
   selector: 'app-one-recipe',
@@ -12,20 +12,26 @@ import { RecipesManagement } from '../../shared/recipes-management';
 })
 export class OneRecipe {
   recipe = input.required<Recipe>();
-  recipeSelected = output<void>();
-  recipeDeleted = output<void>();
-  // recipeToEdit = output<void>();
-  recipeManagerService = inject(RecipesManagement);
-  onSelectRecipe(): void {
-    this.recipeSelected.emit();
+
+  recipeSelected = output<Recipe>();
+  recipeDeleted = output<Recipe>();
+  recipeEdited = output<Recipe>();
+  isEditing = output<boolean>();
+
+  recipeManagerService = inject(RecipesManagementService);
+
+  onSelectRecipe(rep : Recipe): void {
+    this.recipeSelected.emit(rep);
   }
-  onDelete(): void {
+
+  onDelete(rep : Recipe): void {
     if (confirm('Are you sure you want to delete this recipe?')) {
-      this.recipeDeleted.emit();
+      this.recipeDeleted.emit(rep);
     }
   }
-  onEdit(): void {
-    this.recipeManagerService.setEditMode(true);
-    console.log('Edit recipe:', this.recipe());
+
+  onEdit(rep: Recipe): void {
+    this.isEditing.emit(true);
+    this.recipeEdited.emit(rep);
   }
 }

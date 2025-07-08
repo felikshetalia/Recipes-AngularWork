@@ -1,6 +1,9 @@
 @if(recipe() !== undefined) {
     @if(isEditing()) {
-        <app-edit-recipe [recipe]="recipe()!"></app-edit-recipe>
+        <app-edit-recipe 
+        [recipe]="recipe()!"
+        (editingFinished)="onFinishEditing()"
+        (newRecipeData)="onSubmit($event)"></app-edit-recipe>
     }
     @else {
         <section class="recipe-card">

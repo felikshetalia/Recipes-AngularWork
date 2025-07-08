@@ -1,7 +1,16 @@
 <app-navbar> </app-navbar>
 <main>
   <div class="container">
-    <app-recipes (recipeSelected2Display)="onRecipeSelected($event)"></app-recipes>
-    <app-recipe-card [recipe]="selectedRecipe()"></app-recipe-card>
+    <app-recipes
+    [RECIPE_LIST]="RECIPE_LIST()" 
+    (selectedRecipe)="onRecipeSelected($event)"
+    (recipeToDelete)="onDeleteRecipe()"
+    (recipeToEdit)="onRecipeSelected($event)"
+    (isEditing)="onEditRecipe()"></app-recipes>
+    <app-recipe-card 
+    [recipe]="selectedRecipe()"
+    [isEditing]="isEditing()"
+    (editingFinished)="onFinishEditing()"
+    (submittedData)="onUpdate($event)"></app-recipe-card>
   </div>
 </main>
