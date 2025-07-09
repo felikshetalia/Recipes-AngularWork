@@ -1,6 +1,6 @@
 <section class="edit-card">
     <header>
-        <form [formGroup]="formGroup" (submit)="onSubmit()">
+        <form [formGroup]="editForm" (submit)="onSubmit()">
             <h1>
                 <label for="name">Name</label>
                 <input id="name" type="text" formControlName="recipeName" />

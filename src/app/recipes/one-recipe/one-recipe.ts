@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, inject, input, output, Output } from '@angular/core';
-import { Recipe, recipesList } from '../recipes-list';
-import { RecipesManagementService } from '../../shared/recipes-management';
+import { Recipe } from '../recipes-list';
 
 @Component({
   selector: 'app-one-recipe',
@@ -17,8 +16,6 @@ export class OneRecipe {
   recipeDeleted = output<Recipe>();
   recipeEdited = output<Recipe>();
   isEditing = output<boolean>();
-
-  recipeManagerService = inject(RecipesManagementService);
 
   onSelectRecipe(rep : Recipe): void {
     this.recipeSelected.emit(rep);

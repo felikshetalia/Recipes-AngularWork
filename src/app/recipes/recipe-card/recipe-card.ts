@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, input, OnChanges, output, SimpleChanges } from '@angular/core';
-import { Recipe, recipesList } from '../recipes-list';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { Recipe } from '../recipes-list';
 import { TimeCustomPipe } from '../../shared/time-custom-pipe';
 import { EditRecipe } from "../edit-recipe/edit-recipe";
 

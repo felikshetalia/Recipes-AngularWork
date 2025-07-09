@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Navbar } from "./navbar/navbar";
 import { Recipes } from "./recipes/recipes";
@@ -21,8 +21,7 @@ export class App implements OnInit {
   private _recipesManagementService = inject(RecipesManagementService);
 
   RECIPE_LIST = this._recipesManagementService.recipesReadonly;
-  // RECIPE_LIST = signal<Recipe[]>(recipesList);
-
+  
   selectedRecipe = signal<Recipe | undefined>(undefined);
   enteredRecipeData = signal<Recipe | undefined>(undefined);
   isEditing = signal<boolean>(false);
@@ -39,6 +38,7 @@ export class App implements OnInit {
 
   onDeleteRecipe(): void {
     this._recipesManagementService.deleteRecipe(this.selectedRecipe()!);
+    this.selectedRecipe.set(undefined);
   }
 
   onEditRecipe(): void {
@@ -49,7 +49,9 @@ export class App implements OnInit {
   onUpdate(source: Recipe): void {
     this.enteredRecipeData.set(source);
     this._recipesManagementService.updateRecipe(this.enteredRecipeData()!, this.selectedRecipe()!);
+    this.selectedRecipe.set(source);
     console.log(this.RECIPE_LIST());
+    console.log(this.selectedRecipe());
     this.onFinishEditing();
   }
 

@@ -1,5 +1,5 @@
 import { Component, inject, input, OnInit, output } from '@angular/core';
-import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
+import { ReactiveFormsModule, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { Recipe } from '../recipes-list';
 import { RecipesManagementService } from '../../shared/recipes-management';
 @Component({
@@ -15,19 +15,27 @@ export class EditRecipe implements OnInit {
   editingFinished = output<void>();
   newRecipeData = output<Recipe>();
 
+  fb = new FormBuilder()
+  
+  editForm = this.fb.group({
+    recipeName: [''],
+    prepTime: [0],
+    ingredientList: ['']
+  });
+
+  // formGroup = new FormGroup({
+  //   recipeName: new FormControl(''),
+  //   prepTime: new FormControl<number>(0),
+  //   ingredientList: new FormControl('')
+  // });
+
   ngOnInit(): void {
-    this.formGroup.patchValue({
+    this.editForm.patchValue({
       recipeName: this.recipe()?.name,
       prepTime: this.recipe()?.preparationTimeInMins,
       ingredientList: this.recipe()?.ingredients.join(', ')
     });
   }
-  
-  formGroup = new FormGroup({
-    recipeName: new FormControl(''),
-    prepTime: new FormControl<number>(0),
-    ingredientList: new FormControl('')
-  });
 
   onCancel(): void{
     this.editingFinished.emit();
@@ -36,9 +44,9 @@ export class EditRecipe implements OnInit {
   onSubmit(): void{
     const enteredData = {
       id: this.recipe()!.id,
-      name: this.formGroup.value.recipeName || '',
-      preparationTimeInMins: this.formGroup.value.prepTime || 0,
-      ingredients: this.formGroup.value.ingredientList ? this.formGroup.value.ingredientList.split(',').map(ing => ing.trim()) : []
+      name: this.editForm.value.recipeName || '',
+      preparationTimeInMins: this.editForm.value.prepTime || 0,
+      ingredients: this.editForm.value.ingredientList ? this.editForm.value.ingredientList.split(',').map(ing => ing.trim()) : []
     }
     this.newRecipeData.emit(enteredData);
   }
