@@ -1,6 +1,5 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Recipe, recipesList } from '../recipes/recipes-list';
-import { isPlatformBrowser } from '@angular/common';
 @Injectable({
   providedIn: 'root'
 })

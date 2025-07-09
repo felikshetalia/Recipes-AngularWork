@@ -1,5 +1,5 @@
 import { Component, inject, input, OnInit, output } from '@angular/core';
-import { ReactiveFormsModule, FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { Recipe } from '../recipes-list';
 import { RecipesManagementService } from '../../shared/recipes-management';
 @Component({
@@ -22,12 +22,6 @@ export class EditRecipe implements OnInit {
     prepTime: [0],
     ingredientList: ['']
   });
-
-  // formGroup = new FormGroup({
-  //   recipeName: new FormControl(''),
-  //   prepTime: new FormControl<number>(0),
-  //   ingredientList: new FormControl('')
-  // });
 
   ngOnInit(): void {
     this.editForm.patchValue({

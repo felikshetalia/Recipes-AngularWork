@@ -1,6 +1,5 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { Navbar } from '../../navbar/navbar';
 
 @Component({
   selector: 'app-author-dialog',

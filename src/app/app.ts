@@ -1,12 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { Navbar } from "./navbar/navbar";
 import { Recipes } from "./recipes/recipes";
 import { RecipeCard } from "./recipes/recipe-card/recipe-card";
-import { OneRecipe } from './recipes/one-recipe/one-recipe';
-import { Recipe, recipesList } from './recipes/recipes-list';
+import { Recipe } from './recipes/recipes-list';
 import { RecipesManagementService } from './shared/recipes-management';
-import { Conditional } from '@angular/compiler';
 
 @Component({
   selector: 'app-root',

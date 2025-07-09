@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
-import { Recipe, recipesList } from './recipes-list';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { Recipe } from './recipes-list';
 import { OneRecipe } from "./one-recipe/one-recipe";
-import { RecipeCard } from './recipe-card/recipe-card';
+
 @Component({
   selector: 'app-recipes',
   imports: [OneRecipe],
