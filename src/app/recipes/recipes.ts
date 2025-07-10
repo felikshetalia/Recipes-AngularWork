@@ -1,25 +1,31 @@
-import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
-import { Recipe, recipesList } from './recipes-list';
-import { OneRecipe } from "./one-recipe/one-recipe";
-import { RecipeCard } from './recipe-card/recipe-card';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { Recipe } from './recipes-list';
+
 @Component({
   selector: 'app-recipes',
-  imports: [OneRecipe],
   templateUrl: './recipes.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './recipes.scss'
 })
 export class Recipes {
-  RECIPE_LIST = recipesList;
-  selectedRecipe = signal<Recipe | undefined>(undefined);
-  recipeSelected2Display = output<Recipe>();
-  onSelectRecipe(rep: Recipe) : void {
-    this.selectedRecipe.set(rep);
-    this.recipeSelected2Display.emit(rep);
-    console.log('Selected recipe:', this.selectedRecipe());
+  RECIPE_LIST = input<Recipe[]>();
+
+  selectedRecipe = output<Recipe>();
+  deleteRecipeClicked= output<Recipe>();
+  editRecipeClicked = output<Recipe>();
+
+  onSelectRecipe(rep: Recipe): void {
+    this.selectedRecipe.emit(rep);
   }
+  
   onDeleteRecipe(rep: Recipe): void {
-    this.RECIPE_LIST = this.RECIPE_LIST.filter(recipe => recipe.id !== this.selectedRecipe()?.id);
-    this.selectedRecipe.set(undefined);
+    if (confirm('Are you sure you want to delete this recipe?')){
+      this.deleteRecipeClicked.emit(rep);
+    }
   }
+
+  onEditRecipe(rep: Recipe): void {
+    this.editRecipeClicked.emit(rep);
+  }
+
 }

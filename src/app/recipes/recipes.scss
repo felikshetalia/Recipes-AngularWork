@@ -18,5 +18,56 @@
         flex-direction: column;
         background: transparent;
         box-shadow: 0 2px 8px rgba(78, 137, 196, 0.08);
+
+        .btn-recipe {
+            width: 100%;
+            padding: 1.2rem 2rem;
+            background: linear-gradient(#9bc6f1 0%, #d4edff 100%);
+            color: #080a0c;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1.4rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            margin-right: 3mm;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .recipe-row {
+            display: flex;
+            align-items: center;
+            border-radius: 0.5rem;
+            background-color: cornflowerblue;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(78, 137, 196, 0.08);
+        }
+
+        .icon-btn {
+            background: linear-gradient(#d0deeb 0%, #a0bbcf 100%);
+            border: none;
+            cursor: pointer;
+            padding: 1.2rem 1.2rem;
+            border-radius: 0.3rem;
+            margin: 0.1rem;
+            display: flex;
+            align-items: center;
+            transition: background 0.2s;
+
+            .material-icons {
+                font-size: 1.5rem;
+                color: #39739d;
+            }
+        }
+
+        .icon-btn.btn-danger .material-icons {
+            color: #e57373;
+        }
+
+        .icon-btn:hover {
+            background: #e3f0fa;
+        }
     }
 }

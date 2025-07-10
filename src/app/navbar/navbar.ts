@@ -11,6 +11,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 })
 export class Navbar {
   readonly dialog = inject(MatDialog);
+  
   openDialog():void {
     this.dialog.open(AuthorDialog, {
       hasBackdrop: true,
