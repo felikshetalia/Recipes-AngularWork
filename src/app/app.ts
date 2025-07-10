@@ -38,23 +38,20 @@ export class App implements OnInit {
     this.selectedRecipe.set(undefined);
   }
 
-  onEditRecipe(): void {
-    this.isEditing.set(true)
-    console.log(this.isEditing());
+  onEditRecipe(rep: Recipe): void {
+    this.isEditing.set(true);
+    this.selectedRecipe.set(rep);
   }
 
   onUpdate(source: Recipe): void {
     this.enteredRecipeData.set(source);
     this._recipesManagementService.updateRecipe(this.enteredRecipeData()!, this.selectedRecipe()!);
     this.selectedRecipe.set(source);
-    console.log(this.RECIPE_LIST());
-    console.log(this.selectedRecipe());
     this.onFinishEditing();
   }
 
   onFinishEditing(): void {
     this.isEditing.set(false);
-    console.log(this.isEditing());
   }
 
 }

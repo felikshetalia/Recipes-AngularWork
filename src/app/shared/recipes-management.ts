@@ -12,7 +12,6 @@ export class RecipesManagementService {
   updateRecipe(source: Recipe, dest: Recipe): void {
     const newList = this.RECIPES_LIST().map(recipe => recipe.id === dest.id ? source : recipe);
     this.RECIPES_LIST.set(newList);
-    console.log(this.RECIPES_LIST());
   }
 
   deleteRecipe(rep: Recipe): void {

@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { Recipe } from './recipes-list';
-import { OneRecipe } from "./one-recipe/one-recipe";
 
 @Component({
   selector: 'app-recipes',
-  imports: [OneRecipe],
+  imports: [],
   templateUrl: './recipes.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './recipes.scss'
@@ -13,23 +12,21 @@ export class Recipes {
   RECIPE_LIST = input<Recipe[]>();
 
   selectedRecipe = output<Recipe>();
-  recipeToDelete= output<Recipe>();
-  recipeToEdit = output<Recipe>();
-  isEditing = output<boolean>();
+  deleteRecipeClicked= output<Recipe>();
+  editRecipeClicked = output<Recipe>();
 
   onSelectRecipe(rep: Recipe): void {
     this.selectedRecipe.emit(rep);
   }
   
   onDeleteRecipe(rep: Recipe): void {
-    this.recipeToDelete.emit(rep);
+    if (confirm('Are you sure you want to delete this recipe?')){
+      this.deleteRecipeClicked.emit(rep);
+    }
   }
 
   onEditRecipe(rep: Recipe): void {
-    this.recipeToEdit.emit(rep);
+    this.editRecipeClicked.emit(rep);
   }
 
-  onChangeEditMode(mode: boolean) : void{
-    this.isEditing.emit(mode);
-  }
 }

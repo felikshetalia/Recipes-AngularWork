@@ -14,11 +14,11 @@ export class RecipeCard {
   recipe = input.required<Recipe | undefined>();
   isEditing = input.required<boolean>();
   
-  editingFinished = output<void>();
+  editingDisabled = output<void>();
   submittedData = output<Recipe>();
 
   onFinishEditing() : void{
-    this.editingFinished.emit();
+    this.editingDisabled.emit();
   }
 
   onSubmit(rep: Recipe){

@@ -1,23 +1,21 @@
-import { Component, inject, input, OnInit, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnInit, output } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { Recipe } from '../recipes-list';
-import { RecipesManagementService } from '../../shared/recipes-management';
+
 @Component({
   selector: 'app-edit-recipe',
   imports: [ReactiveFormsModule],
   templateUrl: './edit-recipe.html',
-  styleUrl: './edit-recipe.scss'
+  styleUrl: './edit-recipe.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditRecipe implements OnInit {
   recipe = input.required<Recipe | undefined>();
-  recipeManagerService = inject(RecipesManagementService);
 
   editingFinished = output<void>();
   newRecipeData = output<Recipe>();
-
-  fb = new FormBuilder()
   
-  editForm = this.fb.group({
+  editForm = inject(FormBuilder).group({
     recipeName: [''],
     prepTime: [0],
     ingredientList: ['']
