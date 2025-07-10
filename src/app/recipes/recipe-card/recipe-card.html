@@ -2,7 +2,7 @@
     @if(isEditing()) {
         <app-edit-recipe 
         [recipe]="recipe()!"
-        (editingCanceled)="onFinishEditing()"
+        (editingCanceled)="onEditingCanceled()"
         (recipeUpdated)="onSubmit($event)"></app-edit-recipe>
     }
     @else {

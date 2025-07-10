@@ -15,13 +15,13 @@ export class RecipeCard {
   isEditing = input.required<boolean>();
   
   editingCanceled = output<void>();
-  submittedData = output<Recipe>();
+  recipeUpdated = output<Recipe>();
 
-  onFinishEditing() : void{
+  onEditingCanceled() : void{
     this.editingCanceled.emit();
   }
 
   onSubmit(rep: Recipe){
-    this.submittedData.emit(rep);
+    this.recipeUpdated.emit(rep);
   }
 }
