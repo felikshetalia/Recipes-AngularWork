@@ -3,7 +3,6 @@ import { Recipe } from './recipes-list';
 
 @Component({
   selector: 'app-recipes',
-  imports: [],
   templateUrl: './recipes.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './recipes.scss'

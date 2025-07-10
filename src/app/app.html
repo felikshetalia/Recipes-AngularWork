@@ -9,7 +9,7 @@
     <app-recipe-card 
     [recipe]="selectedRecipe()"
     [isEditing]="isEditing()"
-    (editingDisabled)="onFinishEditing()"
+    (editingCanceled)="onFinishEditing()"
     (submittedData)="onUpdate($event)"></app-recipe-card>
   </div>
 </main>

@@ -12,8 +12,8 @@ import { Recipe } from '../recipes-list';
 export class EditRecipe implements OnInit {
   recipe = input.required<Recipe | undefined>();
 
-  editingFinished = output<void>();
-  newRecipeData = output<Recipe>();
+  editingCanceled = output<void>();
+  recipeUpdated = output<Recipe>();
   
   editForm = inject(FormBuilder).group({
     recipeName: [''],
@@ -30,7 +30,7 @@ export class EditRecipe implements OnInit {
   }
 
   onCancel(): void{
-    this.editingFinished.emit();
+    this.editingCanceled.emit();
   }
 
   onSubmit(): void{
@@ -40,6 +40,6 @@ export class EditRecipe implements OnInit {
       preparationTimeInMins: this.editForm.value.prepTime || 0,
       ingredients: this.editForm.value.ingredientList ? this.editForm.value.ingredientList.split(',').map(ing => ing.trim()) : []
     }
-    this.newRecipeData.emit(enteredData);
+    this.recipeUpdated.emit(enteredData);
   }
 }

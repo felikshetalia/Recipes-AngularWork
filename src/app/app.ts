@@ -20,7 +20,6 @@ export class App implements OnInit {
   RECIPE_LIST = this._recipesManagementService.recipesReadonly;
   
   selectedRecipe = signal<Recipe | undefined>(undefined);
-  enteredRecipeData = signal<Recipe | undefined>(undefined);
   isEditing = signal<boolean>(false);
 
   ngOnInit(): void {
@@ -44,8 +43,7 @@ export class App implements OnInit {
   }
 
   onUpdate(source: Recipe): void {
-    this.enteredRecipeData.set(source);
-    this._recipesManagementService.updateRecipe(this.enteredRecipeData()!, this.selectedRecipe()!);
+    this._recipesManagementService.updateRecipe(source, this.selectedRecipe()!);
     this.selectedRecipe.set(source);
     this.onFinishEditing();
   }
