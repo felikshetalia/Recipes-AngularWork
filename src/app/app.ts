@@ -4,6 +4,7 @@ import { Recipes } from "./recipes/recipes";
 import { RecipeCard } from "./recipes/recipe-card/recipe-card";
 import { Recipe } from './recipes/recipes-list';
 import { RecipesManagementService } from './shared/recipes-management';
+import { recipesList } from './recipes/recipes-list';
 
 @Component({
   selector: 'app-root',
@@ -18,14 +19,27 @@ export class App implements OnInit {
   private _recipesManagementService = inject(RecipesManagementService);
 
   RECIPE_LIST = this._recipesManagementService.recipesReadonly;
-  
+
   selectedRecipe = signal<Recipe | undefined>(undefined);
   isEditing = signal<boolean>(false);
 
   ngOnInit(): void {
+    this.populateRecipes();
+    this._recipesManagementService.loadRecipes().subscribe();
     if (this.RECIPE_LIST().length > 0) {
       this.selectedRecipe.set(this.RECIPE_LIST()[0]);
     }
+  }
+
+  populateRecipes(): void {
+    recipesList.forEach(rep => {
+      this._recipesManagementService.addRecipe(rep)
+        .subscribe({
+          next: (item) => {
+            this.RECIPE_LIST().push(item);
+          }
+        })
+    });
   }
 
   onRecipeSelected(recipe: Recipe): void {
@@ -33,7 +47,8 @@ export class App implements OnInit {
   }
 
   onDeleteRecipe(): void {
-    this._recipesManagementService.deleteRecipe(this.selectedRecipe()!);
+    //this._recipesManagementService.deleteRecipe(this.selectedRecipe()!);
+    this._recipesManagementService.deleteRecipe(this.selectedRecipe()!).subscribe()
     this.selectedRecipe.set(undefined);
   }
 
