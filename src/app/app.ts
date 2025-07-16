@@ -25,6 +25,10 @@ export class App implements OnInit {
   isAdding = signal<boolean>(false);
 
   ngOnInit(): void {
+    this.loadData();
+  }
+
+  loadData(): void {
     this._recipesManagementService.loadRecipes().subscribe({
       next: (list) => {
         if (list.length > 0) {
@@ -32,7 +36,6 @@ export class App implements OnInit {
         }
       }
     });
-
   }
 
   onRecipeSelected(recipe: Recipe): void {
@@ -40,7 +43,11 @@ export class App implements OnInit {
   }
 
   onDeleteRecipe(): void {
-    this._recipesManagementService.deleteRecipe(this.selectedRecipe()!).subscribe()
+    this._recipesManagementService.deleteRecipe(this.selectedRecipe()!).subscribe({
+      next: () => {
+        this.loadData();
+      }
+    });
     this.selectedRecipe.set(undefined);
   }
 
@@ -51,7 +58,11 @@ export class App implements OnInit {
 
   onAddRecipe(enteredData: Recipe): void {
     this._recipesManagementService.addRecipe(enteredData)
-      .subscribe();
+      .subscribe({
+        next: () => {
+          this.loadData();
+        }
+      });
     this.isAdding.set(false);
   }
 
@@ -60,7 +71,12 @@ export class App implements OnInit {
   }
 
   onUpdate(source: Recipe): void {
-    this._recipesManagementService.updateRecipe(source, this.selectedRecipe()!).subscribe();
+    this._recipesManagementService.updateRecipe(source, this.selectedRecipe()!)
+    .subscribe({
+      next: () => {
+        this.loadData();
+      }
+    });
     this.isEditing.set(false);
   }
 

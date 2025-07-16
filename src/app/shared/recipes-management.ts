@@ -1,16 +1,14 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Recipe } from '../recipes/models';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subscription, tap } from 'rxjs';
-import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
-import { response } from 'express';
+import { Observable, tap } from 'rxjs';
+
 @Injectable({
   providedIn: 'root'
 })
 export class RecipesManagementService {
 
   private _resourceURL = "https://crudcrud.com/api/843f0c312fe7401ba1ba65d070fa6db4/recipes";
-  private _pathToJson = "data/recipes";
   private _httpCli = inject(HttpClient);
 
   public RECIPES_LIST = signal<Recipe[]>([]);
@@ -27,17 +25,7 @@ export class RecipesManagementService {
   }
 
   addRecipe(source: Recipe): Observable<Recipe> {
-    const isDuplicate = this.RECIPES_LIST().some(rep => rep.name === source.name);
-    return this._httpCli.post<Recipe>(this._resourceURL, source)
-    .pipe(
-      tap({
-        next: () => {
-          if(isDuplicate){
-            console.log("duplicate tho");
-          }
-        }
-      })
-    )
+    return this._httpCli.post<Recipe>(this._resourceURL, source);
   }
 
   updateRecipe(source: Recipe, dest: Recipe): Observable<Recipe> {
@@ -45,23 +33,7 @@ export class RecipesManagementService {
   }
 
   deleteRecipe(rep: Recipe): Observable<any> {
-    const prevState = this.RECIPES_LIST();
-    console.log(rep);
-    return this._httpCli.delete(`${this._resourceURL}/${rep._id}`)
-      .pipe(
-        tap({
-          next: () => {
-            if (prevState.some((r) => r._id === rep._id)) {
-              this.RECIPES_LIST.set(prevState.filter(r => r._id !== rep._id));
-            }
-          },
-          error: () => {
-            console.log(rep._id);
-
-          }
-        })
-      );
-
+    return this._httpCli.delete(`${this._resourceURL}/${rep._id}`);
   }
 
 }

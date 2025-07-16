@@ -35,7 +35,6 @@ export class EditRecipe implements OnInit {
 
   onSubmit(): void{
     const enteredData = {
-      _id: this.recipe()!._id,
       name: this.editForm.value.recipeName || '',
       preparationTimeInMins: this.editForm.value.prepTime || 0,
       ingredients: this.editForm.value.ingredientList ? this.editForm.value.ingredientList.split(',').map(ing => ing.trim()) : []
