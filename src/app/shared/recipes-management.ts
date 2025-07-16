@@ -1,14 +1,15 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Recipe, recipesList } from '../recipes/recipes-list';
+import { Recipe } from '../recipes/models';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscription, tap } from 'rxjs';
 import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
+import { response } from 'express';
 @Injectable({
   providedIn: 'root'
 })
 export class RecipesManagementService {
 
-  private _resourceURL = "https://crudcrud.com/api/b78e0bd65e3949478d7de4d04158792a/recipes";
+  private _resourceURL = "https://crudcrud.com/api/843f0c312fe7401ba1ba65d070fa6db4/recipes";
   private _pathToJson = "data/recipes";
   private _httpCli = inject(HttpClient);
 
@@ -17,7 +18,6 @@ export class RecipesManagementService {
   public recipesReadonly = this.RECIPES_LIST.asReadonly();
 
   loadRecipes(): Observable<Recipe[]> {
-    this.RECIPES_LIST.set([]);
     return this._httpCli.get<Recipe[]>(this._resourceURL)
     .pipe(
       tap({
@@ -27,25 +27,40 @@ export class RecipesManagementService {
   }
 
   addRecipe(source: Recipe): Observable<Recipe> {
-    return this._httpCli.put<Recipe>(this._resourceURL, source);
+    const isDuplicate = this.RECIPES_LIST().some(rep => rep.name === source.name);
+    return this._httpCli.post<Recipe>(this._resourceURL, source)
+    .pipe(
+      tap({
+        next: () => {
+          if(isDuplicate){
+            console.log("duplicate tho");
+          }
+        }
+      })
+    )
   }
 
-  updateRecipe(source: Recipe, dest: Recipe): void {
-    const newList = this.RECIPES_LIST().map(recipe => recipe.id === dest.id ? source : recipe);
-    this.RECIPES_LIST.set(newList);
+  updateRecipe(source: Recipe, dest: Recipe): Observable<Recipe> {
+    return this._httpCli.put<Recipe>(`${this._resourceURL}/${dest._id}`, source);
   }
-
-  // deleteRecipe(rep: Recipe): void {
-  //   const newList = this.RECIPES_LIST().filter(recipe => recipe.id !== rep.id);
-  //   this.RECIPES_LIST.set(newList);
-  // }
 
   deleteRecipe(rep: Recipe): Observable<any> {
     const prevState = this.RECIPES_LIST();
-    if(prevState.some((r) => r.id === rep.id)){
-      this.RECIPES_LIST.set(prevState.filter(r => r.id !== rep.id));
-    }
-    return this._httpCli.delete(`${this._resourceURL}/${rep.id}`);
+    console.log(rep);
+    return this._httpCli.delete(`${this._resourceURL}/${rep._id}`)
+      .pipe(
+        tap({
+          next: () => {
+            if (prevState.some((r) => r._id === rep._id)) {
+              this.RECIPES_LIST.set(prevState.filter(r => r._id !== rep._id));
+            }
+          },
+          error: () => {
+            console.log(rep._id);
+
+          }
+        })
+      );
 
   }
 

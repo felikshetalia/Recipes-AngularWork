@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { Recipe } from '../recipes-list';
+import { Recipe } from '../models';
 import { TimeCustomPipe } from '../../shared/time-custom-pipe';
 import { EditRecipe } from "../edit-recipe/edit-recipe";
 

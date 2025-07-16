@@ -8,6 +8,14 @@
     padding: 0 2rem;
     max-width: none;
     max-height: none;
+    .icon-btn {
+        width: 15%;
+        font-size: large;
+        font-weight: bolder;
+        float: right bottom;
+        margin-right: 100px;
+        box-shadow: 0 5px 16px rgba(78, 137, 196, 0.08);
+    }
 }
 
 main {

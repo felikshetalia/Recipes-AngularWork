@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, output } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
-import { Recipe } from '../recipes-list';
+import { Recipe } from '../models';
 
 @Component({
   selector: 'app-edit-recipe',
@@ -35,7 +35,7 @@ export class EditRecipe implements OnInit {
 
   onSubmit(): void{
     const enteredData = {
-      id: this.recipe()!.id,
+      _id: this.recipe()!._id,
       name: this.editForm.value.recipeName || '',
       preparationTimeInMins: this.editForm.value.prepTime || 0,
       ingredients: this.editForm.value.ingredientList ? this.editForm.value.ingredientList.split(',').map(ing => ing.trim()) : []

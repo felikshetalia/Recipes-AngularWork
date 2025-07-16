@@ -2,13 +2,13 @@ import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@ang
 import { Navbar } from "./navbar/navbar";
 import { Recipes } from "./recipes/recipes";
 import { RecipeCard } from "./recipes/recipe-card/recipe-card";
-import { Recipe } from './recipes/recipes-list';
+import { Recipe } from './recipes/models';
 import { RecipesManagementService } from './shared/recipes-management';
-import { recipesList } from './recipes/recipes-list';
+import { AddRecipe } from "./recipes/add-recipe/add-recipe";
 
 @Component({
   selector: 'app-root',
-  imports: [Navbar, Recipes, RecipeCard],
+  imports: [Navbar, Recipes, RecipeCard, AddRecipe],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -22,24 +22,17 @@ export class App implements OnInit {
 
   selectedRecipe = signal<Recipe | undefined>(undefined);
   isEditing = signal<boolean>(false);
+  isAdding = signal<boolean>(false);
 
   ngOnInit(): void {
-    this.populateRecipes();
-    this._recipesManagementService.loadRecipes().subscribe();
-    if (this.RECIPE_LIST().length > 0) {
-      this.selectedRecipe.set(this.RECIPE_LIST()[0]);
-    }
-  }
-
-  populateRecipes(): void {
-    recipesList.forEach(rep => {
-      this._recipesManagementService.addRecipe(rep)
-        .subscribe({
-          next: (item) => {
-            this.RECIPE_LIST().push(item);
-          }
-        })
+    this._recipesManagementService.loadRecipes().subscribe({
+      next: (list) => {
+        if (list.length > 0) {
+          this.selectedRecipe.set(list[0]);
+        }
+      }
     });
+
   }
 
   onRecipeSelected(recipe: Recipe): void {
@@ -47,7 +40,6 @@ export class App implements OnInit {
   }
 
   onDeleteRecipe(): void {
-    //this._recipesManagementService.deleteRecipe(this.selectedRecipe()!);
     this._recipesManagementService.deleteRecipe(this.selectedRecipe()!).subscribe()
     this.selectedRecipe.set(undefined);
   }
@@ -57,14 +49,24 @@ export class App implements OnInit {
     this.selectedRecipe.set(rep);
   }
 
-  onUpdate(source: Recipe): void {
-    this._recipesManagementService.updateRecipe(source, this.selectedRecipe()!);
-    this.selectedRecipe.set(source);
-    this.onFinishEditing();
+  onAddRecipe(enteredData: Recipe): void {
+    this._recipesManagementService.addRecipe(enteredData)
+      .subscribe();
+    this.isAdding.set(false);
   }
 
-  onFinishEditing(): void {
+  onAddClick(): void {
+    this.isAdding.set(true);
+  }
+
+  onUpdate(source: Recipe): void {
+    this._recipesManagementService.updateRecipe(source, this.selectedRecipe()!).subscribe();
     this.isEditing.set(false);
+  }
+
+  onCancel(): void {
+    this.isEditing.set(false);
+    this.isAdding.set(false);
   }
 
 }
