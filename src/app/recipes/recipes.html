@@ -1,6 +1,6 @@
 <section class="recipesList">
     <ul>
-        @for(recipe of RECIPE_LIST(); track recipe.id) {
+        @for(recipe of recipeList(); track recipe._id) {
         <div class="recipe-row">
             <button class="btn btn-recipe" type="button" (click)="onSelectRecipe(recipe)">
                 {{ recipe.name }}

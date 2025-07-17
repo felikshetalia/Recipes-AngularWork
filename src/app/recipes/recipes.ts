@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { Recipe } from './recipes-list';
+import { Recipe } from './models';
 
 @Component({
   selector: 'app-recipes',
@@ -8,7 +8,7 @@ import { Recipe } from './recipes-list';
   styleUrl: './recipes.scss'
 })
 export class Recipes {
-  RECIPE_LIST = input<Recipe[]>();
+  recipeList = input<Recipe[]>();
 
   selectedRecipe = output<Recipe>();
   deleteRecipeClicked= output<Recipe>();

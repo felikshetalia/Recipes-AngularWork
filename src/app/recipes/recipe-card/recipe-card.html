@@ -1,25 +1,17 @@
 @if(recipe() !== undefined) {
-    @if(isEditing()) {
-        <app-edit-recipe 
-        [recipe]="recipe()!"
-        (editingCanceled)="onEditingCanceled()"
-        (recipeUpdated)="onSubmit($event)"></app-edit-recipe>
-    }
-    @else {
-        <section class="recipe-card">
-            <header>
-                <h1>How to prepare {{ recipe()?.name }} ?</h1>
-                <p>Amount of time needed to prepare this recipe: {{ recipe()?.preparationTimeInMins ?? 0 | timeCustom }}</p>
-                <p>List of ingredients: 
-                    @for(i of recipe()?.ingredients; track i) {
-                        <li>{{ i }}</li>   
-                    }
-                </p>
-                <p>This component displays a recipe card with details such as title, image, and description.</p>
-                <p>It is designed to be reusable and can be used in various parts of the application to showcase different recipes.</p>
-                <p>It includes a button to view the recipe details, which can be linked to</p>
-            </header>
-        </section>
-    }
-    
+
+<section class="recipe-card">
+    <header>
+        <h1>How to prepare {{ recipe()?.name }} ?</h1>
+        <p>Amount of time needed to prepare this recipe: {{ recipe()?.preparationTimeInMins ?? 0 | timeCustom }}</p>
+        <p>List of ingredients:
+            @for(i of recipe()?.ingredients; track i) {
+            <li>{{ i }}</li>
+            }
+        </p>
+        <p> {{ recipe()?.description }}</p>
+    </header>
+</section>
+
+
 }

@@ -1,22 +1,39 @@
-import { Injectable, signal } from '@angular/core';
-import { Recipe, recipesList } from '../recipes/recipes-list';
+import { inject, Injectable, signal } from '@angular/core';
+import { Recipe } from '../recipes/models';
+import { HttpClient } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
+
 @Injectable({
   providedIn: 'root'
 })
 export class RecipesManagementService {
 
-  public RECIPES_LIST = signal<Recipe[]>(recipesList);
+  private _resourceURL = "https://crudcrud.com/api/1dea320aea244900b648e8054efc4fdd/recipes";
+  private _httpCli = inject(HttpClient);
 
-  public recipesReadonly = this.RECIPES_LIST.asReadonly();
+  public recipeList = signal<Recipe[]>([]);
 
-  updateRecipe(source: Recipe, dest: Recipe): void {
-    const newList = this.RECIPES_LIST().map(recipe => recipe.id === dest.id ? source : recipe);
-    this.RECIPES_LIST.set(newList);
+  public recipesReadonly = this.recipeList.asReadonly();
+
+  loadRecipes(): Observable<Recipe[]> {
+    return this._httpCli.get<Recipe[]>(this._resourceURL)
+    .pipe(
+      tap({
+        next: (list) => this.recipeList.set(list)
+      })
+    );
   }
 
-  deleteRecipe(rep: Recipe): void {
-    const newList = this.RECIPES_LIST().filter(recipe => recipe.id !== rep.id);
-    this.RECIPES_LIST.set(newList);
+  addRecipe(source: Recipe): Observable<Recipe> {
+    return this._httpCli.post<Recipe>(this._resourceURL, source);
+  }
+
+  updateRecipe(source: Recipe, dest: Recipe): Observable<Recipe> {
+    return this._httpCli.put<Recipe>(`${this._resourceURL}/${dest._id}`, source);
+  }
+
+  deleteRecipe(rep: Recipe): Observable<null> {
+    return this._httpCli.delete<null>(`${this._resourceURL}/${rep._id}`);
   }
 
 }
