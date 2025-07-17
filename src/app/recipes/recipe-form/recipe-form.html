@@ -1,0 +1,51 @@
+<section class="form-card">
+    <header>
+        <form [formGroup]="form">
+            <h1>
+                <label for="name">Name</label>
+                @if(form.get('recipeName')?.touched && form.get('recipeName')?.invalid){
+                    <small style="font-size: small; color: red;"> At least 3 characters </small>
+                }
+                <input id="name" type="text" formControlName="recipeName" />
+            </h1>
+            <p>
+                <label for="prepTime">Preparation Time</label>
+                @if(form.get('prepTime')?.touched && form.get('prepTime')?.invalid){
+                    <small style="font-size: small; color: red;"> Required </small>
+                }
+                <input id="prepTime" type="number" formControlName="prepTime"/>
+            </p>
+            <div class="form-field">
+                <label for="ingredients">Ingredients</label>
+                @if(form.get('ingredients')?.touched && form.get('ingredients')?.invalid){
+                    <small style="font-size: small; color: red;"> At least 2 ingredients </small>
+                }
+                <textarea 
+                    id="ingredients" 
+                    formControlName="ingredientList" 
+                    rows="4">
+                </textarea>
+
+            </div>
+            <div class="form-field">
+                <label for="description">Description</label>
+                @if(form.get('description')?.touched && form.get('description')?.invalid){
+                    <small style="font-size: small; color: red;"> At least 15 characters </small>
+                }
+                    <textarea 
+                        id="description" 
+                        formControlName="description"
+                        rows="4">
+                    </textarea>
+
+            </div>
+            <p class="actions">
+                <button type="submit" (click)="onSubmit()">
+                    @if(isEditMode()){ Save Recipe }
+                    @else { Add Recipe }
+                </button>
+                <button type="button" (click)="onCancel()">Cancel</button>
+            </p>
+        </form>
+    </header>
+</section>

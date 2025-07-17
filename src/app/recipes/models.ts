@@ -3,4 +3,5 @@ export interface Recipe {
     name: string;
     preparationTimeInMins: number;
     ingredients: string[];
+    description: string;
 }

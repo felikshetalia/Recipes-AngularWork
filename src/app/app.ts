@@ -4,11 +4,11 @@ import { Recipes } from "./recipes/recipes";
 import { RecipeCard } from "./recipes/recipe-card/recipe-card";
 import { Recipe } from './recipes/models';
 import { RecipesManagementService } from './shared/recipes-management';
-import { AddRecipe } from "./recipes/add-recipe/add-recipe";
+import { RecipeForm } from "./recipes/recipe-form/recipe-form";
 
 @Component({
   selector: 'app-root',
-  imports: [Navbar, Recipes, RecipeCard, AddRecipe],
+  imports: [Navbar, Recipes, RecipeCard, RecipeForm],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -18,7 +18,7 @@ export class App implements OnInit {
 
   private _recipesManagementService = inject(RecipesManagementService);
 
-  RECIPE_LIST = this._recipesManagementService.recipesReadonly;
+  recipeList = this._recipesManagementService.recipesReadonly;
 
   selectedRecipe = signal<Recipe | undefined>(undefined);
   isEditing = signal<boolean>(false);

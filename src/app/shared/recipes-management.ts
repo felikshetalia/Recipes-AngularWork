@@ -8,18 +8,18 @@ import { Observable, tap } from 'rxjs';
 })
 export class RecipesManagementService {
 
-  private _resourceURL = "https://crudcrud.com/api/843f0c312fe7401ba1ba65d070fa6db4/recipes";
+  private _resourceURL = "https://crudcrud.com/api/1dea320aea244900b648e8054efc4fdd/recipes";
   private _httpCli = inject(HttpClient);
 
-  public RECIPES_LIST = signal<Recipe[]>([]);
+  public recipeList = signal<Recipe[]>([]);
 
-  public recipesReadonly = this.RECIPES_LIST.asReadonly();
+  public recipesReadonly = this.recipeList.asReadonly();
 
   loadRecipes(): Observable<Recipe[]> {
     return this._httpCli.get<Recipe[]>(this._resourceURL)
     .pipe(
       tap({
-        next: (list) => this.RECIPES_LIST.set(list)
+        next: (list) => this.recipeList.set(list)
       })
     );
   }
@@ -32,8 +32,8 @@ export class RecipesManagementService {
     return this._httpCli.put<Recipe>(`${this._resourceURL}/${dest._id}`, source);
   }
 
-  deleteRecipe(rep: Recipe): Observable<any> {
-    return this._httpCli.delete(`${this._resourceURL}/${rep._id}`);
+  deleteRecipe(rep: Recipe): Observable<null> {
+    return this._httpCli.delete<null>(`${this._resourceURL}/${rep._id}`);
   }
 
 }

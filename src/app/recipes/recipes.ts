@@ -8,7 +8,7 @@ import { Recipe } from './models';
   styleUrl: './recipes.scss'
 })
 export class Recipes {
-  RECIPE_LIST = input<Recipe[]>();
+  recipeList = input<Recipe[]>();
 
   selectedRecipe = output<Recipe>();
   deleteRecipeClicked= output<Recipe>();

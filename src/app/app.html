@@ -1,24 +1,24 @@
 <app-navbar> </app-navbar>
 <main>
   <div class="container">
-    @if(isAdding()){
+    <app-recipes
+    [recipeList]="recipeList()" 
+    (selectedRecipe)="onRecipeSelected($event)"
+    (deleteRecipeClicked)="onDeleteRecipe()"
+    (editRecipeClicked)="onEditRecipe($event)"></app-recipes>
+    @if(isEditing() || isAdding()){
       <div class="backdrop">
-        <app-add-recipe 
-        (addingCanceled)="onCancel()"
+        <app-recipe-form
+        [isEditMode]="isEditing()"
+        [recipe]="selectedRecipe()"
+        (editingCanceled)="onCancel()"
+        (recipeUpdated)="onUpdate($event)"
         (recipeAdded)="onAddRecipe($event)"/>
       </div>
     }
     @else {
-      <app-recipes
-      [RECIPE_LIST]="RECIPE_LIST()" 
-      (selectedRecipe)="onRecipeSelected($event)"
-      (deleteRecipeClicked)="onDeleteRecipe()"
-      (editRecipeClicked)="onEditRecipe($event)"></app-recipes>
       <app-recipe-card 
-      [recipe]="selectedRecipe()"
-      [isEditing]="isEditing()"
-      (editingCanceled)="onCancel()"
-      (recipeUpdated)="onUpdate($event)"></app-recipe-card>
+      [recipe]="selectedRecipe()"></app-recipe-card>
       <button class="icon-btn" title="Add" (click)="onAddClick()">
         <span class="material-icons">add</span>
         Add
