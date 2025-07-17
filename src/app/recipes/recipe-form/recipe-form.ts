@@ -15,8 +15,7 @@ export class RecipeForm implements OnInit {
   isEditMode = input.required<boolean | undefined>();
 
   editingCanceled = output<void>();
-  recipeUpdated = output<Recipe>();
-  recipeAdded = output<Recipe>();
+  formSubmitted = output<Recipe>();
   
   form = inject(FormBuilder).group({
     recipeName: ['', [Validators.minLength(3), Validators.maxLength(80)]],
@@ -26,20 +25,12 @@ export class RecipeForm implements OnInit {
   });
 
   ngOnInit(): void {
-    if(this.isEditMode() === true){
+    if(this.isEditMode()){
       this.form.patchValue({
         recipeName: this.recipe()?.name,
         prepTime: this.recipe()?.preparationTimeInMins,
         ingredientList: this.recipe()?.ingredients.join(', '),
         description: this.recipe()?.description
-      });
-    }
-    else{
-      this.form.patchValue({
-        recipeName: '',
-        prepTime: 0,
-        ingredientList: '',
-        description: ''
       });
     }
   }
@@ -60,10 +51,7 @@ export class RecipeForm implements OnInit {
       return;
     }
     else{
-      if(this.isEditMode() === true)
-        this.recipeUpdated.emit(enteredData);
-      else
-        this.recipeAdded.emit(enteredData);
+      this.formSubmitted.emit(enteredData);
     }
   }
 }

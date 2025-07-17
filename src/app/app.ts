@@ -80,6 +80,15 @@ export class App implements OnInit {
     this.isEditing.set(false);
   }
 
+  handleSubmission(enteredData: Recipe): void {
+    if(this.isAdding()){
+      this.onAddRecipe(enteredData);
+    }
+    else{
+      this.onUpdate(enteredData);
+    }
+  }
+
   onCancel(): void {
     this.isEditing.set(false);
     this.isAdding.set(false);
