@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { Navbar } from "./navbar/navbar";
 import { Recipes } from "./recipes/recipes";
 import { RecipeCard } from "./recipes/recipe-card/recipe-card";
@@ -7,6 +7,7 @@ import { RecipesManagementService } from './shared/recipes-management';
 import { RecipeForm } from "./recipes/recipe-form/recipe-form";
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { debounce, debounceTime } from 'rxjs';
+import { execArgv } from 'process';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,7 @@ export class App implements OnInit {
   protected title = 'Recipes';
 
   private _recipesManagementService = inject(RecipesManagementService);
+  private _destroyRef = inject(DestroyRef);
 
   recipeList = this._recipesManagementService.recipesReadonly;
 
@@ -33,7 +35,7 @@ export class App implements OnInit {
   ngOnInit(): void {
     this.loadData();
 
-    this.searchForm.valueChanges.pipe(debounceTime(200))
+    const searchFromSub = this.searchForm.valueChanges.pipe(debounceTime(200))
     .subscribe(searchTerm => {
       if(searchTerm!.length > 0){
         this.isSearching.set(true);
@@ -45,6 +47,10 @@ export class App implements OnInit {
         this.isSearching.set(false);
       }
     })
+
+    this._destroyRef.onDestroy(() => {
+      searchFromSub.unsubscribe();
+    });
   }
 
   loadData(): void {

@@ -15,18 +15,26 @@
                 }
                 <input id="prepTime" type="number" formControlName="prepTime"/>
             </p>
-            <div class="form-field">
-                <label for="ingredients">Ingredients</label>
-                @if(form.get('ingredients')?.touched && form.get('ingredients')?.invalid){
-                    <small style="font-size: small; color: red;"> At least 2 ingredients </small>
-                }
-                <textarea 
-                    id="ingredients" 
-                    formControlName="ingredientList" 
-                    rows="4">
-                </textarea>
 
+            <div class="form-ingredients" formArrayName="ingredients">
+                <label for="ingredients">Ingredients</label>
+                @if(form.get('ingredients')?.invalid && form.get('ingredients')?.touched){
+
+                }
+                @for(ing of _ingredients.controls; track $index; let i = $index){
+                    <div [formGroupName]="i">
+                        <input formControlName="name" placeholder="Item" class="input-name">
+                        <input formControlName="quantity" placeholder="Quantity" class="input-quantity">
+                        <button type="button" (click)="_ingredients.removeAt(i)">
+                            <span class="material-icons">remove</span>
+                        </button>
+                    </div>
+                }
+                <button type="button" (click)="addIngredient()">
+                    <span class="material-icons">add</span>
+                </button>
             </div>
+
             <div class="form-field">
                 <label for="description">Description</label>
                 @if(form.get('description')?.touched && form.get('description')?.invalid){

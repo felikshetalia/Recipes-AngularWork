@@ -1,23 +1,23 @@
 <section class="recipesList">
     @if(recipeList()?.length === 0){
-        <p> Currently no recipes available </p>
+    <p> Currently no recipes available </p>
     }
     @else {
 
-        <ul>
-            @for(recipe of recipeList(); track recipe._id) {
-            <div class="recipe-row">
-                <button class="btn btn-recipe" type="button" (click)="onSelectRecipe(recipe)">
-                    {{ recipe.name }}
-                </button>
-                <button class="icon-btn btn-danger" type="button" title="Delete" (click)="onDeleteRecipe(recipe)">
-                    <span class="material-icons">delete</span>
-                </button>
-                <button class="icon-btn" title="Edit" type="button" (click)="onEditRecipe(recipe)">
-                    <span class="material-icons">edit</span>
-                </button>
-            </div>
-            }
-        </ul>
+    <ul>
+        @for(recipe of recipeList(); track recipe._id) {
+        <div class="recipe-row">
+            <button class="btn btn-recipe" type="button" (click)="onSelectRecipe(recipe)">
+                {{ recipe.name }}
+            </button>
+            <button class="icon-btn btn-danger" type="button" title="Delete" (click)="onDeleteRecipe(recipe)">
+                <span class="material-icons">delete</span>
+            </button>
+            <button class="icon-btn" title="Edit" type="button" (click)="onEditRecipe(recipe)">
+                <span class="material-icons">edit</span>
+            </button>
+        </div>
+        }
+    </ul>
     }
 </section>

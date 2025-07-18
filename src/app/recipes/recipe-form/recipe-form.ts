@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, output } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
 import { Recipe } from '../models';
+import { isQuestionOrExclamationToken } from 'typescript';
 
 @Component({
   selector: 'app-recipe-form',
@@ -17,10 +18,12 @@ export class RecipeForm implements OnInit {
   editingCanceled = output<void>();
   formSubmitted = output<Recipe>();
   
-  form = inject(FormBuilder).group({
+  private _fb = inject(FormBuilder);
+
+  form = this._fb.group({
     recipeName: ['', [Validators.minLength(3), Validators.maxLength(80)]],
     prepTime: [0, [Validators.required]],
-    ingredientList: ['', Validators.min(2)],
+    ingredients: this._fb.array([], Validators.min(2)),
     description: ['', [Validators.minLength(15), Validators.maxLength(255)]]
   });
 
@@ -29,21 +32,39 @@ export class RecipeForm implements OnInit {
       this.form.patchValue({
         recipeName: this.recipe()?.name,
         prepTime: this.recipe()?.preparationTimeInMins,
-        ingredientList: this.recipe()?.ingredients.join(', '),
         description: this.recipe()?.description
       });
-    }
+
+      this._ingredients.clear();
+      this.recipe()?.ingredients.forEach(ing => {
+        this._ingredients.push(
+          this._fb.group({
+            name: [ing.name],
+            quantity: [ing.quantity]
+          })
+        );
+      })
+    } 
   }
 
+  addIngredient(): void {
+    this._ingredients.push(
+      this._fb.group({
+        name: [''],
+        quantity: ['']
+      })
+    );
+  }
+  
   onCancel(): void{
     this.editingCanceled.emit();
   }
-
+  
   onSubmit(): void{
     const enteredData = {
       name: this.form.value.recipeName || '',
       preparationTimeInMins: this.form.value.prepTime || 0,
-      ingredients: this.form.value.ingredientList ? this.form.value.ingredientList.split(',').map(ing => ing.trim()) : [],
+      ingredients: this._ingredients.value || [],
       description: this.form.value.description || ''
     }
     if(this.form.invalid){
@@ -54,5 +75,8 @@ export class RecipeForm implements OnInit {
       this.formSubmitted.emit(enteredData);
     }
   }
-
+  
+  get _ingredients(): FormArray{
+    return this.form.get('ingredients') as FormArray;
+  }
 }
