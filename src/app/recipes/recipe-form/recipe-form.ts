@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, output } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Recipe } from '../models';
 
 @Component({
@@ -10,7 +10,7 @@ import { Recipe } from '../models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RecipeForm implements OnInit {
-  // form with modes
+
   recipe = input.required<Recipe | undefined>();
   isEditMode = input.required<boolean | undefined>();
 
@@ -20,7 +20,7 @@ export class RecipeForm implements OnInit {
   form = inject(FormBuilder).group({
     recipeName: ['', [Validators.minLength(3), Validators.maxLength(80)]],
     prepTime: [0, [Validators.required]],
-    ingredientList: ['', [Validators.min(2)]],
+    ingredientList: ['', Validators.min(2)],
     description: ['', [Validators.minLength(15), Validators.maxLength(255)]]
   });
 
@@ -54,4 +54,5 @@ export class RecipeForm implements OnInit {
       this.formSubmitted.emit(enteredData);
     }
   }
+
 }

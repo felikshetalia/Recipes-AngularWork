@@ -5,3 +5,10 @@ export interface Recipe {
     ingredients: string[];
     description: string;
 }
+
+export interface Ingredient {
+    _id?: string;
+    name: string;
+    quantity: string;
+}
+
