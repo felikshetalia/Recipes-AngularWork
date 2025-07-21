@@ -23,7 +23,7 @@ export class RecipeForm implements OnInit {
   form = this._fb.group({
     recipeName: ['', [Validators.minLength(3), Validators.maxLength(80)]],
     prepTime: [0, [Validators.required]],
-    ingredients: this._fb.array([], Validators.min(2)),
+    ingredients: this._fb.array([], [Validators.minLength(2)]),
     description: ['', [Validators.minLength(15), Validators.maxLength(255)]]
   });
 
@@ -39,8 +39,8 @@ export class RecipeForm implements OnInit {
       this.recipe()?.ingredients.forEach(ing => {
         this._ingredients.push(
           this._fb.group({
-            name: [ing.name],
-            quantity: [ing.quantity]
+            name: [ing.name, [Validators.required]],
+            quantity: [ing.quantity, [Validators.required]]
           })
         );
       })
@@ -50,8 +50,8 @@ export class RecipeForm implements OnInit {
   addIngredient(): void {
     this._ingredients.push(
       this._fb.group({
-        name: [''],
-        quantity: ['']
+        name: ['', [Validators.required]],
+        quantity: ['', [Validators.required]]
       })
     );
   }

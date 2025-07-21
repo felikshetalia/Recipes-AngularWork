@@ -4,7 +4,12 @@
             <h1>
                 <label for="name">Name</label>
                 @if(form.get('recipeName')?.touched && form.get('recipeName')?.invalid){
+                    @if(form.get('recipeName')?.hasError('minLength')){
                     <small style="font-size: small; color: red;"> At least 3 characters </small>
+                    }
+                    @else {
+                    <small style="font-size: small; color: red;"> At most 80 characters </small>
+                    }
                 }
                 <input id="name" type="text" formControlName="recipeName" />
             </h1>
@@ -18,10 +23,13 @@
 
             <div class="form-ingredients" formArrayName="ingredients">
                 <label for="ingredients">Ingredients</label>
-                @if(form.get('ingredients')?.invalid && form.get('ingredients')?.touched){
-
+                @if(_ingredients.length < 2){
+                <small style="font-size: small; color: red;"> At least 2 ingredients </small>
                 }
                 @for(ing of _ingredients.controls; track $index; let i = $index){
+                    @if(ing.get('name')!.touched && ing.get('quantity')!.touched && ing.get('name')!.hasError('required') && ing.get('quantity')!.hasError('required')){
+                        <small style="font-size: small; color: red;"> Provide the missing details </small>
+                    }
                     <div [formGroupName]="i">
                         <input formControlName="name" placeholder="Item" class="input-name">
                         <input formControlName="quantity" placeholder="Quantity" class="input-quantity">
@@ -38,7 +46,12 @@
             <div class="form-field">
                 <label for="description">Description</label>
                 @if(form.get('description')?.touched && form.get('description')?.invalid){
+                    @if(form.get('description')?.hasError('minLength')){
                     <small style="font-size: small; color: red;"> At least 15 characters </small>
+                    }
+                    @else {
+                    <small style="font-size: small; color: red;"> At most 255 characters </small>
+                    }
                 }
                     <textarea 
                         id="description" 
