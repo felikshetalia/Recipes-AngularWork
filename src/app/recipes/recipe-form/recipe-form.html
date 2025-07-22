@@ -4,7 +4,7 @@
             <h1>
                 <label for="name">Name</label>
                 @if(form.get('recipeName')?.touched && form.get('recipeName')?.invalid){
-                    @if(form.get('recipeName')?.hasError('minLength')){
+                    @if(form.get('recipeName')?.hasError('minlength')){
                     <small style="font-size: small; color: red;"> At least 3 characters </small>
                     }
                     @else {
@@ -46,7 +46,7 @@
             <div class="form-field">
                 <label for="description">Description</label>
                 @if(form.get('description')?.touched && form.get('description')?.invalid){
-                    @if(form.get('description')?.hasError('minLength')){
+                    @if(form.get('description')?.hasError('minlength')){
                     <small style="font-size: small; color: red;"> At least 15 characters </small>
                     }
                     @else {
