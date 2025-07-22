@@ -8,6 +8,7 @@ import { RecipeForm } from "./recipes/recipe-form/recipe-form";
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { debounce, debounceTime } from 'rxjs';
 import { execArgv } from 'process';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-root',
@@ -35,7 +36,8 @@ export class App implements OnInit {
   ngOnInit(): void {
     this.loadData();
 
-    const searchFromSub = this.searchForm.valueChanges.pipe(debounceTime(200))
+    this.searchForm.valueChanges.pipe(debounceTime(200))
+    .pipe(takeUntilDestroyed(this._destroyRef))
     .subscribe(searchTerm => {
       if(searchTerm!.length > 0){
         this.isSearching.set(true);
@@ -47,10 +49,6 @@ export class App implements OnInit {
         this.isSearching.set(false);
       }
     })
-
-    this._destroyRef.onDestroy(() => {
-      searchFromSub.unsubscribe();
-    });
   }
 
   loadData(): void {
