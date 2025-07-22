@@ -4,7 +4,7 @@
     box-shadow: 0 4px 16px rgba(78, 137, 196, 0.10);
     padding: 2rem 2.5rem;
     margin: 100px 100px 50px 0;
-    max-height: 800px;
+    max-height: auto;
     max-width: 1600px;
 
     header {
@@ -48,10 +48,24 @@
             cursor: pointer;
         }
     }
+
+    .form-ingredients{
+        display: contents;
+        gap: 8px;
+        margin-bottom: 8px;
+
+        .input-name{
+            width: 150px;
+        }
+
+        .input-quantity{
+            width: 100px;
+        }
+    }
 }
 
 @media (max-width: 700px) {
-    .edit-card {
+    .form-card {
         padding: 1rem;
         max-width: 100%;
         min-width: 0;

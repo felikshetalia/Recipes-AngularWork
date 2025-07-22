@@ -1,27 +1,37 @@
 <app-navbar> </app-navbar>
 <main>
   <div class="container">
-    <app-recipes
-    [recipeList]="recipeList()" 
+    <app-recipes 
+    [recipeList]="isSearching() ? filteredList() : recipeList()" 
     (selectedRecipe)="onRecipeSelected($event)"
-    (deleteRecipeClicked)="onDeleteRecipe()"
+    (deleteRecipeClicked)="onDeleteRecipe()" 
     (editRecipeClicked)="onEditRecipe($event)"></app-recipes>
+
     @if(isEditing() || isAdding()){
-      <div class="backdrop">
-        <app-recipe-form
-        [isEditMode]="isEditing()"
-        [recipe]="selectedRecipe()"
-        (editingCanceled)="onCancel()"
-        (formSubmitted)="handleSubmission($event)"/>
-      </div>
+    <div class="backdrop">
+      <app-recipe-form 
+      [isEditMode]="isEditing()" 
+      [recipe]="selectedRecipe()" 
+      (editingCanceled)="onCancel()"
+      (formSubmitted)="handleSubmission($event)" />
+    </div>
     }
     @else {
-      <app-recipe-card 
-      [recipe]="selectedRecipe()"></app-recipe-card>
-      <button class="icon-btn" title="Add" (click)="onAddClick()">
-        <span class="material-icons">add</span>
-        Add
-      </button>
+    <app-recipe-card 
+    [recipe]="selectedRecipe()"></app-recipe-card>
+
+    <button class="icon-btn" title="Add" (click)="onAddClick()">
+      <span class="material-icons">add</span>
+      Add
+    </button>
+
+    <i class="fa fa-search"></i>
+    <input class="search-bar" 
+    type="text" 
+    placeholder="Search for a recipe"
+     #filter
+     [formControl]="searchForm" />
+
     }
 
   </div>

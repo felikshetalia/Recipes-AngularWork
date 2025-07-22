@@ -1,4 +1,9 @@
 <section class="recipesList">
+    @if(recipeList()?.length === 0){
+    <p> Currently no recipes available </p>
+    }
+    @else {
+
     <ul>
         @for(recipe of recipeList(); track recipe._id) {
         <div class="recipe-row">
@@ -14,4 +19,5 @@
         </div>
         }
     </ul>
+    }
 </section>

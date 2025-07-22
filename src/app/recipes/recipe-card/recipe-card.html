@@ -6,7 +6,7 @@
         <p>Amount of time needed to prepare this recipe: {{ recipe()?.preparationTimeInMins ?? 0 | timeCustom }}</p>
         <p>List of ingredients:
             @for(i of recipe()?.ingredients; track i) {
-            <li>{{ i }}</li>
+            <li>{{ i.quantity }} {{ i.name }}</li>
             }
         </p>
         <p> {{ recipe()?.description }}</p>
