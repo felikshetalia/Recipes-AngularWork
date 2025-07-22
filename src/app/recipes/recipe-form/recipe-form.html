@@ -38,7 +38,9 @@
                         </button>
                     </div>
                 }
-                <button type="button" (click)="addIngredient()">
+                <button type="button" 
+                (click)="addIngredient()"
+                [disabled]="!_ingredients.at(_ingredients.length - 1).valid">
                     <span class="material-icons">add</span>
                 </button>
             </div>
