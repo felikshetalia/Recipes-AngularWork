@@ -11,6 +11,8 @@ import { execArgv } from 'process';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatFabButton } from '@angular/material/button';
+import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +22,8 @@ import { MatFabButton } from '@angular/material/button';
     RecipeForm,
     ReactiveFormsModule,
     MatIcon,
-    MatFabButton],
+    MatFabButton,
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

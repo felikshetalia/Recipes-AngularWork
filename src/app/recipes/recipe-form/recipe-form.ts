@@ -24,7 +24,6 @@ import { MatIcon } from '@angular/material/icon';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RecipeForm implements OnInit {
-
   recipe = input.required<Recipe | undefined>();
   isEditMode = input.required<boolean | undefined>();
 
@@ -58,6 +57,15 @@ export class RecipeForm implements OnInit {
         );
       })
     } 
+    else{
+      this._ingredients.clear();
+      this._ingredients.push(
+      this._fb.group({
+        name: ['', [Validators.required]],
+        quantity: ['', [Validators.required]]
+      })
+    );
+    }
   }
 
   addIngredient(): void {

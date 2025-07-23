@@ -1,16 +1,16 @@
 <app-navbar> </app-navbar>
 <main>
   <div class="container">
+    <button matFab extended (click)="onAddClick()">
+      <mat-icon>add</mat-icon>
+      Add
+    </button>
     <app-recipes 
     [recipeList]="isSearching() ? filteredList() : recipeList()" 
     (selectedRecipe)="onRecipeSelected($event)"
     (deleteRecipeClicked)="onDeleteRecipe()" 
     (editRecipeClicked)="onEditRecipe($event)">
   
-      <button matFab extended (click)="onAddClick()">
-        <mat-icon>add</mat-icon>
-        Add
-      </button>
   </app-recipes>
 
     @if(isEditing() || isAdding()){

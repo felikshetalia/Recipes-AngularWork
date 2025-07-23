@@ -1,6 +1,10 @@
 <form [formGroup]="form">
     <mat-card>
         <h1>
+            @if(isEditMode()) { Edit details }
+            @else {Enter details}
+        </h1>
+
             <mat-form-field>
                 <mat-label for="name">Name</mat-label>
                 @if(form.get('recipeName')?.touched && form.get('recipeName')?.invalid){
@@ -13,8 +17,7 @@
                 }
                 <input matInput id="name" type="text" formControlName="recipeName" />
             </mat-form-field>
-        </h1>
-        <p>
+
             <mat-form-field>
                 <mat-label for="prepTime">Preparation Time</mat-label>
                 @if(form.get('prepTime')?.touched && form.get('prepTime')?.invalid){
@@ -22,7 +25,7 @@
                 }
                 <input matInput id="prepTime" type="number" formControlName="prepTime" />
             </mat-form-field>
-        </p>
+
 
         <form formArrayName="ingredients">
             <mat-label for="ingredients">Ingredients</mat-label>
