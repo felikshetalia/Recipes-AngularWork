@@ -1,17 +1,21 @@
 @if(recipe() !== undefined) {
+<div>
 
-<section class="recipe-card">
-    <header>
-        <h1>How to prepare {{ recipe()?.name }} ?</h1>
-        <p>Amount of time needed to prepare this recipe: {{ recipe()?.preparationTimeInMins ?? 0 | timeCustom }}</p>
-        <p>List of ingredients:
-            @for(i of recipe()?.ingredients; track i) {
-            <li>{{ i.quantity }} {{ i.name }}</li>
-            }
-        </p>
-        <p> {{ recipe()?.description }}</p>
-    </header>
-</section>
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>How to prepare {{ recipe()?.name }} ?</mat-card-title>
+        </mat-card-header>
+            <mat-card-content>      
+                <p>Amount of time needed to prepare this recipe: {{ recipe()?.preparationTimeInMins ?? 0 | timeCustom }}</p>
+                <p>List of ingredients:
+                    @for(i of recipe()?.ingredients; track i) {
+                    <li>{{ i.quantity }} {{ i.name }}</li>
+                    }
+                </p>
+                <p> {{ recipe()?.description }}</p>
+            </mat-card-content>
+    </mat-card>
+</div>
 
 
 }

@@ -1,23 +1,26 @@
-<section class="recipesList">
-    @if(recipeList()?.length === 0){
-    <p> Currently no recipes available </p>
-    }
-    @else {
-
-    <ul>
-        @for(recipe of recipeList(); track recipe._id) {
-        <div class="recipe-row">
-            <button class="btn btn-recipe" type="button" (click)="onSelectRecipe(recipe)">
-                {{ recipe.name }}
-            </button>
-            <button class="icon-btn btn-danger" type="button" title="Delete" (click)="onDeleteRecipe(recipe)">
-                <span class="material-icons">delete</span>
-            </button>
-            <button class="icon-btn" title="Edit" type="button" (click)="onEditRecipe(recipe)">
-                <span class="material-icons">edit</span>
-            </button>
-        </div>
+<mat-card>
+    <ng-content/>
+    <mat-nav-list>
+        @if(recipeList()?.length === 0){
+        <p> Currently no recipes available </p>
         }
-    </ul>
-    }
-</section>
+        @else {
+    
+        <ul>
+            @for(recipe of recipeList(); track recipe._id) {
+            <div class="recipe-row">
+                <mat-list-item role="listitem" (click)="onSelectRecipe(recipe)">
+                     {{ recipe.name }}
+                </mat-list-item>
+                <button matMiniFab type="button" aria-label="Delete" (click)="onDeleteRecipe(recipe)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <button matMiniFab aria-label="Edit" type="button" (click)="onEditRecipe(recipe)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </div>
+            }
+        </ul>
+        }
+    </mat-nav-list>
+</mat-card>

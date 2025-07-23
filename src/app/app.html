@@ -5,7 +5,13 @@
     [recipeList]="isSearching() ? filteredList() : recipeList()" 
     (selectedRecipe)="onRecipeSelected($event)"
     (deleteRecipeClicked)="onDeleteRecipe()" 
-    (editRecipeClicked)="onEditRecipe($event)"></app-recipes>
+    (editRecipeClicked)="onEditRecipe($event)">
+  
+      <button matFab extended (click)="onAddClick()">
+        <mat-icon>add</mat-icon>
+        Add
+      </button>
+  </app-recipes>
 
     @if(isEditing() || isAdding()){
     <div class="backdrop">
@@ -19,11 +25,6 @@
     @else {
     <app-recipe-card 
     [recipe]="selectedRecipe()"></app-recipe-card>
-
-    <button class="icon-btn" title="Add" (click)="onAddClick()">
-      <span class="material-icons">add</span>
-      Add
-    </button>
 
     <i class="fa fa-search"></i>
     <input class="search-bar" 

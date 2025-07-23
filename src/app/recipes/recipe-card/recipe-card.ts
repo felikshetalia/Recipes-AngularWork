@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { Recipe } from '../models';
 import { TimeCustomPipe } from '../../shared/time-custom-pipe';
-import { RecipeForm } from "../recipe-form/recipe-form";
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-recipe-card',
-  imports: [TimeCustomPipe],
+  imports: [TimeCustomPipe, MatCardModule],
   templateUrl: './recipe-card.html',
   styleUrl: './recipe-card.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

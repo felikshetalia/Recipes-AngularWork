@@ -1,11 +1,24 @@
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, output } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
 import { Recipe } from '../models';
-import { isQuestionOrExclamationToken } from 'typescript';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { MatButton, MatMiniFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-recipe-form',
-  imports: [ReactiveFormsModule],
+  imports: [
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatCardModule,
+    MatMiniFabButton,
+    MatButton,
+    MatIcon
+  ],
   templateUrl: './recipe-form.html',
   styleUrl: './recipe-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

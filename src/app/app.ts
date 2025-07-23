@@ -9,10 +9,18 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { debounce, debounceTime } from 'rxjs';
 import { execArgv } from 'process';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatFabButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-root',
-  imports: [Navbar, Recipes, RecipeCard, RecipeForm, ReactiveFormsModule],
+  imports: [Navbar,
+    Recipes,
+    RecipeCard,
+    RecipeForm,
+    ReactiveFormsModule,
+    MatIcon,
+    MatFabButton],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
