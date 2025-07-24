@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { Recipe } from './models';
 import { MatListModule } from '@angular/material/list';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatIcon } from '@angular/material/icon';
 import { MatCardModule } from "@angular/material/card";
-import { MatMiniFabButton } from '@angular/material/button';
+import { MatIconButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-recipes',
@@ -13,7 +13,8 @@ import { MatMiniFabButton } from '@angular/material/button';
     MatListModule, 
     MatIcon, 
     MatCardModule,
-    MatMiniFabButton],
+    MatIconButton
+  ],
   styleUrl: './recipes.scss'
 })
 export class Recipes {

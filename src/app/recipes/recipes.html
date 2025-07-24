@@ -1,26 +1,28 @@
 <mat-card>
-    <ng-content/>
+    <ng-content />
     <mat-nav-list>
         @if(recipeList()?.length === 0){
-        <p> Currently no recipes available </p>
+            <p> Currently no recipes available </p>
         }
         @else {
-    
-        <ul>
+
             @for(recipe of recipeList(); track recipe._id) {
-            <div class="recipe-row">
-                <mat-list-item role="listitem" (click)="onSelectRecipe(recipe)">
-                     {{ recipe.name }}
-                </mat-list-item>
-                <button matMiniFab type="button" aria-label="Delete" (click)="onDeleteRecipe(recipe)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-                <button matMiniFab aria-label="Edit" type="button" (click)="onEditRecipe(recipe)">
-                    <mat-icon>edit</mat-icon>
-                </button>
-            </div>
-            }
-        </ul>
+                <div class="recipe-row">
+
+                    <mat-list-item role="listitem" (click)="onSelectRecipe(recipe)">
+                        <span class="item-name">{{ recipe.name }}</span>
+                        <span class="actions">
+                            <button matIconButton type="button" aria-label="Delete" (click)="onDeleteRecipe(recipe)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                            <button matIconButton aria-label="Edit" type="button" (click)="onEditRecipe(recipe)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        </span>
+                    </mat-list-item>
+                    
+                </div>
+            }    
         }
     </mat-nav-list>
 </mat-card>
