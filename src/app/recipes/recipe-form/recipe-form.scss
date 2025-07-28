@@ -1,97 +1,36 @@
-// mat-card {
-//     //background: linear-gradient(135deg, #e3f0fa 0%, #c1e0f7 100%);
-//     border-radius: 1rem;
-//     box-shadow: 0 4px 16px rgba(78, 137, 196, 0.10);
-//     padding: 2rem 2.5rem;
-//     margin: 100px 100px 50px 0;
-//     height: auto;
-//     width: 1600px;
-
-//     // header {
-//     //     margin: 2rem;
-//     // }
-
-//     // h1 {
-//     //     font-size: 3rem;
-//     //     font-weight: 700;
-//     //     color: #39739d;
-//     //     margin-bottom: 2rem;
-//     // }
-
-//     // p {
-//     //     font-size: 1.5rem;
-//     //     color: #222;
-//     //     margin: 0.8rem;
-//     // }
-
-//     // input, textarea {
-//     //     width: 100%;
-//     //     padding: 0.5rem;
-//     //     font-size: 1.2rem;
-//     //     border: 1px solid #ccc;
-//     //     border-radius: 0.5rem;
-//     //     margin-bottom: 1rem;
-//     // }
-
-//     // .actions{
-//     //     display: flex;
-//     //     justify-content: space-between;
-//     //     margin-top: 1rem;
-
-//     //     button{
-//     //         padding: 0.5rem 1rem;
-//     //         font-size: 1.2rem;
-//     //         background-color: #0c4864;
-//     //         color: white;
-//     //         border-radius: 0.5rem;
-//     //         border: none;
-//     //         cursor: pointer;
-//     //     }
-//     // }
-
-//     .form-ingredients{
-//         display: contents;
-//         gap: 8px;
-//         margin-bottom: 8px;
-
-//         .input-name{
-//             width: 150px;
-//         }
-
-//         .input-quantity{
-//             width: 100px;
-//         }
-//     }
-
-//         mat-card-header {
-//             background-color: transparent;
-//             align-content: stretch;
-    
-//             mat-form-field {
-//                 background-color: transparent;
-//                 align-content: stretch;
-//             }
-//         }
-// }
-
-// @media (max-width: 700px) {
-//     .form-card {
-//         padding: 1rem;
-//         max-width: 100%;
-//         min-width: 0;
-
-//         h1 {
-//             font-size: 1.3rem;
-//         }
-//     }
-// }
 mat-card{
-    height: auto;
-    width: 1600px;
+    height: 80vh;
+    width: auto;
     padding: 100px;
-}
-form{
-    height: auto;
-    width: 1600px;
-    padding: 100px;
+    // display: flex;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.1);
+    margin: 30px;
+    // flex-wrap: wrap;
+    font-size: larger;
+
+    form{
+        margin-top: 30px;
+        mat-label{
+            font-size: 20pt;
+            margin: 20px;
+        }
+        div{
+            margin-top: 10px;
+            mat-form-field{
+                margin-left: 20px;
+            }
+        }
+        button{
+            margin-bottom: 30px;
+        }
+    }
+
+    mat-card-actions{
+        margin-top: 40px;
+        button{
+            width: 150px;
+            height: 75px;
+            font-size: large;
+        }
+    }
 }

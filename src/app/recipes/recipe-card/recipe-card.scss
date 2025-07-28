@@ -1,10 +1,27 @@
-div{
-    height: auto;
-    width: 1600px;
-    padding: 100px;
-}
 mat-card{
-    height: auto;
-    width: 1600px;
+    height: 80vh;
+    width: auto;
     padding: 100px;
+    display: flex;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.1);
+    font-size: 24pt;
+    margin: 30px;
+    flex-wrap: wrap;
+    mat-card-header{
+        padding-bottom: 50px;
+        mat-card-title{
+            font-size: 40pt;
+        }
+    }
+    
+    mat-card-content{
+        p{
+            padding-bottom: 5px;
+        }
+
+        li{
+            margin-left: 50px;
+            padding-bottom: 5px;
+        }
+    }
 }

@@ -1,28 +1,26 @@
-<mat-card>
-    <ng-content />
-    <mat-nav-list>
-        @if(recipeList()?.length === 0){
-            <p> Currently no recipes available </p>
-        }
-        @else {
+<ng-content />
+<mat-nav-list>
+    @if(recipeList()?.length === 0){
+    <p> Currently no recipes available </p>
+    }
+    @else {
 
-            @for(recipe of recipeList(); track recipe._id) {
-                <div class="recipe-row">
+    @for(recipe of recipeList(); track recipe._id) {
 
-                    <mat-list-item role="listitem" (click)="onSelectRecipe(recipe)">
-                        <span class="item-name">{{ recipe.name }}</span>
-                        <span class="actions">
-                            <button matIconButton type="button" aria-label="Delete" (click)="onDeleteRecipe(recipe)">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                            <button matIconButton aria-label="Edit" type="button" (click)="onEditRecipe(recipe)">
-                                <mat-icon>edit</mat-icon>
-                            </button>
-                        </span>
-                    </mat-list-item>
-                    
-                </div>
-            }    
-        }
-    </mat-nav-list>
-</mat-card>
+    <mat-list-item role="listitem" (click)="onSelectRecipe(recipe)">
+        <div class="recipe-row">
+            <span class="item-name">{{ recipe.name }}</span>
+            <span class="actions">
+                <button matIconButton type="button" aria-label="Delete" (click)="onDeleteRecipe(recipe)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <button matIconButton aria-label="Edit" type="button" (click)="onEditRecipe(recipe)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </span>
+        </div>
+    </mat-list-item>
+
+    }
+    }
+</mat-nav-list>

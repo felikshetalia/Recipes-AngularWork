@@ -1,39 +1,46 @@
 <app-navbar> </app-navbar>
 <main>
-  <div class="container">
-    <button matFab extended (click)="onAddClick()">
-      <mat-icon>add</mat-icon>
-      Add
-    </button>
+  <div class="lhs">
     <app-recipes 
     [recipeList]="isSearching() ? filteredList() : recipeList()" 
     (selectedRecipe)="onRecipeSelected($event)"
     (deleteRecipeClicked)="onDeleteRecipe()" 
     (editRecipeClicked)="onEditRecipe($event)">
+    <button matFab extended (click)="onAddClick()">
+      <mat-icon>add</mat-icon>
+      Add
+    </button>
+    
+    </app-recipes>
+  </div>
   
-  </app-recipes>
+  <div class="rhs">
 
     @if(isEditing() || isAdding()){
-    <div class="backdrop">
-      <app-recipe-form 
-      [isEditMode]="isEditing()" 
-      [recipe]="selectedRecipe()" 
-      (editingCanceled)="onCancel()"
-      (formSubmitted)="handleSubmission($event)" />
-    </div>
+
+        <app-recipe-form 
+        [isEditMode]="isEditing()" 
+        [recipe]="selectedRecipe()" 
+        (editingCanceled)="onCancel()"
+        (formSubmitted)="handleSubmission($event)" />
+
     }
     @else {
-    <app-recipe-card 
-    [recipe]="selectedRecipe()"></app-recipe-card>
+      <div class="rhs-top">
+        <input class="search-bar" 
+        type="text" 
+        placeholder="Search for a recipe..."
+        #filter
+        [formControl]="searchForm" />
+        <mat-divider></mat-divider>
+      </div>
+      <div class="rhs-bottom">
+        <app-recipe-card 
+        [recipe]="selectedRecipe()"></app-recipe-card>
 
-    <i class="fa fa-search"></i>
-    <input class="search-bar" 
-    type="text" 
-    placeholder="Search for a recipe"
-     #filter
-     [formControl]="searchForm" />
+      </div>
 
     }
-
   </div>
+
 </main>

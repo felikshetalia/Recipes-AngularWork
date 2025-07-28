@@ -6,13 +6,11 @@ import { Recipe } from './recipes/models';
 import { RecipesManagementService } from './shared/recipes-management';
 import { RecipeForm } from "./recipes/recipe-form/recipe-form";
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { debounce, debounceTime } from 'rxjs';
-import { execArgv } from 'process';
+import { debounceTime } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatIcon } from '@angular/material/icon';
 import { MatFabButton } from '@angular/material/button';
-import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
+import { MatDivider } from '@angular/material/divider';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +21,7 @@ import { MatInput } from '@angular/material/input';
     ReactiveFormsModule,
     MatIcon,
     MatFabButton,
+    MatDivider
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
