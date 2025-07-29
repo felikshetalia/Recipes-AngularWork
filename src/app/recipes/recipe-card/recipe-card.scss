@@ -6,7 +6,7 @@ mat-card{
     box-shadow: 0 40px 80px rgba(0, 0, 0, 0.1);
     font-size: 24pt;
     margin: 30px;
-    flex-wrap: wrap;
+    text-wrap: wrap;
     mat-card-header{
         padding-bottom: 50px;
         mat-card-title{
@@ -15,6 +15,11 @@ mat-card{
     }
     
     mat-card-content{
+        table{
+            margin-top: 10px;
+            margin-bottom: 30px;
+        }
+        overflow-wrap: anywhere;
         p{
             padding-bottom: 5px;
         }

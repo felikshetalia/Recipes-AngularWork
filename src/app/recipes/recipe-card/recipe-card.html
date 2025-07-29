@@ -9,7 +9,7 @@
                     <mat-icon>schedule</mat-icon>
                     {{ recipe()?.preparationTimeInMins ?? 0 | timeCustom }}
                 </p>
-                <p>List of ingredients:</p>
+                <mat-label>List of ingredients</mat-label>
                 <table mat-table [dataSource]="recipe()!.ingredients" class="mat-elevation-z1">
 
                     <ng-container matColumnDef="quantity">
@@ -26,8 +26,8 @@
                     <tr mat-row *matRowDef="let row; columns: ['quantity', 'name'];"></tr>
                 </table>
             
-                <p>Description: </p>
-                {{ recipe()?.description }}
+                <mat-label>Description</mat-label>
+                <p>{{ recipe()?.description }}</p>
             </mat-card-content>
     </mat-card>
 

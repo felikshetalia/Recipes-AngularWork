@@ -9,10 +9,10 @@
                 <mat-label for="name">Name</mat-label>
                 @if(form.get('recipeName')?.touched && form.get('recipeName')?.invalid){
                 @if(form.get('recipeName')?.hasError('minlength')){
-                <small style="font-size: small; color: red;"> At least 3 characters </small>
+                <mat-error style="font-size: small; color: red;"> At least 3 characters </mat-error>
                 }
                 @else {
-                <small style="font-size: small; color: red;"> At most 80 characters </small>
+                <mat-error style="color: red;"> At most 80 characters </mat-error>
                 }
                 }
                 <input matInput id="name" type="text" formControlName="recipeName" />
@@ -21,7 +21,7 @@
             <mat-form-field>
                 <mat-label for="prepTime">Preparation Time</mat-label>
                 @if(form.get('prepTime')?.touched && form.get('prepTime')?.invalid){
-                <small style="font-size: small; color: red;"> Required </small>
+                <mat-error style="color: red;"> Required </mat-error>
                 }
                 <input matInput id="prepTime" type="number" formControlName="prepTime" />
             </mat-form-field>
@@ -34,7 +34,7 @@
                 @for(ing of _ingredients.controls; track $index; let i = $index){
                 @if(ing.get('name')!.touched && ing.get('quantity')!.touched && ing.get('name')!.hasError('required') &&
                 ing.get('quantity')!.hasError('required')){
-                <small style="font-size: small; color: red;"> Provide the missing details </small>
+                <mat-error style="color: red;"> Provide the missing details </mat-error>
                 }
                 <div [formGroupName]="i">
                     <mat-form-field>
@@ -58,10 +58,10 @@
             <mat-label for="description">Description</mat-label>
             @if(form.get('description')?.touched && form.get('description')?.invalid){
             @if(form.get('description')?.hasError('minlength')){
-            <small style="font-size: small; color: red;"> At least 15 characters </small>
+            <mat-error style="color: red;"> At least 15 characters </mat-error>
             }
             @else {
-            <small style="font-size: small; color: red;"> At most 255 characters </small>
+            <mat-error style="color: red;"> At most 255 characters </mat-error>
             }
             }
             <textarea matInput id="description" formControlName="description" rows="4">

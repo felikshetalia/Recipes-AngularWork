@@ -11,18 +11,22 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
 import { MatFabButton } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',
-  imports: [Navbar,
+  imports: [
+    Navbar,
     Recipes,
     RecipeCard,
     RecipeForm,
     ReactiveFormsModule,
     MatIcon,
     MatFabButton,
-    MatDivider
-  ],
+    MatSidenav,
+    MatSidenavContainer,
+    MatSidenavContent
+],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -86,6 +90,7 @@ export class App implements OnInit {
 
   onEditRecipe(rep: Recipe): void {
     this.isEditing.set(true);
+    this.isAdding.set(false);
     this.selectedRecipe.set(rep);
   }
 
@@ -101,6 +106,7 @@ export class App implements OnInit {
 
   onAddClick(): void {
     this.isAdding.set(true);
+    this.isEditing.set(false);
   }
 
   onUpdate(source: Recipe): void {

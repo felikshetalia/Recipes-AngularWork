@@ -1,6 +1,13 @@
-<app-navbar> </app-navbar>
-<main>
-  <div class="lhs">
+<app-navbar>
+  <input class="search-bar" 
+        type="text" 
+        placeholder="Search for a recipe..."
+        #filter
+        [formControl]="searchForm" />
+</app-navbar>
+<mat-sidenav-container>
+
+  <mat-sidenav #sidenav mode="side" class="lhs" opened="true">
     <app-recipes 
     [recipeList]="isSearching() ? filteredList() : recipeList()" 
     (selectedRecipe)="onRecipeSelected($event)"
@@ -10,37 +17,24 @@
       <mat-icon>add</mat-icon>
       Add
     </button>
-    
     </app-recipes>
-  </div>
-  
-  <div class="rhs">
-
+  </mat-sidenav>
+  <mat-sidenav-content class="rhs">
+      
     @if(isEditing() || isAdding()){
-
-        <app-recipe-form 
-        [isEditMode]="isEditing()" 
-        [recipe]="selectedRecipe()" 
-        (editingCanceled)="onCancel()"
-        (formSubmitted)="handleSubmission($event)" />
-
+      
+      <app-recipe-form 
+      [isEditMode]="isEditing()" 
+      [recipe]="selectedRecipe()" 
+      (editingCanceled)="onCancel()"
+      (formSubmitted)="handleSubmission($event)" />
+      
     }
-    @else {
-      <div class="rhs-top">
-        <input class="search-bar" 
-        type="text" 
-        placeholder="Search for a recipe..."
-        #filter
-        [formControl]="searchForm" />
-        <mat-divider></mat-divider>
-      </div>
-      <div class="rhs-bottom">
-        <app-recipe-card 
-        [recipe]="selectedRecipe()"></app-recipe-card>
-
-      </div>
-
+    @else { 
+      <app-recipe-card 
+      [recipe]="selectedRecipe()"></app-recipe-card>    
     }
-  </div>
 
-</main>
+</mat-sidenav-content>
+
+</mat-sidenav-container>

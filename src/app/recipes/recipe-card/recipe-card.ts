@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { Recipe } from '../models';
 import { TimeCustomPipe } from '../../shared/time-custom-pipe';
 import { MatCardModule } from '@angular/material/card';
-import { f } from "../../../../node_modules/@angular/material/icon-module.d-COXCrhrh";
 import { MatIcon } from '@angular/material/icon';
-import { MatTable, MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
+import { MatLabel } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-recipe-card',
@@ -12,7 +12,8 @@ import { MatTable, MatTableModule } from '@angular/material/table';
     TimeCustomPipe, 
     MatCardModule, 
     MatIcon,
-    MatTableModule
+    MatTableModule,
+    MatLabel
   ],
   templateUrl: './recipe-card.html',
   styleUrl: './recipe-card.scss',
