@@ -1,4 +1,4 @@
-mat-card{
+mat-card {
     height: 80vh;
     width: auto;
     padding: 100px;
@@ -8,27 +8,36 @@ mat-card{
     // flex-wrap: wrap;
     font-size: larger;
 
-    form{
+    form {
         margin-top: 30px;
-        mat-label{
+
+        mat-error {
+            margin-left: 20px;
+        }
+
+        mat-label {
             font-size: 20pt;
             margin: 20px;
         }
-        div{
+
+        div {
             margin-top: 10px;
-            mat-form-field{
+
+            mat-form-field {
                 margin-left: 20px;
             }
         }
-        button{
+
+        button {
             margin-bottom: 30px;
             margin-left: 20px;
         }
     }
 
-    mat-card-actions{
+    mat-card-actions {
         margin-top: 40px;
-        button{
+
+        button {
             width: 150px;
             height: 75px;
             font-size: large;
