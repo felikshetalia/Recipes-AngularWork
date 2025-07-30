@@ -6,13 +6,27 @@ import { Recipe } from './recipes/models';
 import { RecipesManagementService } from './shared/recipes-management';
 import { RecipeForm } from "./recipes/recipe-form/recipe-form";
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { debounce, debounceTime } from 'rxjs';
-import { execArgv } from 'process';
+import { debounceTime } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatIcon } from '@angular/material/icon';
+import { MatFabButton } from '@angular/material/button';
+import { MatDivider } from '@angular/material/divider';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',
-  imports: [Navbar, Recipes, RecipeCard, RecipeForm, ReactiveFormsModule],
+  imports: [
+    Navbar,
+    Recipes,
+    RecipeCard,
+    RecipeForm,
+    ReactiveFormsModule,
+    MatIcon,
+    MatFabButton,
+    MatSidenav,
+    MatSidenavContainer,
+    MatSidenavContent
+],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -76,6 +90,7 @@ export class App implements OnInit {
 
   onEditRecipe(rep: Recipe): void {
     this.isEditing.set(true);
+    this.isAdding.set(false);
     this.selectedRecipe.set(rep);
   }
 
@@ -91,6 +106,7 @@ export class App implements OnInit {
 
   onAddClick(): void {
     this.isAdding.set(true);
+    this.isEditing.set(false);
   }
 
   onUpdate(source: Recipe): void {

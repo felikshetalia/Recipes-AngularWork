@@ -1,9 +1,13 @@
 import { Component, inject } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-author-dialog',
-  imports: [MatDialogModule],
+  imports: [
+    MatDialogModule,
+    MatButton
+  ],
   standalone: true,
   templateUrl: './author-dialog.html',
   styleUrl: './author-dialog.scss'

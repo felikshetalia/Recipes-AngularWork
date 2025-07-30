@@ -1,38 +1,40 @@
-<app-navbar> </app-navbar>
-<main>
-  <div class="container">
+<app-navbar>
+  <input class="search-bar" 
+        type="text" 
+        placeholder="Search for a recipe..."
+        #filter
+        [formControl]="searchForm" />
+</app-navbar>
+<mat-sidenav-container>
+
+  <mat-sidenav #sidenav mode="side" class="lhs" opened="true">
     <app-recipes 
     [recipeList]="isSearching() ? filteredList() : recipeList()" 
     (selectedRecipe)="onRecipeSelected($event)"
     (deleteRecipeClicked)="onDeleteRecipe()" 
-    (editRecipeClicked)="onEditRecipe($event)"></app-recipes>
-
+    (editRecipeClicked)="onEditRecipe($event)">
+    <button matFab extended (click)="onAddClick()">
+      <mat-icon>add</mat-icon>
+      Add
+    </button>
+    </app-recipes>
+  </mat-sidenav>
+  <mat-sidenav-content class="rhs">
+      
     @if(isEditing() || isAdding()){
-    <div class="backdrop">
+      
       <app-recipe-form 
       [isEditMode]="isEditing()" 
       [recipe]="selectedRecipe()" 
       (editingCanceled)="onCancel()"
       (formSubmitted)="handleSubmission($event)" />
-    </div>
+      
     }
-    @else {
-    <app-recipe-card 
-    [recipe]="selectedRecipe()"></app-recipe-card>
-
-    <button class="icon-btn" title="Add" (click)="onAddClick()">
-      <span class="material-icons">add</span>
-      Add
-    </button>
-
-    <i class="fa fa-search"></i>
-    <input class="search-bar" 
-    type="text" 
-    placeholder="Search for a recipe"
-     #filter
-     [formControl]="searchForm" />
-
+    @else { 
+      <app-recipe-card 
+      [recipe]="selectedRecipe()"></app-recipe-card>    
     }
 
-  </div>
-</main>
+</mat-sidenav-content>
+
+</mat-sidenav-container>

@@ -1,74 +1,73 @@
-<section class="form-card">
-    <header>
-        <form [formGroup]="form">
-            <h1>
-                <label for="name">Name</label>
-                @if(form.get('recipeName')?.touched && form.get('recipeName')?.invalid){
-                    @if(form.get('recipeName')?.hasError('minlength')){
-                    <small style="font-size: small; color: red;"> At least 3 characters </small>
-                    }
-                    @else {
-                    <small style="font-size: small; color: red;"> At most 80 characters </small>
-                    }
-                }
-                <input id="name" type="text" formControlName="recipeName" />
-            </h1>
-            <p>
-                <label for="prepTime">Preparation Time</label>
-                @if(form.get('prepTime')?.touched && form.get('prepTime')?.invalid){
-                    <small style="font-size: small; color: red;"> Required </small>
-                }
-                <input id="prepTime" type="number" formControlName="prepTime"/>
-            </p>
+<form [formGroup]="form">
+    <mat-card>
+        <h1>
+            @if(isEditMode()) { Edit details }
+            @else {Enter details}
+        </h1>
 
-            <div class="form-ingredients" formArrayName="ingredients">
-                <label for="ingredients">Ingredients</label>
-                @if(_ingredients.length < 2){
-                <small style="font-size: small; color: red;"> At least 2 ingredients </small>
-                }
-                @for(ing of _ingredients.controls; track $index; let i = $index){
-                    @if(ing.get('name')!.touched && ing.get('quantity')!.touched && ing.get('name')!.hasError('required') && ing.get('quantity')!.hasError('required')){
-                        <small style="font-size: small; color: red;"> Provide the missing details </small>
-                    }
-                    <div [formGroupName]="i">
-                        <input formControlName="name" placeholder="Item" class="input-name">
-                        <input formControlName="quantity" placeholder="Quantity" class="input-quantity">
-                        <button type="button" (click)="_ingredients.removeAt(i)">
-                            <span class="material-icons">remove</span>
-                        </button>
-                    </div>
-                }
-                <button type="button" 
-                (click)="addIngredient()"
-                [disabled]="!_ingredients.at(_ingredients.length - 1).valid">
-                    <span class="material-icons">add</span>
+        <mat-form-field>
+            <mat-label for="name">Name</mat-label>
+            <input matInput id="name" type="text" formControlName="recipeName" />
+            @if(form.get('recipeName')?.invalid) {
+            <mat-error></mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label for="prepTime">Preparation Time</mat-label>
+            <input matInput id="prepTime" type="number" formControlName="prepTime" />
+            @if(form.get('prepTime')?.invalid){
+            <mat-error></mat-error>
+            }
+        </mat-form-field>
+
+
+        <form formArrayName="ingredients">
+            <mat-label for="ingredients">Ingredients</mat-label>
+
+            @for(ing of _ingredients.controls; track $index; let i = $index)
+            {
+            <div [formGroupName]="i">
+                <mat-form-field>
+                    <input matInput formControlName="name" placeholder="Item" class="input-name">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput formControlName="quantity" placeholder="Quantity" class="input-quantity">
+                </mat-form-field>
+                <button matMiniFab type="button" (click)="_ingredients.removeAt(i)">
+                    <mat-icon>remove</mat-icon>
                 </button>
             </div>
 
-            <div class="form-field">
-                <label for="description">Description</label>
-                @if(form.get('description')?.touched && form.get('description')?.invalid){
-                    @if(form.get('description')?.hasError('minlength')){
-                    <small style="font-size: small; color: red;"> At least 15 characters </small>
-                    }
-                    @else {
-                    <small style="font-size: small; color: red;"> At most 255 characters </small>
-                    }
+            @if(ing.get('name')!.invalid || ing.get('quantity')!.invalid){
+            <mat-error> Provide the missing details </mat-error>
+            }
+            }
+            @if(_ingredients.length < 2) { <mat-error> At least 2
+                ingredients</mat-error>
                 }
-                    <textarea 
-                        id="description" 
-                        formControlName="description"
-                        rows="4">
-                    </textarea>
 
-            </div>
-            <p class="actions">
-                <button type="submit" (click)="onSubmit()">
-                    @if(isEditMode()){ Save Recipe }
-                    @else { Add Recipe }
+                <button matMiniFab type="button" (click)="addIngredient()"
+                    [disabled]="!_ingredients.at(_ingredients.length - 1).valid">
+                    <mat-icon>add</mat-icon>
                 </button>
-                <button type="button" (click)="onCancel()">Cancel</button>
-            </p>
         </form>
-    </header>
-</section>
+
+        <mat-form-field>
+            <mat-label for="description">Description</mat-label>
+            <textarea matInput id="description" formControlName="description" rows="4">
+            </textarea>
+            @if(form.get('description')?.invalid){
+            <mat-error></mat-error>
+            }
+
+        </mat-form-field>
+        <mat-card-actions class="actions">
+            <button matButton type="submit" (click)="onSubmit()">
+                @if(isEditMode()){ Save Recipe }
+                @else { Add Recipe }
+            </button>
+            <button matButton type="button" (click)="onCancel()">Cancel</button>
+        </mat-card-actions>
+    </mat-card>
+</form>

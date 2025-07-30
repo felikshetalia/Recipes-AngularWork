@@ -1,10 +1,20 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { Recipe } from './models';
+import { MatListModule } from '@angular/material/list';
+import { MatIcon } from '@angular/material/icon';
+import { MatCardModule } from "@angular/material/card";
+import { MatIconButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-recipes',
   templateUrl: './recipes.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatListModule, 
+    MatIcon, 
+    MatCardModule,
+    MatIconButton
+  ],
   styleUrl: './recipes.scss'
 })
 export class Recipes {
