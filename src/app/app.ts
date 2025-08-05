@@ -1,17 +1,35 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
-import { Navbar } from "./navbar/navbar";
-import { Recipes } from "./recipes/recipes";
-import { RecipeCard } from "./recipes/recipe-card/recipe-card";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
+import { Navbar } from './navbar/navbar';
+import { Recipes } from './recipes/recipes';
+import { RecipeCard } from './recipes/recipe-card/recipe-card';
 import { Recipe } from './recipes/models';
-import { RecipesManagementService } from './shared/recipes-management';
-import { RecipeForm } from "./recipes/recipe-form/recipe-form";
+import { RecipesManagementService } from './shared/recipes-management.service';
+import { RecipeForm } from './recipes/recipe-form/recipe-form';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
 import { MatFabButton } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
-import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import {
+  MatSidenav,
+  MatSidenavContainer,
+  MatSidenavContent,
+} from '@angular/material/sidenav';
+import { Store } from '@ngrx/store';
+import { loadRecipes } from './store/recipes.actions';
+import {
+  selectError,
+  selectLoadingBool,
+  selectRecipes,
+} from './store/recipes.selectors';
 
 @Component({
   selector: 'app-root',
@@ -25,19 +43,22 @@ import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/mat
     MatFabButton,
     MatSidenav,
     MatSidenavContainer,
-    MatSidenavContent
-],
+    MatSidenavContent,
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App implements OnInit {
   protected title = 'Recipes';
 
   private _recipesManagementService = inject(RecipesManagementService);
   private _destroyRef = inject(DestroyRef);
+  private _store = inject(Store);
 
-  recipeList = this._recipesManagementService.recipesReadonly;
+  recipeList$ = this._store.selectSignal(selectRecipes);
+  isLoading$ = this._store.selectSignal(selectLoadingBool);
+  errorCode$ = this._store.selectSignal(selectError);
 
   selectedRecipe = signal<Recipe | undefined>(undefined);
   isEditing = signal<boolean>(false);
@@ -45,34 +66,38 @@ export class App implements OnInit {
   isSearching = signal<boolean>(false);
 
   searchForm = inject(FormBuilder).control('');
-  filteredList = signal<Recipe[]>(this.recipeList());
+  filteredList = signal<Recipe[]>(this.recipeList$());
 
   ngOnInit(): void {
     this.loadData();
 
-    this.searchForm.valueChanges.pipe(debounceTime(200))
-    .pipe(takeUntilDestroyed(this._destroyRef))
-    .subscribe(searchTerm => {
-      if(searchTerm!.length > 0){
-        this.isSearching.set(true);
-        this.filteredList.set(this.recipeList().filter(
-          rep => rep.name.toLowerCase().includes(searchTerm!.toLowerCase()))
-        )
-      }
-      else{
-        this.isSearching.set(false);
-      }
-    })
+    this.searchForm.valueChanges
+      .pipe(debounceTime(200))
+      .pipe(takeUntilDestroyed(this._destroyRef))
+      .subscribe((searchTerm) => {
+        if (searchTerm!.length > 0) {
+          this.isSearching.set(true);
+          this.filteredList.set(
+            this.recipeList$().filter((rep) =>
+              rep.name.toLowerCase().includes(searchTerm!.toLowerCase()),
+            ),
+          );
+        } else {
+          this.isSearching.set(false);
+        }
+      });
   }
 
   loadData(): void {
-    this._recipesManagementService.loadRecipes().subscribe({
-      next: (list) => {
-        if (list.length > 0) {
-          this.selectedRecipe.set(list[0]);
-        }
-      }
-    });
+    this._store.dispatch(loadRecipes());
+    // this._recipesManagementService.loadRecipes().subscribe({
+    //   next: (list) => {
+    //     this._store.dispatch(loadRecipes({ recipes: list }));
+    //     if (list.length > 0) {
+    //       this.selectedRecipe.set(list[0]);
+    //     }
+    //   },
+    // });
   }
 
   onRecipeSelected(recipe: Recipe): void {
@@ -80,11 +105,13 @@ export class App implements OnInit {
   }
 
   onDeleteRecipe(): void {
-    this._recipesManagementService.deleteRecipe(this.selectedRecipe()!).subscribe({
-      next: () => {
-        this.loadData();
-      }
-    });
+    this._recipesManagementService
+      .deleteRecipe(this.selectedRecipe()!)
+      .subscribe({
+        next: () => {
+          this.loadData();
+        },
+      });
     this.selectedRecipe.set(undefined);
   }
 
@@ -95,12 +122,11 @@ export class App implements OnInit {
   }
 
   onAddRecipe(enteredData: Recipe): void {
-    this._recipesManagementService.addRecipe(enteredData)
-      .subscribe({
-        next: () => {
-          this.loadData();
-        }
-      });
+    this._recipesManagementService.addRecipe(enteredData).subscribe({
+      next: () => {
+        this.loadData();
+      },
+    });
     this.isAdding.set(false);
   }
 
@@ -110,20 +136,20 @@ export class App implements OnInit {
   }
 
   onUpdate(source: Recipe): void {
-    this._recipesManagementService.updateRecipe(source, this.selectedRecipe()!)
-    .subscribe({
-      next: () => {
-        this.loadData();
-      }
-    });
+    this._recipesManagementService
+      .updateRecipe(source, this.selectedRecipe()!)
+      .subscribe({
+        next: () => {
+          this.loadData();
+        },
+      });
     this.isEditing.set(false);
   }
 
   handleSubmission(enteredData: Recipe): void {
-    if(this.isAdding()){
+    if (this.isAdding()) {
       this.onAddRecipe(enteredData);
-    }
-    else{
+    } else {
       this.onUpdate(enteredData);
     }
   }
@@ -132,5 +158,4 @@ export class App implements OnInit {
     this.isEditing.set(false);
     this.isAdding.set(false);
   }
-
 }

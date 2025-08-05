@@ -4,24 +4,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RecipesManagementService {
-
-  private _resourceURL = "https://crudcrud.com/api/95450bd0255d4f0bb8f82a90bfcfa765/recipes";
+  private _resourceURL =
+    'https://crudcrud.com/api/0fd002a390a24c0cacc806c1198dcffa/recipes';
   private _httpCli = inject(HttpClient);
 
-  public recipeList = signal<Recipe[]>([]);
-
-  public recipesReadonly = this.recipeList.asReadonly();
-
   loadRecipes(): Observable<Recipe[]> {
-    return this._httpCli.get<Recipe[]>(this._resourceURL)
-    .pipe(
-      tap({
-        next: (list) => this.recipeList.set(list)
-      })
-    );
+    return this._httpCli.get<Recipe[]>(this._resourceURL);
   }
 
   addRecipe(source: Recipe): Observable<Recipe> {
@@ -29,11 +20,13 @@ export class RecipesManagementService {
   }
 
   updateRecipe(source: Recipe, dest: Recipe): Observable<Recipe> {
-    return this._httpCli.put<Recipe>(`${this._resourceURL}/${dest._id}`, source);
+    return this._httpCli.put<Recipe>(
+      `${this._resourceURL}/${dest._id}`,
+      source,
+    );
   }
 
   deleteRecipe(rep: Recipe): Observable<null> {
     return this._httpCli.delete<null>(`${this._resourceURL}/${rep._id}`);
   }
-
 }
