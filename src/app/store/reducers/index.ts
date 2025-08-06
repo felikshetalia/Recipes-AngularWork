@@ -10,7 +10,7 @@ import { Recipe } from '../../recipes/models';
 
 export interface RecipeState {
   recipes: Recipe[];
-  loadingShow: boolean;
+  isLoading: boolean;
   error: any | null;
 }
 

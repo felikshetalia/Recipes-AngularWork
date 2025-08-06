@@ -11,7 +11,7 @@ export const selectRecipes = createSelector(
 
 export const selectLoadingBool = createSelector(
   selectRecipesFeature,
-  (_state) => _state.loadingShow,
+  (_state) => _state.isLoading,
 );
 
 export const selectError = createSelector(

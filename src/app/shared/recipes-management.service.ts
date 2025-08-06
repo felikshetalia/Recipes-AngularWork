@@ -8,7 +8,7 @@ import { Observable, tap } from 'rxjs';
 })
 export class RecipesManagementService {
   private _resourceURL =
-    'https://crudcrud.com/api/0fd002a390a24c0cacc806c1198dcffa/recipes';
+    'https://crudcrud.com/api/2cf4713bdc87461e9bb0b1b4fedcc3a8/recipes';
   private _httpCli = inject(HttpClient);
 
   loadRecipes(): Observable<Recipe[]> {

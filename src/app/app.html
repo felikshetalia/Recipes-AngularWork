@@ -11,6 +11,8 @@
   <mat-sidenav #sidenav mode="side" class="lhs" opened="true">
     <app-recipes
       [recipeList]="isSearching() ? filteredList() : recipeList$()"
+      [isLoading]="isLoading$()"
+      [isError]="errorCode$()"
       (selectedRecipe)="onRecipeSelected($event)"
       (deleteRecipeClicked)="onDeleteRecipe()"
       (editRecipeClicked)="onEditRecipe($event)"

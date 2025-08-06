@@ -8,24 +8,24 @@ import { RecipeState } from '.';
 
 export const initialState: RecipeState = {
   recipes: [],
-  loadingShow: false,
+  isLoading: false,
   error: null,
 };
 export const recipeReducer = createReducer(
   initialState,
   on(loadRecipes, (_state) => ({
     ..._state,
-    loadingShow: true,
+    isLoading: true,
     error: null,
   })),
   on(loadRecipesSuccess, (_state, { recipes }) => ({
     ..._state,
     recipes,
-    loadingShow: false,
+    isLoading: false,
   })),
   on(loadRecipesFailure, (_state, { error }) => ({
     ..._state,
-    loadingShow: false,
+    isLoading: false,
     error: error,
   })),
 );

@@ -19,6 +19,8 @@ import { MatIconButton } from '@angular/material/button';
 })
 export class Recipes {
   recipeList = input<Recipe[] | null>();
+  isLoading = input<boolean>();
+  isError = input<any | null>();
 
   selectedRecipe = output<Recipe>();
   deleteRecipeClicked = output<Recipe>();

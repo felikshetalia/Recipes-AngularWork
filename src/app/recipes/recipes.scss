@@ -1,18 +1,25 @@
-
-mat-nav-list{
+mat-nav-list {
     margin-top: 20px;
+
+    p {
+        font-size: larger;
+    }
 }
+
 .actions {
     display: flex;
     margin-left: auto;
     gap: 8px;
-    justify-content: right;;
+    justify-content: right;
+    ;
 }
-mat-list-item{
+
+mat-list-item {
     width: 500px;
     display: flex;
     flex-direction: row;
 }
+
 .item-name {
     flex: 1;
     font-size: 16pt;

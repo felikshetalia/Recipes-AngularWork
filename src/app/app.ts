@@ -56,24 +56,23 @@ export class App implements OnInit {
   private _destroyRef = inject(DestroyRef);
   private _store = inject(Store);
 
-  recipeList$ = this._store.selectSignal(selectRecipes);
-  isLoading$ = this._store.selectSignal(selectLoadingBool);
-  errorCode$ = this._store.selectSignal(selectError);
+  readonly recipeList$ = this._store.selectSignal(selectRecipes);
+  readonly isLoading$ = this._store.selectSignal(selectLoadingBool);
+  readonly errorCode$ = this._store.selectSignal(selectError);
 
-  selectedRecipe = signal<Recipe | undefined>(undefined);
-  isEditing = signal<boolean>(false);
-  isAdding = signal<boolean>(false);
-  isSearching = signal<boolean>(false);
+  readonly selectedRecipe = signal<Recipe | undefined>(undefined);
+  readonly isEditing = signal<boolean>(false);
+  readonly isAdding = signal<boolean>(false);
+  readonly isSearching = signal<boolean>(false);
+  readonly filteredList = signal<Recipe[]>(this.recipeList$());
 
   searchForm = inject(FormBuilder).control('');
-  filteredList = signal<Recipe[]>(this.recipeList$());
 
   ngOnInit(): void {
     this.loadData();
 
     this.searchForm.valueChanges
-      .pipe(debounceTime(200))
-      .pipe(takeUntilDestroyed(this._destroyRef))
+      .pipe(debounceTime(200), takeUntilDestroyed(this._destroyRef))
       .subscribe((searchTerm) => {
         if (searchTerm!.length > 0) {
           this.isSearching.set(true);
@@ -90,14 +89,6 @@ export class App implements OnInit {
 
   loadData(): void {
     this._store.dispatch(loadRecipes());
-    // this._recipesManagementService.loadRecipes().subscribe({
-    //   next: (list) => {
-    //     this._store.dispatch(loadRecipes({ recipes: list }));
-    //     if (list.length > 0) {
-    //       this.selectedRecipe.set(list[0]);
-    //     }
-    //   },
-    // });
   }
 
   onRecipeSelected(recipe: Recipe): void {
