@@ -1,40 +1,38 @@
 <app-navbar>
-  <input class="search-bar" 
-        type="text" 
-        placeholder="Search for a recipe..."
-        #filter
-        [formControl]="searchForm" />
+  <input
+    class="search-bar"
+    type="text"
+    placeholder="Search for a recipe..."
+    #filter
+    [formControl]="searchForm"
+  />
 </app-navbar>
 <mat-sidenav-container>
-
   <mat-sidenav #sidenav mode="side" class="lhs" opened="true">
-    <app-recipes 
-    [recipeList]="isSearching() ? filteredList() : recipeList()" 
-    (selectedRecipe)="onRecipeSelected($event)"
-    (deleteRecipeClicked)="onDeleteRecipe()" 
-    (editRecipeClicked)="onEditRecipe($event)">
-    <button matFab extended (click)="onAddClick()">
-      <mat-icon>add</mat-icon>
-      Add
-    </button>
+    <app-recipes
+      [recipeList]="isSearching() ? filteredList() : recipeList$()"
+      [isLoading]="isLoading$()"
+      [isError]="errorCode$()"
+      (selectedRecipe)="onRecipeSelected($event)"
+      (deleteRecipeClicked)="onDeleteRecipe()"
+      (editRecipeClicked)="onEditRecipe($event)"
+    >
+      <button matFab extended (click)="onAddClick()">
+        <mat-icon>add</mat-icon>
+        Add
+      </button>
     </app-recipes>
   </mat-sidenav>
   <mat-sidenav-content class="rhs">
-      
-    @if(isEditing() || isAdding()){
-      
-      <app-recipe-form 
-      [isEditMode]="isEditing()" 
-      [recipe]="selectedRecipe()" 
-      (editingCanceled)="onCancel()"
-      (formSubmitted)="handleSubmission($event)" />
-      
+    @if (isEditing() || isAdding()) {
+      <app-recipe-form
+        [isEditMode]="isEditing()"
+        [recipe]="selectedRecipe()"
+        (editingCanceled)="onCancel()"
+        (formSubmitted)="handleSubmission($event)"
+      />
+    } @else {
+      <app-recipe-card [recipe]="selectedRecipe()"></app-recipe-card>
     }
-    @else { 
-      <app-recipe-card 
-      [recipe]="selectedRecipe()"></app-recipe-card>    
-    }
-
-</mat-sidenav-content>
-
+  </mat-sidenav-content>
 </mat-sidenav-container>

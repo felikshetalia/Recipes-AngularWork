@@ -34,10 +34,10 @@ export class RecipeForm implements OnInit, OnChanges {
   private _fb = inject(FormBuilder);
   
   form = this._fb.group({
-    recipeName: ['', [Validators.minLength(3), Validators.maxLength(80)]],
-    prepTime: [0, [Validators.required]],
-    ingredients: this._fb.array([], [Validators.minLength(2)]),
-    description: ['', [Validators.minLength(15), Validators.maxLength(255)]]
+    recipeName: ['', [Validators.minLength(3), Validators.maxLength(80), Validators.required]],
+    prepTime: [0, [Validators.required, Validators.minLength(1)]],
+    ingredients: this._fb.array([], [Validators.minLength(2), Validators.required]),
+    description: ['', [Validators.minLength(15), Validators.maxLength(255), Validators.required]]
   });
   
   ngOnInit(): void {
