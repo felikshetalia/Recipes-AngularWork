@@ -78,6 +78,7 @@ export class RecipeEffects {
             map(
               () =>
                 editRecipeGroup.editRecipeSuccess({
+                  oldRecipeId: action.oldRecipeId,
                   newRecipe: action.newRecipe,
                 }),
               catchError((error: HttpErrorResponse) =>

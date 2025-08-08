@@ -32,7 +32,7 @@ export const editRecipeGroup = createActionGroup({
   source: '[API]',
   events: {
     'Edit Recipe': props<{ oldRecipeId: string; newRecipe: Recipe }>(),
-    'Edit Recipe Success': props<{ newRecipe: Recipe }>(),
+    'Edit Recipe Success': props<{ oldRecipeId: string; newRecipe: Recipe }>(),
     'Edit Recipe Failure': props<{ error: any }>(),
   },
 });
