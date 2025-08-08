@@ -105,7 +105,6 @@ export class App implements OnInit {
       deleteRecipeGroup.deleteRecipe({ recipe: this.selectedRecipe()! }),
     );
     this.selectedRecipe.set(undefined);
-    this.loadData();
   }
 
   onEditRecipe(rep: Recipe): void {
