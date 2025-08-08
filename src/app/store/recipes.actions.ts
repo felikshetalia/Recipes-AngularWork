@@ -31,8 +31,8 @@ export const deleteRecipeGroup = createActionGroup({
 export const editRecipeGroup = createActionGroup({
   source: '[API]',
   events: {
-    'Edit Recipe': props<{ oldRecipeId: string; newRecipe: Recipe }>(),
-    'Edit Recipe Success': props<{ oldRecipeId: string; newRecipe: Recipe }>(),
+    'Edit Recipe': props<{ id: string; newData: Recipe }>(),
+    'Edit Recipe Success': props<{ id: string; newData: Recipe }>(),
     'Edit Recipe Failure': props<{ error: any }>(),
   },
 });

@@ -1,5 +1,19 @@
-import { ChangeDetectionStrategy, Component, inject, input, OnChanges, OnInit, output, SimpleChanges } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, Validators, FormArray } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  OnChanges,
+  OnInit,
+  output,
+  SimpleChanges,
+} from '@angular/core';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  Validators,
+  FormArray,
+} from '@angular/forms';
 import { Recipe } from '../models';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -22,95 +36,105 @@ import { MatIcon } from '@angular/material/icon';
   ],
   templateUrl: './recipe-form.html',
   styleUrl: './recipe-form.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecipeForm implements OnInit, OnChanges {
   recipe = input.required<Recipe | undefined>();
   isEditMode = input.required<boolean | undefined>();
-  
+
   editingCanceled = output<void>();
   formSubmitted = output<Recipe>();
-  
+
   private _fb = inject(FormBuilder);
-  
+
   form = this._fb.group({
-    recipeName: ['', [Validators.minLength(3), Validators.maxLength(80), Validators.required]],
+    recipeName: [
+      '',
+      [Validators.minLength(3), Validators.maxLength(80), Validators.required],
+    ],
     prepTime: [0, [Validators.required, Validators.minLength(1)]],
-    ingredients: this._fb.array([], [Validators.minLength(2), Validators.required]),
-    description: ['', [Validators.minLength(15), Validators.maxLength(255), Validators.required]]
+    ingredients: this._fb.array(
+      [],
+      [Validators.minLength(2), Validators.required],
+    ),
+    description: [
+      '',
+      [
+        Validators.minLength(15),
+        Validators.maxLength(255),
+        Validators.required,
+      ],
+    ],
   });
-  
+
   ngOnInit(): void {
     this._initForm();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['isEditMode'] || changes['recipe']){
+    if (changes['isEditMode'] || changes['recipe']) {
       this._initForm();
     }
-    console.log(changes);
   }
 
   addIngredient(): void {
     this._ingredients.push(
       this._fb.group({
         name: ['', [Validators.required]],
-        quantity: ['', [Validators.required]]
-      })
+        quantity: ['', [Validators.required]],
+      }),
     );
   }
-  
-  onCancel(): void{
+
+  onCancel(): void {
     this.editingCanceled.emit();
   }
-  
-  onSubmit(): void{
+
+  onSubmit(): void {
     const enteredData = {
       name: this.form.value.recipeName || '',
       preparationTimeInMins: this.form.value.prepTime || 0,
       ingredients: this._ingredients.value || [],
-      description: this.form.value.description || ''
-    }
-    if(this.form.invalid){
+      description: this.form.value.description || '',
+    };
+    if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
-    }
-    else{
+    } else {
       this.formSubmitted.emit(enteredData);
     }
   }
-  
-  get _ingredients(): FormArray{
+
+  get _ingredients(): FormArray {
     return this.form.get('ingredients') as FormArray;
   }
 
   private _initForm(): void {
     this.form.reset();
-    if(this.isEditMode()){
+    if (this.isEditMode()) {
       this.form.patchValue({
         recipeName: this.recipe()?.name,
         prepTime: this.recipe()?.preparationTimeInMins,
-        description: this.recipe()?.description
+        description: this.recipe()?.description,
       });
 
       this._ingredients.clear();
-      this.recipe()?.ingredients.forEach(ing => {
+      this.recipe()?.ingredients.forEach((ing) => {
         this._ingredients.push(
           this._fb.group({
             name: [ing.name, [Validators.required]],
-            quantity: [ing.quantity, [Validators.required]]
-          })
+            quantity: [ing.quantity, [Validators.required]],
+          }),
         );
-      })
-    } 
-    else{
+      });
+    } else {
       this._ingredients.clear();
       this._ingredients.push(
-      this._fb.group({
-        name: ['', [Validators.required]],
-        quantity: ['', [Validators.required]]
-      })
-    );
+        this._fb.group({
+          name: ['', [Validators.required]],
+          quantity: ['', [Validators.required]],
+        }),
+      );
     }
   }
 }

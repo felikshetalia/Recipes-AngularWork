@@ -65,16 +65,13 @@ export const recipeReducer = createReducer(
     isLoading: true,
     error: null,
   })),
-  on(
-    editRecipeGroup.editRecipeSuccess,
-    (_state, { oldRecipeId, newRecipe }) => ({
-      ..._state,
-      isLoading: false,
-      recipes: _state.recipes.map((recipe) =>
-        recipe._id === oldRecipeId ? { ...recipe, ...newRecipe } : recipe,
-      ),
-    }),
-  ),
+  on(editRecipeGroup.editRecipeSuccess, (_state, { id, newData }) => ({
+    ..._state,
+    isLoading: false,
+    recipes: _state.recipes.map((recipe) =>
+      recipe._id === id ? { ...recipe, ...newData } : recipe,
+    ),
+  })),
   on(editRecipeGroup.editRecipeFailure, (_state, { error }) => ({
     ..._state,
     isLoading: false,

@@ -128,8 +128,8 @@ export class App implements OnInit {
   onUpdate(source: Recipe): void {
     this._store.dispatch(
       editRecipeGroup.editRecipe({
-        oldRecipeId: this.selectedRecipe()!._id!,
-        newRecipe: source,
+        id: this.selectedRecipe()!._id!,
+        newData: source,
       }),
     );
     this.isEditing.set(false);

@@ -72,20 +72,18 @@ export class RecipeEffects {
     this.actions$.pipe(
       ofType(editRecipeGroup.editRecipe),
       exhaustMap((action) =>
-        this.recipesService
-          .updateRecipe(action.newRecipe, action.oldRecipeId)
-          .pipe(
-            map(
-              () =>
-                editRecipeGroup.editRecipeSuccess({
-                  oldRecipeId: action.oldRecipeId,
-                  newRecipe: action.newRecipe,
-                }),
-              catchError((error: HttpErrorResponse) =>
-                of(editRecipeGroup.editRecipeFailure({ error })),
-              ),
+        this.recipesService.updateRecipe(action.newData, action.id).pipe(
+          map(
+            () =>
+              editRecipeGroup.editRecipeSuccess({
+                id: action.id,
+                newData: action.newData,
+              }),
+            catchError((error: HttpErrorResponse) =>
+              of(editRecipeGroup.editRecipeFailure({ error })),
             ),
           ),
+        ),
       ),
     ),
   );
