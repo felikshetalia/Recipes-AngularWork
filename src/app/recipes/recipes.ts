@@ -18,7 +18,7 @@ import { MatIconButton } from '@angular/material/button';
   styleUrl: './recipes.scss',
 })
 export class Recipes {
-  recipeList = input<Recipe[] | null>();
+  recipeList = input<Recipe[]>();
   isLoading = input<boolean>();
   isError = input<any | null>();
 

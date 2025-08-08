@@ -24,7 +24,12 @@ import {
   MatSidenavContent,
 } from '@angular/material/sidenav';
 import { Store } from '@ngrx/store';
-import { loadRecipes } from './store/recipes.actions';
+import {
+  addRecipeGroup,
+  deleteRecipeGroup,
+  editRecipeGroup,
+  loadRecipesGroup,
+} from './store/recipes.actions';
 import {
   selectError,
   selectLoadingBool,
@@ -88,7 +93,7 @@ export class App implements OnInit {
   }
 
   loadData(): void {
-    this._store.dispatch(loadRecipes());
+    this._store.dispatch(loadRecipesGroup.load());
   }
 
   onRecipeSelected(recipe: Recipe): void {
@@ -96,14 +101,11 @@ export class App implements OnInit {
   }
 
   onDeleteRecipe(): void {
-    this._recipesManagementService
-      .deleteRecipe(this.selectedRecipe()!)
-      .subscribe({
-        next: () => {
-          this.loadData();
-        },
-      });
+    this._store.dispatch(
+      deleteRecipeGroup.deleteRecipe({ recipe: this.selectedRecipe()! }),
+    );
     this.selectedRecipe.set(undefined);
+    this.loadData();
   }
 
   onEditRecipe(rep: Recipe): void {
@@ -113,12 +115,9 @@ export class App implements OnInit {
   }
 
   onAddRecipe(enteredData: Recipe): void {
-    this._recipesManagementService.addRecipe(enteredData).subscribe({
-      next: () => {
-        this.loadData();
-      },
-    });
+    this._store.dispatch(addRecipeGroup.addRecipe({ recipe: enteredData }));
     this.isAdding.set(false);
+    this.selectedRecipe.set(enteredData);
   }
 
   onAddClick(): void {
@@ -127,14 +126,14 @@ export class App implements OnInit {
   }
 
   onUpdate(source: Recipe): void {
-    this._recipesManagementService
-      .updateRecipe(source, this.selectedRecipe()!)
-      .subscribe({
-        next: () => {
-          this.loadData();
-        },
-      });
+    this._store.dispatch(
+      editRecipeGroup.editRecipe({
+        oldRecipeId: this.selectedRecipe()!._id!,
+        newRecipe: source,
+      }),
+    );
     this.isEditing.set(false);
+    this.selectedRecipe.set(source);
   }
 
   handleSubmission(enteredData: Recipe): void {
