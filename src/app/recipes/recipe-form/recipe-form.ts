@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   inject,
   input,
   OnChanges,
@@ -38,7 +39,7 @@ import { MatIcon } from '@angular/material/icon';
   styleUrl: './recipe-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RecipeForm implements OnInit, OnChanges {
+export class RecipeForm implements OnInit {
   recipe = input.required<Recipe | undefined>();
   isEditMode = input.required<boolean | undefined>();
 
@@ -67,14 +68,16 @@ export class RecipeForm implements OnInit, OnChanges {
     ],
   });
 
-  ngOnInit(): void {
-    this._initForm();
+  constructor() {
+    effect(() => {
+      this.isEditMode();
+      this.recipe();
+      this._initForm();
+    });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['isEditMode'] || changes['recipe']) {
-      this._initForm();
-    }
+  ngOnInit(): void {
+    this._initForm();
   }
 
   addIngredient(): void {

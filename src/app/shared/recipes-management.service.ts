@@ -1,14 +1,14 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Recipe } from '../recipes/models';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RecipesManagementService {
-  private _resourceURL =
-    'https://crudcrud.com/api/fca72cfbace9470d99103f7a82d04015/recipes';
+  private _resourceURL = `https://crudcrud.com/api/${environment.apiKey}/recipes`;
   private _httpCli = inject(HttpClient);
 
   loadRecipes(): Observable<Recipe[]> {

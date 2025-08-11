@@ -9,7 +9,7 @@
       @for (recipe of recipeList(); track recipe._id) {
         <mat-list-item role="listitem" (click)="onSelectRecipe(recipe!)">
           <div class="recipe-row">
-            <span class="item-name">{{ recipe!.name }}</span>
+            <span class="item-name">{{ recipe.name }}</span>
             <span class="actions">
               <button
                 matIconButton

@@ -116,7 +116,6 @@ export class App implements OnInit {
   onAddRecipe(enteredData: Recipe): void {
     this._store.dispatch(addRecipeGroup.addRecipe({ recipe: enteredData }));
     this.isAdding.set(false);
-    this.selectedRecipe.set(enteredData);
   }
 
   onAddClick(): void {

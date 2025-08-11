@@ -33,9 +33,7 @@
       />
     } @else {
       <app-recipe-card
-        [recipe]="
-          selectedRecipe() !== undefined ? selectedRecipe() : recipeList$()[0]
-        "
+        [recipe]="selectedRecipe() ?? recipeList$()[0]"
       ></app-recipe-card>
     }
   </mat-sidenav-content>

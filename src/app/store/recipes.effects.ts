@@ -7,10 +7,9 @@ import {
   loadRecipesGroup,
 } from './recipes.actions';
 import { RecipesManagementService } from '../shared/recipes-management.service';
-import { exhaustMap, map, catchError, of, switchMap, tap } from 'rxjs';
+import { exhaustMap, map, catchError, of } from 'rxjs';
 import { Recipe } from '../recipes/models';
 import { HttpErrorResponse } from '@angular/common/http';
-import { error } from 'node:console';
 
 @Injectable()
 export class RecipeEffects {
@@ -73,15 +72,14 @@ export class RecipeEffects {
       ofType(editRecipeGroup.editRecipe),
       exhaustMap((action) =>
         this.recipesService.updateRecipe(action.newData, action.id).pipe(
-          map(
-            () =>
-              editRecipeGroup.editRecipeSuccess({
-                id: action.id,
-                newData: action.newData,
-              }),
-            catchError((error: HttpErrorResponse) =>
-              of(editRecipeGroup.editRecipeFailure({ error })),
-            ),
+          map(() =>
+            editRecipeGroup.editRecipeSuccess({
+              id: action.id,
+              newData: action.newData,
+            }),
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(editRecipeGroup.editRecipeFailure({ error })),
           ),
         ),
       ),
