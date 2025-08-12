@@ -70,8 +70,6 @@ export class RecipeForm implements OnInit {
 
   constructor() {
     effect(() => {
-      this.isEditMode();
-      this.recipe();
       this._initForm();
     });
   }
