@@ -32,7 +32,9 @@
         (formSubmitted)="handleSubmission($event)"
       />
     } @else {
-      <app-recipe-card [recipe]="selectedRecipe()"></app-recipe-card>
+      <app-recipe-card
+        [recipe]="selectedRecipe() ?? recipeList$()[0]"
+      ></app-recipe-card>
     }
   </mat-sidenav-content>
 </mat-sidenav-container>

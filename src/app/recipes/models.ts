@@ -1,14 +1,13 @@
 export interface Recipe {
-    _id?: string;
-    name: string;
-    preparationTimeInMins: number;
-    ingredients: Ingredient[];
-    description: string;
+  _id?: string;
+  name: string;
+  preparationTimeInMins: number;
+  ingredients: Ingredient[];
+  description: string;
 }
 
 export interface Ingredient {
-    _id?: string;
-    name: string;
-    quantity: string;
+  _id?: string;
+  name: string;
+  quantity: string;
 }
-
