@@ -15,26 +15,19 @@
       [isError]="errorCode$()"
       (selectedRecipe)="onRecipeSelected($event)"
       (deleteRecipeClicked)="onDeleteRecipe()"
-      (editRecipeClicked)="onEditRecipe($event)"
     >
-      <button matFab extended (click)="onAddClick()">
+      <button
+        matFab
+        extended
+        [routerLink]="['/recipes/add']"
+        (click)="onAddClick()"
+      >
         <mat-icon>add</mat-icon>
         Add
       </button>
     </app-recipes>
   </mat-sidenav>
   <mat-sidenav-content class="rhs">
-    @if (isEditing() || isAdding()) {
-      <app-recipe-form
-        [isEditMode]="isEditing()"
-        [recipe]="selectedRecipe()"
-        (editingCanceled)="onCancel()"
-        (formSubmitted)="handleSubmission($event)"
-      />
-    } @else {
-      <app-recipe-card
-        [recipe]="selectedRecipe() ?? recipeList$()[0]"
-      ></app-recipe-card>
-    }
+    <router-outlet />
   </mat-sidenav-content>
 </mat-sidenav-container>

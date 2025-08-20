@@ -4,10 +4,9 @@ import {
   effect,
   inject,
   input,
-  OnChanges,
   OnInit,
   output,
-  SimpleChanges,
+  signal,
 } from '@angular/core';
 import {
   ReactiveFormsModule,
@@ -21,6 +20,10 @@ import { MatInput } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButton, MatMiniFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { addRecipeGroup, editRecipeGroup } from '../../store/recipes.actions';
+import { coerceStringArray } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'app-recipe-form',
@@ -40,13 +43,16 @@ import { MatIcon } from '@angular/material/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecipeForm implements OnInit {
-  recipe = input.required<Recipe | undefined>();
-  isEditMode = input.required<boolean | undefined>();
-
-  editingCanceled = output<void>();
-  formSubmitted = output<Recipe>();
-
+  private _router = inject(Router);
   private _fb = inject(FormBuilder);
+  private _store = inject(Store);
+
+  activeRoute = inject(ActivatedRoute);
+
+  recipe = input.required<Recipe | undefined>();
+
+  formSubmitted = signal<boolean>(false);
+  formMode = signal<string>(this.activeRoute.snapshot.data['mode']);
 
   form = this._fb.group({
     recipeName: [
@@ -75,6 +81,10 @@ export class RecipeForm implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.formMode() == 'add') {
+      console.log('add mode activated');
+    }
+    if (this.formMode() == 'edit') console.log('edit mode activated');
     this._initForm();
   }
 
@@ -88,7 +98,7 @@ export class RecipeForm implements OnInit {
   }
 
   onCancel(): void {
-    this.editingCanceled.emit();
+    this._router.navigate(['']);
   }
 
   onSubmit(): void {
@@ -102,8 +112,20 @@ export class RecipeForm implements OnInit {
       this.form.markAllAsTouched();
       return;
     } else {
-      this.formSubmitted.emit(enteredData);
+      // this.formSubmitted.emit(enteredData);
+      if (this.formMode() == 'edit') {
+        this._store.dispatch(
+          editRecipeGroup.editRecipe({
+            id: this.recipe()?._id!,
+            newData: enteredData,
+          }),
+        );
+      } else {
+        this._store.dispatch(addRecipeGroup.addRecipe({ recipe: enteredData }));
+      }
+      this.formSubmitted.set(true);
     }
+    this._router.navigate(['']);
   }
 
   get _ingredients(): FormArray {
@@ -112,7 +134,7 @@ export class RecipeForm implements OnInit {
 
   private _initForm(): void {
     this.form.reset();
-    if (this.isEditMode()) {
+    if (this.activeRoute.snapshot.data['mode'] == 'edit') {
       this.form.patchValue({
         recipeName: this.recipe()?.name,
         prepTime: this.recipe()?.preparationTimeInMins,

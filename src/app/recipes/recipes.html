@@ -7,7 +7,11 @@
       <p>Currently no recipes available</p>
     } @else {
       @for (recipe of recipeList(); track recipe._id) {
-        <mat-list-item role="listitem" (click)="onSelectRecipe(recipe!)">
+        <mat-list-item
+          role="listitem"
+          [routerLink]="['recipes', recipe!._id]"
+          (click)="onSelectRecipe(recipe!)"
+        >
           <div class="recipe-row">
             <span class="item-name">{{ recipe.name }}</span>
             <span class="actions">

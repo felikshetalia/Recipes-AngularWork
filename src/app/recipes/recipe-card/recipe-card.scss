@@ -1,4 +1,4 @@
-mat-card{
+mat-card {
     height: 80vh;
     width: auto;
     padding: 100px;
@@ -7,26 +7,34 @@ mat-card{
     font-size: 24pt;
     margin: 30px;
     text-wrap: wrap;
-    mat-card-header{
+
+    mat-card-header {
         padding-bottom: 50px;
-        mat-card-title{
+
+        mat-card-title {
             font-size: 40pt;
         }
     }
-    
-    mat-card-content{
-        table{
+
+    mat-card-content {
+        table {
             margin-top: 10px;
             margin-bottom: 30px;
         }
+
         overflow-wrap: anywhere;
-        p{
+
+        p {
             padding-bottom: 5px;
         }
 
-        li{
+        li {
             margin-left: 50px;
             padding-bottom: 5px;
         }
+    }
+
+    mat-card-actions {
+        padding-top: 300px;
     }
 }

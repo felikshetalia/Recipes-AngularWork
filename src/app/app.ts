@@ -8,16 +8,12 @@ import {
 } from '@angular/core';
 import { Navbar } from './navbar/navbar';
 import { Recipes } from './recipes/recipes';
-import { RecipeCard } from './recipes/recipe-card/recipe-card';
 import { Recipe } from './recipes/models';
-import { RecipesManagementService } from './shared/recipes-management.service';
-import { RecipeForm } from './recipes/recipe-form/recipe-form';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
 import { MatFabButton } from '@angular/material/button';
-import { MatDivider } from '@angular/material/divider';
 import {
   MatSidenav,
   MatSidenavContainer,
@@ -29,26 +25,29 @@ import {
   deleteRecipeGroup,
   editRecipeGroup,
   loadRecipesGroup,
+  selectRecipeGroup,
 } from './store/recipes.actions';
 import {
+  selectedRecipe,
   selectError,
   selectLoadingBool,
   selectRecipes,
 } from './store/recipes.selectors';
+import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   imports: [
     Navbar,
     Recipes,
-    RecipeCard,
-    RecipeForm,
     ReactiveFormsModule,
     MatIcon,
     MatFabButton,
     MatSidenav,
     MatSidenavContainer,
     MatSidenavContent,
+    RouterOutlet,
+    RouterLink,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
@@ -56,16 +55,16 @@ import {
 })
 export class App implements OnInit {
   protected title = 'Recipes';
+  private _route = inject(ActivatedRoute);
 
-  private _recipesManagementService = inject(RecipesManagementService);
   private _destroyRef = inject(DestroyRef);
   private _store = inject(Store);
 
   readonly recipeList$ = this._store.selectSignal(selectRecipes);
   readonly isLoading$ = this._store.selectSignal(selectLoadingBool);
   readonly errorCode$ = this._store.selectSignal(selectError);
+  readonly selectedRecipe$ = this._store.selectSignal(selectedRecipe);
 
-  readonly selectedRecipe = signal<Recipe | undefined>(undefined);
   readonly isEditing = signal<boolean>(false);
   readonly isAdding = signal<boolean>(false);
   readonly isSearching = signal<boolean>(false);
@@ -97,20 +96,18 @@ export class App implements OnInit {
   }
 
   onRecipeSelected(recipe: Recipe): void {
-    this.selectedRecipe.set(recipe);
+    this._store.dispatch(selectRecipeGroup.selectRecipe({ recipe }));
   }
 
   onDeleteRecipe(): void {
     this._store.dispatch(
-      deleteRecipeGroup.deleteRecipe({ recipe: this.selectedRecipe()! }),
+      deleteRecipeGroup.deleteRecipe({ recipe: this.selectedRecipe$()! }),
     );
-    this.selectedRecipe.set(undefined);
   }
 
   onEditRecipe(rep: Recipe): void {
     this.isEditing.set(true);
     this.isAdding.set(false);
-    this.selectedRecipe.set(rep);
   }
 
   onAddRecipe(enteredData: Recipe): void {
@@ -126,12 +123,11 @@ export class App implements OnInit {
   onUpdate(source: Recipe): void {
     this._store.dispatch(
       editRecipeGroup.editRecipe({
-        id: this.selectedRecipe()!._id!,
+        id: this.selectedRecipe$()!._id!,
         newData: source,
       }),
     );
     this.isEditing.set(false);
-    this.selectedRecipe.set(source);
   }
 
   handleSubmission(enteredData: Recipe): void {

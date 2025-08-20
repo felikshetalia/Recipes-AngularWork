@@ -1,4 +1,9 @@
-import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import {
+  createActionGroup,
+  emptyProps,
+  props,
+  createAction,
+} from '@ngrx/store';
 import { Recipe } from '../recipes/models';
 
 export const loadRecipesGroup = createActionGroup({
@@ -34,5 +39,14 @@ export const editRecipeGroup = createActionGroup({
     'Edit Recipe': props<{ id: string; newData: Recipe }>(),
     'Edit Recipe Success': props<{ id: string; newData: Recipe }>(),
     'Edit Recipe Failure': props<{ error: any }>(),
+  },
+});
+
+export const selectRecipeGroup = createActionGroup({
+  source: '[API]',
+  events: {
+    'Select Recipe': props<{ recipe: Recipe }>(),
+    'Select Recipe Success': props<{ recipe: Recipe }>(),
+    'Select Recipe Failure': props<{ error: any }>(),
   },
 });

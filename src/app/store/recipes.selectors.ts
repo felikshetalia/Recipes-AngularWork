@@ -18,3 +18,8 @@ export const selectError = createSelector(
   selectRecipesFeature,
   (_state) => _state.error,
 );
+
+export const selectedRecipe = createSelector(
+  selectRecipesFeature,
+  (_state) => _state.selectedRecipe,
+);

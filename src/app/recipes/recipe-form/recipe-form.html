@@ -1,7 +1,7 @@
 <form [formGroup]="form">
   <mat-card>
     <h1>
-      @if (isEditMode()) {
+      @if (this.activeRoute.snapshot.data["mode"] == "edit") {
         Edit details
       } @else {
         Enter details
@@ -108,7 +108,7 @@
     </mat-form-field>
     <mat-card-actions class="actions">
       <button matButton type="submit" (click)="onSubmit()">
-        @if (isEditMode()) {
+        @if (this.activeRoute.snapshot.data["mode"] == "edit") {
           Save Recipe
         } @else {
           Add Recipe
