@@ -5,7 +5,6 @@ import {
   inject,
   input,
   OnInit,
-  output,
   signal,
 } from '@angular/core';
 import {
@@ -23,7 +22,6 @@ import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { addRecipeGroup, editRecipeGroup } from '../../store/recipes.actions';
-import { coerceStringArray } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'app-recipe-form',
@@ -81,10 +79,6 @@ export class RecipeForm implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.formMode() == 'add') {
-      console.log('add mode activated');
-    }
-    if (this.formMode() == 'edit') console.log('edit mode activated');
     this._initForm();
   }
 
@@ -124,8 +118,8 @@ export class RecipeForm implements OnInit {
         this._store.dispatch(addRecipeGroup.addRecipe({ recipe: enteredData }));
       }
       this.formSubmitted.set(true);
+      this._router.navigate(['']);
     }
-    this._router.navigate(['']);
   }
 
   get _ingredients(): FormArray {

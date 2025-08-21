@@ -24,7 +24,6 @@ import { MatButton, MatFabButton } from '@angular/material/button';
     MatTableModule,
     MatLabel,
     RecipeForm,
-    MatIcon,
     MatFabButton,
     RouterLink,
   ],

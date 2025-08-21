@@ -7,7 +7,6 @@ import {
   selectRecipeGroup,
 } from '../recipes.actions';
 import { RecipeState } from '.';
-import { _VIEW_REPEATER_STRATEGY } from '@angular/cdk/collections';
 
 export const initialState: RecipeState = {
   recipes: [],
@@ -77,7 +76,7 @@ export const recipeReducer = createReducer(
     recipes: _state.recipes.map((recipe) =>
       recipe._id === id ? { ...recipe, ...newData } : recipe,
     ),
-    selectedRecipe: newData,
+    selectedRecipe: { ..._state.selectedRecipe, ...newData },
   })),
   on(editRecipeGroup.editRecipeFailure, (_state, { error }) => ({
     ..._state,
