@@ -12,6 +12,7 @@ export interface RecipeState {
   recipes: Recipe[];
   isLoading: boolean;
   error: any | null;
+  selectedRecipe: Recipe | undefined;
 }
 
 export const metaReducers: MetaReducer<RecipeState>[] = isDevMode() ? [] : [];

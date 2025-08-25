@@ -4,10 +4,8 @@ import {
   effect,
   inject,
   input,
-  OnChanges,
   OnInit,
-  output,
-  SimpleChanges,
+  signal,
 } from '@angular/core';
 import {
   ReactiveFormsModule,
@@ -21,6 +19,10 @@ import { MatInput } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButton, MatMiniFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { addRecipeGroup, editRecipeGroup } from '../../store/recipes.actions';
+import { selectRecipes } from '../../store/recipes.selectors';
 
 @Component({
   selector: 'app-recipe-form',
@@ -40,13 +42,18 @@ import { MatIcon } from '@angular/material/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecipeForm implements OnInit {
-  recipe = input.required<Recipe | undefined>();
-  isEditMode = input.required<boolean | undefined>();
-
-  editingCanceled = output<void>();
-  formSubmitted = output<Recipe>();
-
+  private _router = inject(Router);
   private _fb = inject(FormBuilder);
+  private _store = inject(Store);
+
+  activeRoute = inject(ActivatedRoute);
+
+  recipe = input.required<Recipe | undefined>();
+
+  formSubmitted = signal<boolean>(false);
+  isEditMode = signal<boolean>(
+    this.activeRoute.snapshot.data['mode'] === 'edit',
+  );
 
   form = this._fb.group({
     recipeName: [
@@ -88,7 +95,12 @@ export class RecipeForm implements OnInit {
   }
 
   onCancel(): void {
-    this.editingCanceled.emit();
+    this.isEditMode()
+      ? this._router.navigate(['/recipes', this.recipe()?._id])
+      : this._router.navigate([
+          '/recipes',
+          this._store.selectSignal(selectRecipes)()[0]._id,
+        ]);
   }
 
   onSubmit(): void {
@@ -102,7 +114,19 @@ export class RecipeForm implements OnInit {
       this.form.markAllAsTouched();
       return;
     } else {
-      this.formSubmitted.emit(enteredData);
+      if (this.isEditMode()) {
+        this._store.dispatch(
+          editRecipeGroup.editRecipe({
+            id: this.recipe()?._id!,
+            newData: enteredData,
+          }),
+        );
+        this._router.navigate(['/recipes', this.recipe()!._id]);
+      } else {
+        this._store.dispatch(addRecipeGroup.addRecipe({ recipe: enteredData }));
+        this._router.navigate(['/recipes']);
+      }
+      this.formSubmitted.set(true);
     }
   }
 

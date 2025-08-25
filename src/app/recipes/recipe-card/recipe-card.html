@@ -31,5 +31,11 @@
       <mat-label>Description</mat-label>
       <p>{{ recipe()?.description }}</p>
     </mat-card-content>
+    <mat-card-actions>
+      <button matFab extended [routerLink]="['edit']" aria-label="Edit Recipe">
+        <mat-icon>edit</mat-icon>
+        Edit
+      </button>
+    </mat-card-actions>
   </mat-card>
 }

@@ -11,6 +11,7 @@ export const initialState: RecipeState = {
   recipes: [],
   isLoading: false,
   error: null,
+  selectedRecipe: undefined,
 };
 export const recipeReducer = createReducer(
   initialState,
@@ -23,6 +24,7 @@ export const recipeReducer = createReducer(
     ..._state,
     recipes,
     isLoading: false,
+    selectedRecipe: recipes[0],
   })),
   on(loadRecipesGroup.loadFailure, (_state, { error }) => ({
     ..._state,
@@ -38,6 +40,7 @@ export const recipeReducer = createReducer(
     ..._state,
     isLoading: false,
     recipes: [..._state.recipes, recipe],
+    selectedRecipe: recipe,
   })),
   on(addRecipeGroup.addRecipeFailure, (_state, { error }) => ({
     ..._state,
@@ -53,6 +56,7 @@ export const recipeReducer = createReducer(
     ..._state,
     recipes: _state.recipes.filter((r) => r._id !== recipe._id),
     isLoading: false,
+    selectedRecipe: undefined,
   })),
   on(deleteRecipeGroup.deleteRecipeFailure, (_state, { error, recipe }) => ({
     ..._state,
@@ -71,6 +75,7 @@ export const recipeReducer = createReducer(
     recipes: _state.recipes.map((recipe) =>
       recipe._id === id ? { ...recipe, ...newData } : recipe,
     ),
+    selectedRecipe: { ..._state.selectedRecipe, ...newData },
   })),
   on(editRecipeGroup.editRecipeFailure, (_state, { error }) => ({
     ..._state,
