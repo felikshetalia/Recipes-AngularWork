@@ -22,6 +22,7 @@ import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { addRecipeGroup, editRecipeGroup } from '../../store/recipes.actions';
+import { selectRecipes } from '../../store/recipes.selectors';
 
 @Component({
   selector: 'app-recipe-form',
@@ -50,7 +51,7 @@ export class RecipeForm implements OnInit {
   recipe = input.required<Recipe | undefined>();
 
   formSubmitted = signal<boolean>(false);
-  formMode = signal<string>(this.activeRoute.snapshot.data['mode']);
+  isEditMode = signal<boolean>(false);
 
   form = this._fb.group({
     recipeName: [
@@ -73,6 +74,9 @@ export class RecipeForm implements OnInit {
   });
 
   constructor() {
+    if (this.activeRoute.snapshot.data['mode'] === 'edit') {
+      this.isEditMode.set(true);
+    }
     effect(() => {
       this._initForm();
     });
@@ -92,7 +96,12 @@ export class RecipeForm implements OnInit {
   }
 
   onCancel(): void {
-    this._router.navigate(['']);
+    this.isEditMode()
+      ? this._router.navigate(['/recipes', this.recipe()?._id])
+      : this._router.navigate([
+          '/recipes',
+          this._store.selectSignal(selectRecipes)()[0]._id,
+        ]);
   }
 
   onSubmit(): void {
@@ -106,19 +115,19 @@ export class RecipeForm implements OnInit {
       this.form.markAllAsTouched();
       return;
     } else {
-      // this.formSubmitted.emit(enteredData);
-      if (this.formMode() == 'edit') {
+      if (this.isEditMode()) {
         this._store.dispatch(
           editRecipeGroup.editRecipe({
             id: this.recipe()?._id!,
             newData: enteredData,
           }),
         );
+        this._router.navigate(['/recipes', this.recipe()!._id]);
       } else {
         this._store.dispatch(addRecipeGroup.addRecipe({ recipe: enteredData }));
+        this._router.navigate(['/recipes']);
       }
       this.formSubmitted.set(true);
-      this._router.navigate(['']);
     }
   }
 
@@ -128,7 +137,7 @@ export class RecipeForm implements OnInit {
 
   private _initForm(): void {
     this.form.reset();
-    if (this.activeRoute.snapshot.data['mode'] == 'edit') {
+    if (this.isEditMode()) {
       this.form.patchValue({
         recipeName: this.recipe()?.name,
         prepTime: this.recipe()?.preparationTimeInMins,

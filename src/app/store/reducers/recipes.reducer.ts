@@ -4,7 +4,6 @@ import {
   addRecipeGroup,
   deleteRecipeGroup,
   editRecipeGroup,
-  selectRecipeGroup,
 } from '../recipes.actions';
 import { RecipeState } from '.';
 
@@ -79,21 +78,6 @@ export const recipeReducer = createReducer(
     selectedRecipe: { ..._state.selectedRecipe, ...newData },
   })),
   on(editRecipeGroup.editRecipeFailure, (_state, { error }) => ({
-    ..._state,
-    isLoading: false,
-    error: error,
-  })),
-  on(selectRecipeGroup.selectRecipe, (_state) => ({
-    ..._state,
-    isLoading: false,
-    error: null,
-  })),
-  on(selectRecipeGroup.selectRecipeSuccess, (_state, { recipe }) => ({
-    ..._state,
-    isLoading: false,
-    selectedRecipe: recipe,
-  })),
-  on(selectRecipeGroup.selectRecipeFailure, (_state, { error }) => ({
     ..._state,
     isLoading: false,
     error: error,

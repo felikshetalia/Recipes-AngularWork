@@ -25,7 +25,6 @@ import {
   deleteRecipeGroup,
   editRecipeGroup,
   loadRecipesGroup,
-  selectRecipeGroup,
 } from './store/recipes.actions';
 import {
   selectedRecipe,
@@ -93,10 +92,6 @@ export class App implements OnInit {
 
   loadData(): void {
     this._store.dispatch(loadRecipesGroup.load());
-  }
-
-  onRecipeSelected(recipe: Recipe): void {
-    this._store.dispatch(selectRecipeGroup.selectRecipe({ recipe }));
   }
 
   onDeleteRecipe(): void {

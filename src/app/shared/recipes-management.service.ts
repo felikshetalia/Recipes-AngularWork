@@ -27,7 +27,7 @@ export class RecipesManagementService {
     return this._httpCli.delete<null>(`${this._resourceURL}/${rep._id}`);
   }
 
-  fetchRecipe(rep: Recipe): Observable<Recipe> {
-    return this._httpCli.get<Recipe>(`${this._resourceURL}/${rep._id}`);
+  fetchRecipe(repId: string): Observable<Recipe> {
+    return this._httpCli.get<Recipe>(`${this._resourceURL}/${repId}`);
   }
 }

@@ -8,14 +8,12 @@ import { inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectRecipes, selectedRecipe } from '../store/recipes.selectors';
 import { map, take } from 'rxjs';
+import { RecipesManagementService } from './recipes-management.service';
 
 export const recipeResolver: ResolveFn<Recipe | undefined> = (
   route: ActivatedRouteSnapshot,
 ) => {
   const store = inject(Store);
-  const repId = route.paramMap.get('repId');
-  return store.select(selectRecipes).pipe(
-    map((recipes: Recipe[]) => recipes.find((r) => r._id === repId)),
-    take(1),
-  );
+  const service = inject(RecipesManagementService);
+  return service.fetchRecipe(route.paramMap.get('repId')!);
 };

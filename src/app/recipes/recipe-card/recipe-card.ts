@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  OnInit,
   signal,
 } from '@angular/core';
 import { TimeCustomPipe } from '../../shared/time-custom-pipe';
@@ -9,11 +10,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatLabel } from '@angular/material/form-field';
-import { Router, RouterLink } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { RecipeForm } from '../recipe-form/recipe-form';
-import { selectedRecipe } from '../../store/recipes.selectors';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatButton, MatFabButton } from '@angular/material/button';
+import { map, Observable } from 'rxjs';
+import { Recipe } from '../models';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-recipe-card',
@@ -23,7 +24,6 @@ import { MatButton, MatFabButton } from '@angular/material/button';
     MatIcon,
     MatTableModule,
     MatLabel,
-    RecipeForm,
     MatFabButton,
     RouterLink,
   ],
@@ -32,15 +32,8 @@ import { MatButton, MatFabButton } from '@angular/material/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecipeCard {
-  private _router = inject(Router);
-  private _store = inject(Store);
-
-  formMode = signal<string | null>(null);
-  goToForm = signal<boolean>(false);
-
-  recipe = this._store.selectSignal(selectedRecipe);
-
-  onCancel() {
-    this._router.navigate(['./']);
-  }
+  private _route = inject(ActivatedRoute);
+  recipe = toSignal<Recipe | undefined>(
+    this._route.data.pipe(map((data) => data['recipe'])),
+  );
 }

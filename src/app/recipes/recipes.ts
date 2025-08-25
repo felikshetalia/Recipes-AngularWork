@@ -21,7 +21,6 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 })
 export class Recipes {
   private _route = inject(Router);
-  private _activeRoute = inject(ActivatedRoute);
   recipeList = input<Recipe[]>();
   isLoading = input<boolean>();
   isError = input<any | null>();
@@ -39,8 +38,6 @@ export class Recipes {
   }
 
   onEditRecipe(rep: Recipe): void {
-    this._route.navigate(['edit'], {
-      relativeTo: this._activeRoute,
-    });
+    this._route.navigate(['/recipes', rep._id, '/edit']);
   }
 }

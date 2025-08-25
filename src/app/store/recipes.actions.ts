@@ -41,12 +41,3 @@ export const editRecipeGroup = createActionGroup({
     'Edit Recipe Failure': props<{ error: any }>(),
   },
 });
-
-export const selectRecipeGroup = createActionGroup({
-  source: '[API]',
-  events: {
-    'Select Recipe': props<{ recipe: Recipe }>(),
-    'Select Recipe Success': props<{ recipe: Recipe }>(),
-    'Select Recipe Failure': props<{ error: any }>(),
-  },
-});

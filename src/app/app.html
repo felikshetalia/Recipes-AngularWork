@@ -13,7 +13,6 @@
       [recipeList]="isSearching() ? filteredList() : recipeList$()"
       [isLoading]="isLoading$()"
       [isError]="errorCode$()"
-      (selectedRecipe)="onRecipeSelected($event)"
       (deleteRecipeClicked)="onDeleteRecipe()"
     >
       <button
