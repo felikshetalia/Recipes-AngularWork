@@ -3,6 +3,7 @@ import {
   Component,
   DestroyRef,
   inject,
+  OnDestroy,
   OnInit,
   signal,
 } from '@angular/core';
@@ -13,7 +14,9 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
-import { MatFabButton } from '@angular/material/button';
+import { MatFabButton, MatIconButton } from '@angular/material/button';
+import { MediaMatcher } from '@angular/cdk/layout';
+
 import {
   MatSidenav,
   MatSidenavContainer,
@@ -33,6 +36,7 @@ import {
   selectRecipes,
 } from './store/recipes.selectors';
 import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -42,35 +46,47 @@ import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
     ReactiveFormsModule,
     MatIcon,
     MatFabButton,
+    MatIconButton,
     MatSidenav,
     MatSidenavContainer,
     MatSidenavContent,
     RouterOutlet,
     RouterLink,
+    CommonModule,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class App implements OnInit {
+export class App implements OnInit, OnDestroy {
   protected title = 'Recipes';
   private _route = inject(ActivatedRoute);
 
   private _destroyRef = inject(DestroyRef);
   private _store = inject(Store);
+  protected readonly _mediaQuery: MediaQueryList;
+  private readonly _mediaQueryListener: () => void;
 
   readonly recipeList$ = this._store.selectSignal(selectRecipes);
   readonly isLoading$ = this._store.selectSignal(selectLoadingBool);
   readonly errorCode$ = this._store.selectSignal(selectError);
   readonly selectedRecipe$ = this._store.selectSignal(selectedRecipe);
 
+  protected readonly mobileMode = signal<boolean>(false);
   readonly isEditing = signal<boolean>(false);
   readonly isAdding = signal<boolean>(false);
   readonly isSearching = signal<boolean>(false);
   readonly filteredList = signal<Recipe[]>(this.recipeList$());
 
   searchForm = inject(FormBuilder).control('');
-
+  constructor() {
+    const media = inject(MediaMatcher);
+    this._mediaQuery = media.matchMedia('(orientation: portrait)');
+    this.mobileMode.set(this._mediaQuery.matches);
+    this._mediaQueryListener = () =>
+      this.mobileMode.set(this._mediaQuery.matches);
+    this._mediaQuery.addListener(this._mediaQueryListener);
+  }
   ngOnInit(): void {
     this.loadData();
 
@@ -89,7 +105,9 @@ export class App implements OnInit {
         }
       });
   }
-
+  ngOnDestroy(): void {
+    this._mediaQuery.removeListener(this._mediaQueryListener);
+  }
   loadData(): void {
     this._store.dispatch(loadRecipesGroup.load());
   }

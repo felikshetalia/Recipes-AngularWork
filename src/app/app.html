@@ -8,11 +8,12 @@
   />
 </app-navbar>
 <mat-sidenav-container>
-  <mat-sidenav #sidenav mode="side" class="lhs" opened="true">
+  <mat-sidenav #sidenav mode="side" class="lhs" [opened]="!_mediaQuery.matches">
     <app-recipes
       [recipeList]="isSearching() ? filteredList() : recipeList$()"
       [isLoading]="isLoading$()"
       [isError]="errorCode$()"
+      [mobileMode]="mobileMode()"
       (deleteRecipeClicked)="onDeleteRecipe()"
     >
       <button
@@ -27,6 +28,11 @@
     </app-recipes>
   </mat-sidenav>
   <mat-sidenav-content class="rhs">
+    @if (mobileMode()) {
+      <button matIconButton (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    }
     <router-outlet />
   </mat-sidenav-content>
 </mat-sidenav-container>
