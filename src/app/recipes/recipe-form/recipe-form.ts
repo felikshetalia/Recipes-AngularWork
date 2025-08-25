@@ -51,7 +51,9 @@ export class RecipeForm implements OnInit {
   recipe = input.required<Recipe | undefined>();
 
   formSubmitted = signal<boolean>(false);
-  isEditMode = signal<boolean>(false);
+  isEditMode = signal<boolean>(
+    this.activeRoute.snapshot.data['mode'] === 'edit',
+  );
 
   form = this._fb.group({
     recipeName: [
@@ -74,9 +76,6 @@ export class RecipeForm implements OnInit {
   });
 
   constructor() {
-    if (this.activeRoute.snapshot.data['mode'] === 'edit') {
-      this.isEditMode.set(true);
-    }
     effect(() => {
       this._initForm();
     });
