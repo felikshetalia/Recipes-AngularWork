@@ -73,7 +73,7 @@ export const recipeReducer = createReducer(
     ..._state,
     isLoading: false,
     recipes: _state.recipes.map((recipe) =>
-      recipe._id === id ? { ...recipe, ...newData } : recipe,
+      recipe._id === id ? { ...recipe, ...newData, _id: id } : recipe,
     ),
     selectedRecipe: { ..._state.selectedRecipe, ...newData },
   })),
