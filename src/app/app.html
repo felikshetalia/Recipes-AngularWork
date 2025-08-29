@@ -8,13 +8,13 @@
   />
 </app-navbar>
 <mat-sidenav-container>
-  <mat-sidenav #sidenav mode="side" class="lhs" [opened]="!_mediaQuery.matches">
+  <mat-sidenav #sidenav mode="side" class="lhs" [opened]="!mobileMode()">
     <app-recipes
       [recipeList]="isSearching() ? filteredList() : recipeList$()"
       [isLoading]="isLoading$()"
       [isError]="errorCode$()"
       [mobileMode]="mobileMode()"
-      (deleteRecipeClicked)="onDeleteRecipe()"
+      (deleteRecipeClicked)="onDeleteRecipe($event)"
     >
       <button
         matFab

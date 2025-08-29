@@ -35,7 +35,12 @@ import {
   selectLoadingBool,
   selectRecipes,
 } from './store/recipes.selectors';
-import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router,
+  RouterLink,
+  RouterOutlet,
+} from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -60,12 +65,12 @@ import { CommonModule } from '@angular/common';
 })
 export class App implements OnInit, OnDestroy {
   protected title = 'Recipes';
-  private _route = inject(ActivatedRoute);
-
   private _destroyRef = inject(DestroyRef);
   private _store = inject(Store);
-  protected readonly _mediaQuery: MediaQueryList;
-  private readonly _mediaQueryListener: () => void;
+  private _route = inject(Router);
+  protected _mediaQuery!: MediaQueryList;
+  private _mediaQueryListener!: () => void;
+  private media = inject(MediaMatcher);
 
   readonly recipeList$ = this._store.selectSignal(selectRecipes);
   readonly isLoading$ = this._store.selectSignal(selectLoadingBool);
@@ -79,17 +84,10 @@ export class App implements OnInit, OnDestroy {
   readonly filteredList = signal<Recipe[]>(this.recipeList$());
 
   searchForm = inject(FormBuilder).control('');
-  constructor() {
-    const media = inject(MediaMatcher);
-    this._mediaQuery = media.matchMedia('(orientation: portrait)');
-    this.mobileMode.set(this._mediaQuery.matches);
-    this._mediaQueryListener = () =>
-      this.mobileMode.set(this._mediaQuery.matches);
-    this._mediaQuery.addListener(this._mediaQueryListener);
-  }
+
   ngOnInit(): void {
     this.loadData();
-
+    this.setupMediaQuery();
     this.searchForm.valueChanges
       .pipe(debounceTime(200), takeUntilDestroyed(this._destroyRef))
       .subscribe((searchTerm) => {
@@ -108,14 +106,33 @@ export class App implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this._mediaQuery.removeListener(this._mediaQueryListener);
   }
+  setupMediaQuery(): void {
+    this._mediaQuery = this.media.matchMedia(
+      '(orientation: portrait), (max-width: 1446px)',
+    );
+    this.mobileMode.set(this._mediaQuery.matches);
+    this._mediaQueryListener = () =>
+      this.mobileMode.set(this._mediaQuery.matches);
+    this._mediaQuery.addListener(this._mediaQueryListener);
+  }
+
   loadData(): void {
     this._store.dispatch(loadRecipesGroup.load());
   }
 
-  onDeleteRecipe(): void {
+  onDeleteRecipe(rep: Recipe): void {
     this._store.dispatch(
-      deleteRecipeGroup.deleteRecipe({ recipe: this.selectedRecipe$()! }),
+      deleteRecipeGroup.deleteRecipe({
+        recipe: rep,
+      }),
     );
+    setTimeout(() => {
+      if (this.recipeList$().length > 0) {
+        this._route.navigate(['/recipes', this.recipeList$()[0]._id]);
+      } else {
+        this._route.navigate(['']);
+      }
+    }, 100);
   }
 
   onEditRecipe(rep: Recipe): void {
@@ -134,6 +151,7 @@ export class App implements OnInit, OnDestroy {
   }
 
   onUpdate(source: Recipe): void {
+    console.log(this.selectedRecipe$());
     this._store.dispatch(
       editRecipeGroup.editRecipe({
         id: this.selectedRecipe$()!._id!,

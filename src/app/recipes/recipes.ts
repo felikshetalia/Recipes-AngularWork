@@ -23,7 +23,6 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 })
 export class Recipes {
   private _route = inject(Router);
-  private _activeRoute = inject(ActivatedRoute);
 
   mobileMode = input<boolean>();
 
@@ -33,10 +32,6 @@ export class Recipes {
 
   selectedRecipe = output<Recipe>();
   deleteRecipeClicked = output<Recipe>();
-
-  constructor() {
-    const media = inject(MediaMatcher);
-  }
 
   onSelectRecipe(rep: Recipe): void {
     this.selectedRecipe.emit(rep);
