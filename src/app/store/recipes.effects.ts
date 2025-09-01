@@ -7,13 +7,17 @@ import {
   loadRecipesGroup,
 } from './recipes.actions';
 import { RecipesManagementService } from '../shared/recipes-management.service';
-import { exhaustMap, map, catchError, of, tap } from 'rxjs';
+import { exhaustMap, map, catchError, of, tap, withLatestFrom } from 'rxjs';
 import { Recipe } from '../recipes/models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { selectRecipes } from './recipes.selectors';
 
 @Injectable()
 export class RecipeEffects {
+  private _route = inject(Router);
+  private _store = inject(Store);
   actions$ = inject(Actions);
   recipesService = inject(RecipesManagementService);
 
@@ -66,6 +70,22 @@ export class RecipeEffects {
         ),
       ),
     ),
+  );
+
+  redirectAfterDelete$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(deleteRecipeGroup.deleteRecipeSuccess),
+        withLatestFrom(this._store.select(selectRecipes)),
+        tap(([action, recipes]) => {
+          if (recipes.length > 0) {
+            this._route.navigate(['/recipes', recipes[0]._id]);
+          } else {
+            this._route.navigate(['/recipes']);
+          }
+        }),
+      ),
+    { dispatch: false },
   );
 
   editRecipe$ = createEffect(() =>

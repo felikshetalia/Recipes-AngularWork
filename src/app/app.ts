@@ -126,13 +126,6 @@ export class App implements OnInit, OnDestroy {
         recipe: rep,
       }),
     );
-    setTimeout(() => {
-      if (this.recipeList$().length > 0) {
-        this._route.navigate(['/recipes', this.recipeList$()[0]._id]);
-      } else {
-        this._route.navigate(['']);
-      }
-    }, 100);
   }
 
   onEditRecipe(rep: Recipe): void {
@@ -151,7 +144,6 @@ export class App implements OnInit, OnDestroy {
   }
 
   onUpdate(source: Recipe): void {
-    console.log(this.selectedRecipe$());
     this._store.dispatch(
       editRecipeGroup.editRecipe({
         id: this.selectedRecipe$()!._id!,
