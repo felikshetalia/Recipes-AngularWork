@@ -67,7 +67,6 @@ export class App implements OnInit, OnDestroy {
   protected title = 'Recipes';
   private _destroyRef = inject(DestroyRef);
   private _store = inject(Store);
-  private _route = inject(Router);
   protected _mediaQuery!: MediaQueryList;
   private _mediaQueryListener!: () => void;
   private media = inject(MediaMatcher);
@@ -111,8 +110,9 @@ export class App implements OnInit, OnDestroy {
       '(orientation: portrait), (max-width: 1446px)',
     );
     this.mobileMode.set(this._mediaQuery.matches);
-    this._mediaQueryListener = () =>
+    this._mediaQueryListener = () => {
       this.mobileMode.set(this._mediaQuery.matches);
+    };
     this._mediaQuery.addListener(this._mediaQueryListener);
   }
 

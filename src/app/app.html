@@ -8,7 +8,12 @@
   />
 </app-navbar>
 <mat-sidenav-container>
-  <mat-sidenav #sidenav mode="side" class="lhs" [opened]="!mobileMode()">
+  <mat-sidenav
+    #sidenav
+    [mode]="mobileMode() ? 'over' : 'side'"
+    class="lhs"
+    [opened]="!mobileMode()"
+  >
     <app-recipes
       [recipeList]="isSearching() ? filteredList() : recipeList$()"
       [isLoading]="isLoading$()"
