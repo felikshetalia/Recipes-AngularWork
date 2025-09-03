@@ -55,7 +55,8 @@ mat-sidenav-container {
     }
 
     .search-bar {
-        height: clamp(38px, 5.352vh, 74.2px);
+        height: clamp(38px, 5.352vh, 60px);
+        margin: 0 3% 0 3%;
     }
 }
 
@@ -80,10 +81,16 @@ mat-sidenav-container {
 @media (max-width: 710px) {
     .search-bar {
         height: 38px;
+        margin: 0 1% 0 1%;
     }
 }
 
 @media (max-width: 600px) {
+    .search-bar {
+        height: 38px;
+        margin: 0 0.5% 0 0.5%;
+    }
+
     mat-sidenav-container {
 
         mat-sidenav {

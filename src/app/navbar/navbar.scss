@@ -1,7 +1,5 @@
 header {
-    width: 100%;
     background-color: rgb(23, 124, 224);
-    overflow-x: hidden;
 }
 
 nav {
@@ -10,27 +8,33 @@ nav {
     align-items: center;
 }
 
+.dialog {
+    padding: 1%;
+    height: 50px;
+    width: 50px;
 
-.btn dialog {
-    color: rgb(56, 125, 228);
-    display: flex;
-    flex: 0 0 auto;
-    justify-content: flex-end;
-    padding-right: 5%;
-    cursor: pointer;
+    .btn dialog {
+        color: rgb(56, 125, 228);
+        cursor: pointer;
+    }
+
 }
 
 nav ul {
-    font-size: 30px;
+    font-size: clamp(25px, 30px, 30px);
     color: white;
-    display: flex;
     font-weight: bolder;
-    flex: 0 0 auto;
 }
 
 @media (orientation: portrait),
 (max-width: 1446px) {
     header {
+
+        .dialog {
+            height: 30px;
+            width: 30px;
+        }
+
         nav {
             height: clamp(44px, 6.2vh, 95.56px);
         }
@@ -38,6 +42,7 @@ nav ul {
 
     nav ul {
         font-size: clamp(20px, 1.56vw, 30px);
+        padding-inline-start: 3%;
     }
 
 }
