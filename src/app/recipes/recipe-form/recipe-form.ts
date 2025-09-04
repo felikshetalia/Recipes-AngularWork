@@ -106,7 +106,7 @@ export class RecipeForm implements OnInit {
       ? this._router.navigate(['/recipes', this.recipe()?._id])
       : this._router.navigate([
           '/recipes',
-          this._store.selectSignal(selectRecipes)()[0]._id,
+          this._store.selectSignal(selectRecipes)()[0]._id ?? '',
         ]);
   }
 

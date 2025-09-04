@@ -17,9 +17,11 @@
     <app-recipes
       [recipeList]="isSearching() ? filteredList() : recipeList$()"
       [isLoading]="isLoading$()"
+      [sidenav]="sidenav"
       [isError]="errorCode$()"
       [mobileMode]="mobileMode()"
       (deleteRecipeClicked)="onDeleteRecipe($event)"
+      (editClicked)="onEditRecipe($event)"
     >
       <button
         matFab

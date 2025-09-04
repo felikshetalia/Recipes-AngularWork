@@ -34,6 +34,21 @@ export class RecipeEffects {
       ),
     ),
   );
+  redirectAfterLoad$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(loadRecipesGroup.loadSuccess),
+        withLatestFrom(this._store.select(selectRecipes)),
+        tap(([action, recipes]) => {
+          if (recipes.length > 0) {
+            this._route.navigate(['/recipes', recipes[0]._id]);
+          } else {
+            this._route.navigate(['/recipes']);
+          }
+        }),
+      ),
+    { dispatch: false },
+  );
 
   addRecipe$ = createEffect(() =>
     this.actions$.pipe(
@@ -49,6 +64,22 @@ export class RecipeEffects {
         ),
       ),
     ),
+  );
+
+  redirectAfterAdd$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(addRecipeGroup.addRecipeSuccess),
+        withLatestFrom(this._store.select(selectRecipes)),
+        tap(([action, recipes]) => {
+          if (recipes.length > 0) {
+            this._route.navigate(['/recipes', action.recipe._id]);
+          } else {
+            this._route.navigate(['/recipes']);
+          }
+        }),
+      ),
+    { dispatch: false },
   );
 
   deleteRecipe$ = createEffect(() =>

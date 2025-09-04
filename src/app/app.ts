@@ -6,6 +6,7 @@ import {
   OnDestroy,
   OnInit,
   signal,
+  viewChild,
 } from '@angular/core';
 import { Navbar } from './navbar/navbar';
 import { Recipes } from './recipes/recipes';
@@ -35,12 +36,7 @@ import {
   selectLoadingBool,
   selectRecipes,
 } from './store/recipes.selectors';
-import {
-  ActivatedRoute,
-  Router,
-  RouterLink,
-  RouterOutlet,
-} from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -67,6 +63,7 @@ export class App implements OnInit, OnDestroy {
   protected title = 'Recipes';
   private _destroyRef = inject(DestroyRef);
   private _store = inject(Store);
+  private _route = inject(Router);
   protected _mediaQuery!: MediaQueryList;
   private _mediaQueryListener!: () => void;
   private media = inject(MediaMatcher);
@@ -77,6 +74,7 @@ export class App implements OnInit, OnDestroy {
   readonly selectedRecipe$ = this._store.selectSignal(selectedRecipe);
 
   protected readonly mobileMode = signal<boolean>(false);
+  protected readonly sidenav = viewChild.required<MatSidenav>('sidenav');
   readonly isEditing = signal<boolean>(false);
   readonly isAdding = signal<boolean>(false);
   readonly isSearching = signal<boolean>(false);
@@ -105,6 +103,7 @@ export class App implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this._mediaQuery.removeListener(this._mediaQueryListener);
   }
+
   setupMediaQuery(): void {
     this._mediaQuery = this.media.matchMedia(
       '(orientation: portrait), (max-width: 1446px)',
@@ -131,6 +130,9 @@ export class App implements OnInit, OnDestroy {
   onEditRecipe(rep: Recipe): void {
     this.isEditing.set(true);
     this.isAdding.set(false);
+    if (rep) {
+      this._route.navigate(['/recipes', rep._id, 'edit']);
+    }
   }
 
   onAddRecipe(enteredData: Recipe): void {
@@ -141,6 +143,9 @@ export class App implements OnInit, OnDestroy {
   onAddClick(): void {
     this.isAdding.set(true);
     this.isEditing.set(false);
+    if (this.mobileMode()) {
+      this.sidenav().toggle();
+    }
   }
 
   onUpdate(source: Recipe): void {
