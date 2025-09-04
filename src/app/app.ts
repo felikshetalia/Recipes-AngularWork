@@ -3,8 +3,10 @@ import {
   Component,
   DestroyRef,
   inject,
+  OnDestroy,
   OnInit,
   signal,
+  viewChild,
 } from '@angular/core';
 import { Navbar } from './navbar/navbar';
 import { Recipes } from './recipes/recipes';
@@ -13,7 +15,9 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
-import { MatFabButton } from '@angular/material/button';
+import { MatFabButton, MatIconButton } from '@angular/material/button';
+import { MediaMatcher } from '@angular/cdk/layout';
+
 import {
   MatSidenav,
   MatSidenavContainer,
@@ -32,7 +36,8 @@ import {
   selectLoadingBool,
   selectRecipes,
 } from './store/recipes.selectors';
-import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -42,28 +47,34 @@ import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
     ReactiveFormsModule,
     MatIcon,
     MatFabButton,
+    MatIconButton,
     MatSidenav,
     MatSidenavContainer,
     MatSidenavContent,
     RouterOutlet,
     RouterLink,
+    CommonModule,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class App implements OnInit {
+export class App implements OnInit, OnDestroy {
   protected title = 'Recipes';
-  private _route = inject(ActivatedRoute);
-
   private _destroyRef = inject(DestroyRef);
   private _store = inject(Store);
+  private _route = inject(Router);
+  protected _mediaQuery!: MediaQueryList;
+  private _mediaQueryListener!: () => void;
+  private media = inject(MediaMatcher);
 
   readonly recipeList$ = this._store.selectSignal(selectRecipes);
   readonly isLoading$ = this._store.selectSignal(selectLoadingBool);
   readonly errorCode$ = this._store.selectSignal(selectError);
   readonly selectedRecipe$ = this._store.selectSignal(selectedRecipe);
 
+  protected readonly mobileMode = signal<boolean>(false);
+  protected readonly sidenav = viewChild.required<MatSidenav>('sidenav');
   readonly isEditing = signal<boolean>(false);
   readonly isAdding = signal<boolean>(false);
   readonly isSearching = signal<boolean>(false);
@@ -73,7 +84,7 @@ export class App implements OnInit {
 
   ngOnInit(): void {
     this.loadData();
-
+    this.setupMediaQuery();
     this.searchForm.valueChanges
       .pipe(debounceTime(200), takeUntilDestroyed(this._destroyRef))
       .subscribe((searchTerm) => {
@@ -89,20 +100,39 @@ export class App implements OnInit {
         }
       });
   }
+  ngOnDestroy(): void {
+    this._mediaQuery.removeListener(this._mediaQueryListener);
+  }
+
+  setupMediaQuery(): void {
+    this._mediaQuery = this.media.matchMedia(
+      '(orientation: portrait), (max-width: 1446px)',
+    );
+    this.mobileMode.set(this._mediaQuery.matches);
+    this._mediaQueryListener = () => {
+      this.mobileMode.set(this._mediaQuery.matches);
+    };
+    this._mediaQuery.addListener(this._mediaQueryListener);
+  }
 
   loadData(): void {
     this._store.dispatch(loadRecipesGroup.load());
   }
 
-  onDeleteRecipe(): void {
+  onDeleteRecipe(rep: Recipe): void {
     this._store.dispatch(
-      deleteRecipeGroup.deleteRecipe({ recipe: this.selectedRecipe$()! }),
+      deleteRecipeGroup.deleteRecipe({
+        recipe: rep,
+      }),
     );
   }
 
   onEditRecipe(rep: Recipe): void {
     this.isEditing.set(true);
     this.isAdding.set(false);
+    if (rep) {
+      this._route.navigate(['/recipes', rep._id, 'edit']);
+    }
   }
 
   onAddRecipe(enteredData: Recipe): void {
@@ -113,6 +143,9 @@ export class App implements OnInit {
   onAddClick(): void {
     this.isAdding.set(true);
     this.isEditing.set(false);
+    if (this.mobileMode()) {
+      this.sidenav().toggle();
+    }
   }
 
   onUpdate(source: Recipe): void {

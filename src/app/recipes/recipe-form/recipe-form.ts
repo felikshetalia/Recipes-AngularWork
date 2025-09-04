@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
+  HostListener,
   inject,
   input,
   OnInit,
@@ -49,11 +50,17 @@ export class RecipeForm implements OnInit {
   activeRoute = inject(ActivatedRoute);
 
   recipe = input.required<Recipe | undefined>();
-
-  formSubmitted = signal<boolean>(false);
   isEditMode = signal<boolean>(
     this.activeRoute.snapshot.data['mode'] === 'edit',
   );
+
+  @HostListener('window:beforeunload', ['$event'])
+  onBeforeUnload(event: BeforeUnloadEvent): void {
+    if (this.form.dirty) {
+      event.preventDefault();
+      event.returnValue = true;
+    }
+  }
 
   form = this._fb.group({
     recipeName: [
@@ -99,11 +106,12 @@ export class RecipeForm implements OnInit {
       ? this._router.navigate(['/recipes', this.recipe()?._id])
       : this._router.navigate([
           '/recipes',
-          this._store.selectSignal(selectRecipes)()[0]._id,
+          this._store.selectSignal(selectRecipes)()[0]._id ?? '',
         ]);
   }
 
   onSubmit(): void {
+    this.form.markAsPristine();
     const enteredData = {
       name: this.form.value.recipeName || '',
       preparationTimeInMins: this.form.value.prepTime || 0,
@@ -126,7 +134,6 @@ export class RecipeForm implements OnInit {
         this._store.dispatch(addRecipeGroup.addRecipe({ recipe: enteredData }));
         this._router.navigate(['/recipes']);
       }
-      this.formSubmitted.set(true);
     }
   }
 

@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
   <mat-card>
     <h1>
       @if (isEditMode()) {
@@ -107,7 +107,7 @@
       </mat-error>
     </mat-form-field>
     <mat-card-actions class="actions">
-      <button matButton type="submit" (click)="onSubmit()">
+      <button matButton type="submit">
         @if (isEditMode()) {
           Save Recipe
         } @else {

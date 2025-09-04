@@ -10,7 +10,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatIcon } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconButton } from '@angular/material/button';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-recipes',
@@ -21,14 +22,22 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 })
 export class Recipes {
   private _route = inject(Router);
+
+  mobileMode = input<boolean>();
+  sidenav = input.required<MatSidenav>();
   recipeList = input<Recipe[]>();
   isLoading = input<boolean>();
   isError = input<any | null>();
 
   selectedRecipe = output<Recipe>();
   deleteRecipeClicked = output<Recipe>();
+  editClicked = output<Recipe>();
+
   onSelectRecipe(rep: Recipe): void {
     this.selectedRecipe.emit(rep);
+    if (this.mobileMode()) {
+      this.sidenav().close();
+    }
   }
 
   onDeleteRecipe(rep: Recipe): void {
@@ -37,7 +46,12 @@ export class Recipes {
     }
   }
 
-  onEditRecipe(rep: Recipe): void {
-    this._route.navigate(['/recipes', rep._id, '/edit']);
+  onEditRecipe(rep: Recipe, event: MouseEvent): void {
+    event.stopPropagation();
+    if (this.mobileMode()) {
+      this.sidenav().close();
+    }
+    this.editClicked.emit(rep);
+    // this._route.navigate(['/recipes', rep._id, '/edit']);
   }
 }

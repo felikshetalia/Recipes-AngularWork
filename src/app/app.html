@@ -8,12 +8,20 @@
   />
 </app-navbar>
 <mat-sidenav-container>
-  <mat-sidenav #sidenav mode="side" class="lhs" opened="true">
+  <mat-sidenav
+    #sidenav
+    [mode]="mobileMode() ? 'over' : 'side'"
+    class="lhs"
+    [opened]="!mobileMode()"
+  >
     <app-recipes
       [recipeList]="isSearching() ? filteredList() : recipeList$()"
       [isLoading]="isLoading$()"
+      [sidenav]="sidenav"
       [isError]="errorCode$()"
-      (deleteRecipeClicked)="onDeleteRecipe()"
+      [mobileMode]="mobileMode()"
+      (deleteRecipeClicked)="onDeleteRecipe($event)"
+      (editClicked)="onEditRecipe($event)"
     >
       <button
         matFab
@@ -27,6 +35,11 @@
     </app-recipes>
   </mat-sidenav>
   <mat-sidenav-content class="rhs">
+    @if (mobileMode()) {
+      <button matIconButton (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    }
     <router-outlet />
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -1,29 +1,61 @@
 header {
-    flex-direction: column;
-    background-color: dodgerblue;
-    padding: 10px 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 0.75rem 0.1rem;
-    gap: 1rem;
-    align-items: center;
-    font-size: 1rem;
-}
-
-button.dialog {
-    margin-right: 30px;
-    padding: 10px;
-    color: rgb(56, 125, 228);
-    font-size: 50px;
-    cursor: pointer;
+    background-color: rgb(23, 124, 224);
 }
 
 nav {
+    width: 100%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
 }
+
+.dialog {
+    padding: 1%;
+    height: 50px;
+    width: 50px;
+
+    .btn dialog {
+        color: rgb(56, 125, 228);
+        cursor: pointer;
+    }
+
+}
+
 nav ul {
-    font-size: 2rem;
+    font-size: clamp(25px, 30px, 30px);
     color: white;
     font-weight: bolder;
+}
+
+@media (orientation: portrait),
+(max-width: 1446px) {
+    header {
+
+        .dialog {
+            height: 30px;
+            width: 30px;
+        }
+
+        nav {
+            height: clamp(44px, 6.2vh, 95.56px);
+        }
+    }
+
+    nav ul {
+        font-size: clamp(20px, 1.56vw, 30px);
+        padding-inline-start: 3%;
+    }
+
+}
+
+@media (max-width: 710px) {
+
+    nav ul {
+        font-size: clamp(15px, 1.56vw, 20px);
+    }
+}
+
+@media(max-width: 600px) {
+    nav ul {
+        font-size: clamp(12px, 1.56vw, 15px);
+    }
 }
