@@ -101,7 +101,8 @@ export class App implements OnInit, OnDestroy {
       });
   }
   ngOnDestroy(): void {
-    this._mediaQuery.removeListener(this._mediaQueryListener);
+    if (this._mediaQuery && this._mediaQueryListener)
+      this._mediaQuery.removeListener(this._mediaQueryListener);
   }
 
   setupMediaQuery(): void {

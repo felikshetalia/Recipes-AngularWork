@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AuthorDialog } from './author-dialog';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('AuthorDialog', () => {
   let component: AuthorDialog;
@@ -8,9 +9,9 @@ describe('AuthorDialog', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AuthorDialog]
-    })
-    .compileComponents();
+      imports: [AuthorDialog],
+      providers: [provideZonelessChangeDetection()],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(AuthorDialog);
     component = fixture.componentInstance;

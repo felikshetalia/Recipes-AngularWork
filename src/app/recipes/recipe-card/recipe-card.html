@@ -1,10 +1,10 @@
 @if (recipe() !== undefined) {
   <mat-card>
     <mat-card-header>
-      <mat-card-title>How to prepare {{ recipe()?.name }} ?</mat-card-title>
+      <mat-card-title>How to prepare {{ recipe()?.name }}?</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <p>
+      <p class="prep-time">
         <mat-icon>schedule</mat-icon>
         {{ recipe()?.preparationTimeInMins ?? 0 | timeCustom }}
       </p>
@@ -29,7 +29,7 @@
       </table>
 
       <mat-label>Description</mat-label>
-      <p>{{ recipe()?.description }}</p>
+      <p class="desc">{{ recipe()?.description }}</p>
     </mat-card-content>
     <mat-card-actions>
       <button matFab extended [routerLink]="['edit']" aria-label="Edit Recipe">
