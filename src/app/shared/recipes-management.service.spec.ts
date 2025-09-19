@@ -3,12 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { RecipesManagementService } from './recipes-management.service';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { provideStore } from '@ngrx/store';
-import {
-  HttpClient,
-  HttpRequest,
-  HttpResponse,
-  provideHttpClient,
-} from '@angular/common/http';
+import { HttpClient, provideHttpClient } from '@angular/common/http';
 import {
   HttpTestingController,
   provideHttpClientTesting,
@@ -55,11 +50,26 @@ describe('RecipesManagement', () => {
   });
 
   it('return type should be an observable', () => {
-    expect(typeof service.addRecipe).toBe(typeof Observable<Recipe>);
-    expect(typeof service.loadRecipes).toBe(typeof Observable<Recipe[]>);
-    expect(typeof service.updateRecipe).toBe(typeof Observable<Recipe>);
-    expect(typeof service.fetchRecipe).toBe(typeof Observable<Recipe>);
-    expect(typeof service.deleteRecipe).toBe(typeof Observable<null>);
+    const newRecipeToAdd = {
+      name: 'Guacamole',
+      description: 'Creamy avocado dip',
+      preparationTimeInMins: 15,
+      ingredients: [
+        { _id: '8ho', name: 'Awokado', quantity: '2 ripe' },
+        { _id: '9ip', name: 'Cebula czerwona', quantity: '1 small' },
+        { _id: '10jq', name: 'Sok z limonki', quantity: '2 tbsp' },
+        { _id: '11kr', name: 'Kolendra', quantity: 'a few sprigs' },
+      ],
+    };
+    expect(service.addRecipe(newRecipeToAdd)).toBeInstanceOf(
+      Observable<Recipe>,
+    );
+    expect(service.loadRecipes()).toBeInstanceOf(Observable<Recipe[]>);
+    expect(service.updateRecipe(newRecipeToAdd, 'qwerty')).toBeInstanceOf(
+      Observable<Recipe>,
+    );
+    expect(service.fetchRecipe('qwerty')).toBeInstanceOf(Observable<Recipe>);
+    expect(service.deleteRecipe(recipeWS)).toBeInstanceOf(Observable<null>);
   });
 
   it('should load all recipes', () => {
@@ -118,7 +128,7 @@ describe('RecipesManagement', () => {
       error: fail,
     });
 
-    const req = httpController.expectOne(service.resourceURL);
+    const req = httpController.expectOne(service['_resourceURL']);
     expect(req.request.method).toEqual('GET');
     req.flush(recipesToGet);
   });
@@ -133,7 +143,7 @@ describe('RecipesManagement', () => {
       error: fail,
     });
     const req = httpController.expectOne(
-      `${service.resourceURL}/${recipeWS._id}`,
+      `${service['_resourceURL']}/${recipeWS._id}`,
     );
     expect(req.request.method).toEqual('GET');
     req.flush(recipeWS);
@@ -160,7 +170,7 @@ describe('RecipesManagement', () => {
       error: fail,
     });
     const req = httpController.expectOne(
-      `${service.resourceURL}/${recipeWS._id}`,
+      `${service['_resourceURL']}/${recipeWS._id}`,
     );
     expect(req.request.method).toEqual('PUT');
     expect(req.request.body).toEqual(newRecipeToPut);
@@ -174,7 +184,7 @@ describe('RecipesManagement', () => {
       },
     });
     const req = httpController.expectOne(
-      `${service.resourceURL}/${recipeWS._id}`,
+      `${service['_resourceURL']}/${recipeWS._id}`,
     );
     expect(req.request.method).toEqual('DELETE');
     req.flush(null);
@@ -200,7 +210,7 @@ describe('RecipesManagement', () => {
       },
       error: fail,
     });
-    const req = httpController.expectOne(`${service.resourceURL}`);
+    const req = httpController.expectOne(`${service['_resourceURL']}`);
     expect(req.request.method).toEqual('POST');
     expect(req.request.body).toEqual(newRecipeToAdd);
     req.flush(newRecipeToAdd);

@@ -44,7 +44,7 @@ import { selectRecipes } from '../../store/recipes.selectors';
 })
 export class RecipeForm implements OnInit {
   private _router = inject(Router);
-  public _fb = inject(FormBuilder);
+  private _fb = inject(FormBuilder);
   private _store = inject(Store);
 
   activeRoute = inject(ActivatedRoute);

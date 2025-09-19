@@ -1,9 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  WritableSignal,
-  provideZonelessChangeDetection,
-  signal,
-} from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { RecipeForm } from './recipe-form';
 import { provideStore } from '@ngrx/store';
 import { provideRouter } from '@angular/router';
@@ -53,7 +49,7 @@ describe('RecipeForm', () => {
 
   it('should update recipe description', () => {
     const mockDesc =
-      'Some description added here in order to fullfill the testing task';
+      'Some description added here in order to fulfill the testing task';
     component.form.controls.description.setValue(mockDesc);
     fixture.detectChanges();
     const input = fixture.debugElement.query(
@@ -65,7 +61,7 @@ describe('RecipeForm', () => {
   it('should update recipe ingredients', () => {
     const ingredientsForm = component.form.get('ingredients') as FormArray;
     ingredientsForm.push(
-      component._fb.group({ name: ['Awokado'], quantity: ['1'] }),
+      component['_fb'].group({ name: ['Awokado'], quantity: ['1'] }),
     );
     const inputName = fixture.debugElement.queryAll(By.css('.input-name'));
     const inputQuantity = fixture.debugElement.queryAll(
