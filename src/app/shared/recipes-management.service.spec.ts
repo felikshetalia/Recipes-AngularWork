@@ -9,7 +9,7 @@ import {
   HttpTestingController,
   provideHttpClientTesting,
 } from '@angular/common/http/testing';
-import { Observable, raceWith } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Recipe } from '../recipes/models';
 
 describe('RecipesManagement', () => {
@@ -206,7 +206,7 @@ describe('RecipesManagement', () => {
     service.addRecipe(newRecipeToAdd).subscribe({
       next: (rep) => {
         expect(rep)
-          .withContext('should edit the selected recipe')
+          .withContext('should add a recipe')
           .toEqual({ ...newRecipeToAdd });
       },
       error: fail,
