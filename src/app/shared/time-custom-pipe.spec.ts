@@ -1,3 +1,4 @@
+/// <reference types="jasmine" />
 import { inject, provideZonelessChangeDetection } from '@angular/core';
 import { TimeCustomPipe } from './time-custom-pipe';
 import { TestBed } from '@angular/core/testing';

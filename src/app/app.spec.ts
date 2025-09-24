@@ -1,7 +1,7 @@
+/// <reference types="jasmine" />
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { App } from './app';
-import { provideStore } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';

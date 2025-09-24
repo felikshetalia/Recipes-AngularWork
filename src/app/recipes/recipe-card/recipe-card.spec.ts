@@ -1,5 +1,5 @@
+/// <reference types="jasmine" />
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { RecipeCard } from './recipe-card';
 import { MatCardModule, MatCardTitle } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';

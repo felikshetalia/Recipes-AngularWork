@@ -1,3 +1,4 @@
+/// <reference types="cypress" />
 describe('Adding recipe', () => {
   beforeEach(() => {
     cy.visit('http://localhost:4200/');
