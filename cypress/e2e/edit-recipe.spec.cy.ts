@@ -52,7 +52,6 @@ describe('Editing recipe', () => {
     cy.visit('/');
     cy.wait('@getEntries');
     cy.wait('@getRecipe');
-    // first visit the recipe card
     cy.contains('Edit').click();
     cy.url().should('include', '/edit');
   });
