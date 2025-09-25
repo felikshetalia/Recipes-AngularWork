@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "types": ["cypress"],       // Use Cypress types
+    "module": "commonjs",       // CommonJS for Node runtime
+    "target": "ES2022",
+    "esModuleInterop": true,
+    "strict": true
+  },
+  "include": ["e2e/**/*.ts"]
+}
