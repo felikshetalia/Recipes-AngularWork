@@ -1,12 +1,12 @@
 <header>
   <nav>
     <ul>
-      Kuchnia Express Marche Przepisy
+      <span (click)="goHome()">Kuchnia Express Marche Przepisy</span>
     </ul>
     <ng-content />
     <div class="dialog">
-      <button matFab class="btn dialog" (click)="openDialog()">
-        <mat-icon>comment</mat-icon>
+      <button matFab class="btn dialog" [routerLink]="['/profile']">
+        <mat-icon>account_circle</mat-icon>
       </button>
     </div>
   </nav>

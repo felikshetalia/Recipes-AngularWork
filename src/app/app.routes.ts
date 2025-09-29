@@ -2,6 +2,7 @@ import { CanDeactivateFn, Routes } from '@angular/router';
 import { RecipeCard } from './recipes/recipe-card/recipe-card';
 import { recipeResolver } from './shared/recipe.resolver';
 import { RecipeForm } from './recipes/recipe-form/recipe-form';
+import { Profile } from './profile/profile';
 
 export const canLeaveFormGuard: CanDeactivateFn<RecipeForm> = (
   component: RecipeForm,
@@ -37,6 +38,10 @@ export const routes: Routes = [
         data: { mode: 'edit' },
       },
     ],
+  },
+  {
+    path: 'profile',
+    component: Profile,
   },
   {
     path: '**',
