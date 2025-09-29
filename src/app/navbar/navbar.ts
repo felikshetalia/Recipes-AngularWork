@@ -5,14 +5,16 @@ import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, MatFabButton, MatIcon],
+  imports: [MatFabButton, MatIcon],
   standalone: true,
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss',
 })
 export class Navbar {
   private _router = inject(Router);
-
+  goToProfile(): void {
+    this._router.navigateByUrl('/profile');
+  }
   goHome(): void {
     this._router.navigateByUrl('/');
   }

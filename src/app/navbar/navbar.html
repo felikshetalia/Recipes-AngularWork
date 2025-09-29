@@ -5,7 +5,7 @@
     </ul>
     <ng-content />
     <div class="dialog">
-      <button matFab class="btn dialog" [routerLink]="['/profile']">
+      <button matFab class="btn dialog" (click)="goToProfile()">
         <mat-icon>account_circle</mat-icon>
       </button>
     </div>
